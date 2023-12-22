@@ -8,4 +8,8 @@ export const BACKEND_API = {
   REGISTER: IP_URL + '/employee/register',
   LOGIN: IP_URL + '/employee/login',
   LOGOUT: IP_URL + '/employee/logout',
+
+  EMPLOYEES_ALL: IP_URL + '/employee/',
+  EMPLOYEE_UPDATE: IP_URL + '/employee/update',
+  EMPLOYEE_DELETE: IP_URL + '/employee/delete/',
 };

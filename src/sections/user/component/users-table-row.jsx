@@ -1,9 +1,18 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, MenuItem, Popover } from '@mui/material';
+import {
+  Chip,
+  IconButton,
+  MenuItem,
+  Popover,
+  TableCell,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import Iconify from 'src/components/iconify';
+import { useSelector } from 'react-redux';
 
-export const UsersTableRow = ({ employee }) => {
+export const UsersTableRow = ({ employee, handleOpenUpdateDialog, handleOpenDeleteDialog }) => {
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -13,28 +22,27 @@ export const UsersTableRow = ({ employee }) => {
   const handleCloseMenu = () => {
     setOpen(null);
   };
+
+  const user = useSelector((state) => state.auth.user);
+
   return (
     <>
       <TableRow hover>
         <TableCell component="th">
           <Typography variant="subtitle2" noWrap>
-            {employee.employeeName}
+            {employee.userFullName}
           </Typography>
         </TableCell>
-
-        <TableCell>{employee.employeeRole}</TableCell>
-
-        <TableCell>{employee.employeeMoileNo}</TableCell>
-
-        <TableCell>{employee.employeeNIC}</TableCell>
-
-        <TableCell>{employee.employeeEmail}</TableCell>
-        <TableCell>{employee.employeeDOB}</TableCell>
-        <TableCell>{employee.employeeNIC}</TableCell>
+        <TableCell>{employee.userName}</TableCell>
+        <TableCell>
+          <Chip label={employee.userRole} color="success" />
+        </TableCell>
         <TableCell align="right">
-          <IconButton onClick={handleOpenMenu}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
+          {user.id === employee._id ? null : (
+            <IconButton onClick={handleOpenMenu}>
+              <Iconify icon="eva:more-vertical-fill" />
+            </IconButton>
+          )}
         </TableCell>
       </TableRow>
       <Popover
@@ -47,12 +55,12 @@ export const UsersTableRow = ({ employee }) => {
           sx: { width: 140 },
         }}
       >
-        <MenuItem onClick={handleCloseMenu}>
+        <MenuItem onClick={() => handleOpenUpdateDialog(employee)}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={() => handleOpenDeleteDialog(employee)} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
         </MenuItem>
@@ -62,5 +70,6 @@ export const UsersTableRow = ({ employee }) => {
 };
 
 UsersTableRow.propTypes = {
-  employee: PropTypes.array,
+  employee: PropTypes.object.isRequired,
+  handleOpenUpdateDialog: PropTypes.func.isRequired,
 };

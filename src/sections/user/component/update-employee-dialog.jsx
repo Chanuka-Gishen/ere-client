@@ -19,18 +19,12 @@ import { FormikProvider } from 'formik';
 import { USER_ROLE } from 'src/constants/user-role';
 import { LoadingButton } from '@mui/lab';
 
-export const AddEmployeeDialog = ({
-  open,
-  handleClose,
-  formik,
-  handleSubmitAddUser,
-  isLoading,
-}) => {
+export const UpdateEmployeeDialog = ({ open, handleClose, formik, handleSubmit, isLoading }) => {
   const { touched, errors, getFieldProps } = formik;
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth sx={{ px: 2 }}>
-      <DialogTitle>Add Employee</DialogTitle>
+      <DialogTitle>Update Employee</DialogTitle>
       <DialogContent>
         <FormikProvider value={formik}>
           <Stack direction={'column'} spacing={2}>
@@ -66,24 +60,6 @@ export const AddEmployeeDialog = ({
                 <FormHelperText>{touched.userLastName && errors.userLastName}</FormHelperText>
               )}
             </FormControl>
-            <Stack spacing={2} direction={'row'}>
-              <TextField
-                label="Password*"
-                fullWidth
-                variant="outlined"
-                {...getFieldProps('userPassword')}
-                error={Boolean(touched.userPassword && errors.userPassword)}
-                helperText={touched.userPassword && errors.userPassword}
-              />
-              <TextField
-                label="Confirm Password*"
-                fullWidth
-                variant="outlined"
-                {...getFieldProps('userConfirmPassword')}
-                error={Boolean(touched.userConfirmPassword && errors.userConfirmPassword)}
-                helperText={touched.userConfirmPassword && errors.userConfirmPassword}
-              />
-            </Stack>
           </Stack>
         </FormikProvider>
       </DialogContent>
@@ -94,7 +70,7 @@ export const AddEmployeeDialog = ({
           color="inherit"
           disabled={isLoading}
           loading={isLoading}
-          onClick={handleSubmitAddUser}
+          onClick={handleSubmit}
         >
           Submit
         </LoadingButton>
@@ -103,10 +79,10 @@ export const AddEmployeeDialog = ({
   );
 };
 
-AddEmployeeDialog.propTypes = {
+UpdateEmployeeDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   formik: PropTypes.object.isRequired,
-  handleSubmitAddUser: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
