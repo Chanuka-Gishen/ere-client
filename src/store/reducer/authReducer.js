@@ -5,10 +5,9 @@ const initialState = {
   user: {
     id: '',
     token: '',
-    mobile: '',
     name: '',
-    status: '',
-    role: 'ADMIN',
+    userName: '',
+    userRole: '',
   },
 };
 
@@ -16,14 +15,13 @@ const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case AUTH_CONSTANT_REDUX.LOGIN_USER:
       return {
-        isLoggedIn: false,
+        isLoggedIn: true,
         user: {
           id: payload._id,
           token: payload.userToken,
           name: payload.userFullName,
-          mobile: payload.userMobile,
-          status: payload.userStatus,
-          role: payload.userRole,
+          userName: payload.userName,
+          userRole: payload.userRole,
         },
       };
     case AUTH_CONSTANT_REDUX.LOGGED_IN_USER:

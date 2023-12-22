@@ -7,18 +7,14 @@ import Typography from '@mui/material/Typography';
 import { alpha, useTheme } from '@mui/material/styles';
 import PropTypes from 'prop-types';
 
-import { useRouter } from 'src/routes/hooks';
-
 import { bgGradient } from 'src/theme/css';
 
 import LoginForm from '../component/login-form';
 
 // ----------------------------------------------------------------------
 
-export const LoginView = ({ handleLogin }) => {
+export const LoginView = ({ handleLogin, formik, isLoading }) => {
   const theme = useTheme();
-
-  const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -57,9 +53,11 @@ export const LoginView = ({ handleLogin }) => {
           </Typography>
 
           <LoginForm
+            formik={formik}
             handleClick={handleLogin}
             handleShowPassword={handleShowPassword}
             showPassword={showPassword}
+            isLoading={isLoading}
           />
         </Card>
       </Stack>
@@ -69,4 +67,6 @@ export const LoginView = ({ handleLogin }) => {
 
 LoginView.propTypes = {
   handleLogin: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  formik: PropTypes.object.isRequired,
 };

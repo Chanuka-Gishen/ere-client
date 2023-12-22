@@ -3,15 +3,22 @@ import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import React from 'react';
 import Iconify from 'src/components/iconify';
 import PropTypes from 'prop-types';
+import { FormikProvider } from 'formik';
 
-const LoginForm = ({ handleClick, handleShowPassword, showPassword }) => {
+const LoginForm = ({ handleClick, handleShowPassword, showPassword, formik, isLoading }) => {
+  const { touched, errors, getFieldProps } = formik;
+
   return (
-    <>
+    <FormikProvider value={formik}>
       <Stack spacing={3} sx={{ my: 3 }}>
-        <TextField name="email" label="Email address" />
+        <TextField
+          label="User Name"
+          {...getFieldProps('userName')}
+          error={Boolean(touched.userName && errors.userName)}
+          helperText={touched.userName && errors.userName}
+        />
 
         <TextField
-          name="password"
           label="Password"
           type={showPassword ? 'text' : 'password'}
           InputProps={{
@@ -23,6 +30,9 @@ const LoginForm = ({ handleClick, handleShowPassword, showPassword }) => {
               </InputAdornment>
             ),
           }}
+          {...getFieldProps('userPassword')}
+          error={Boolean(touched.userPassword && errors.userPassword)}
+          helperText={touched.userPassword && errors.userPassword}
         />
       </Stack>
 
@@ -39,10 +49,12 @@ const LoginForm = ({ handleClick, handleShowPassword, showPassword }) => {
         variant="contained"
         color="inherit"
         onClick={handleClick}
+        loading={isLoading}
+        disabled={isLoading}
       >
         Login
       </LoadingButton>
-    </>
+    </FormikProvider>
   );
 };
 

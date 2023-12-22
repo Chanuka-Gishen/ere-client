@@ -10,32 +10,21 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { account } from 'src/_mock/account';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import authAction from 'src/store/action/authAction';
-
-// ----------------------------------------------------------------------
-
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
-];
+import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
+import { BACKEND_API } from 'src/axios/constant/backend-api';
+import responseUtil from 'src/utils/responseUtil';
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const [isLoading, setIsloading] = useState(false);
 
   const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.auth.user);
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -45,8 +34,23 @@ export default function AccountPopover() {
     setOpen(null);
   };
 
-  const handleLogout = () => {
-    dispatch(authAction.logoutUser());
+  const handleLogout = async () => {
+    setIsloading(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.LOGOUT,
+      method: 'GET',
+    })
+      .then((res) => {
+        const data = res.data;
+
+        if (responseUtil.isResponseSuccess(data.responseCode)) {
+          dispatch(authAction.logoutUser());
+        }
+      })
+      .finally(() => {
+        setIsloading(false);
+      });
   };
 
   return (
@@ -93,10 +97,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {user.name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {user.userName}
           </Typography>
         </Box>
 
