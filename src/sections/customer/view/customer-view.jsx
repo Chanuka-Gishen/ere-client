@@ -19,8 +19,12 @@ import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from 'src/components/custom-table/custom-table-head';
 import { USERS } from 'src/_mock/users';
 import { CustomerTableRow } from '../component/customer-table-row';
+import TableLoadingRow from 'src/components/custom-table/table-loading-row';
+import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 
 export const CustomerView = ({
+  isLoading,
+  customers,
   openAddCust,
   handleOpenAddCustomer,
   handleCloseAddCustomer,
@@ -30,6 +34,9 @@ export const CustomerView = ({
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
+  isLoadingAddCustomer,
+  handleSubmitNewCust,
+  handleInstallationDateChange,
 }) => {
   return (
     <Container maxWidth="xl">
@@ -51,11 +58,25 @@ export const CustomerView = ({
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
               <CustomTableHead headLabel={headerLabels} enableAction={false} />
-              <TableBody>
-                {USERS.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                  <CustomerTableRow customer={row} key={row._id} />
-                ))}
-              </TableBody>
+              {isLoading ? (
+                <TableBody>
+                  <TableLoadingRow colSpan={headerLabels.length} />
+                </TableBody>
+              ) : (
+                <TableBody>
+                  {customers.length === 0 ? (
+                    <TableEmptyRow colSpan={headerLabels.length} />
+                  ) : (
+                    <>
+                      {customers
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row) => (
+                          <CustomerTableRow customer={row} key={row._id} />
+                        ))}
+                    </>
+                  )}
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
         </Scrollbar>
@@ -70,19 +91,31 @@ export const CustomerView = ({
         />
       </Card>
 
-      <CustomerDrawer isOpen={openAddCust} handleClose={handleCloseAddCustomer} formik={formik} />
+      <CustomerDrawer
+        isOpen={openAddCust}
+        handleClose={handleCloseAddCustomer}
+        formik={formik}
+        handleInstallationDateChange={handleInstallationDateChange}
+        isLoading={isLoadingAddCustomer}
+        handleSubmit={handleSubmitNewCust}
+      />
     </Container>
   );
 };
 
 CustomerView.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  customers: PropTypes.array,
   openAddCust: PropTypes.bool.isRequired,
   handleOpenAddCustomer: PropTypes.func.isRequired,
   handleCloseAddCustomer: PropTypes.func.isRequired,
   formik: PropTypes.object.isRequired,
+  handleInstallationDateChange: PropTypes.func.isRequired,
   headerLabels: PropTypes.array.isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,
   handleChangePage: PropTypes.func.isRequired,
   handleChangeRowsPerPage: PropTypes.func.isRequired,
+  isLoadingAddCustomer: PropTypes.bool.isRequired,
+  handleSubmitNewCust: PropTypes.func.isRequired,
 };

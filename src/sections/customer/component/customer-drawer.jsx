@@ -14,15 +14,23 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { FieldArray, FormikProvider } from 'formik';
 import { DatePicker } from '@mui/x-date-pickers';
+import { LoadingButton } from '@mui/lab';
+import { addMonths } from 'date-fns';
 
-export const CustomerDrawer = ({ isOpen, handleClose, formik }) => {
+export const CustomerDrawer = ({
+  isOpen,
+  handleClose,
+  formik,
+  handleInstallationDateChange,
+  isLoading,
+  handleSubmit,
+}) => {
   const { values, touched, errors, getFieldProps } = formik;
 
   return (
     <Drawer
       anchor="right"
       open={isOpen}
-      onClose={handleClose}
       PaperProps={{
         sx: { width: 380, border: 'none', overflow: 'hidden' },
       }}
@@ -45,15 +53,15 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik }) => {
         <FormikProvider value={formik}>
           <Stack direction={'column'} spacing={1} sx={{ px: 1, py: 2 }}>
             <TextField
-              label="Customer Name"
-              name="customerFullName"
+              label="Customer Name*"
+              name="customerName"
               fullWidth
-              {...getFieldProps('customerFullName')}
-              error={Boolean(touched.customerFullName && errors.customerFullName)}
-              helperText={touched.customerFullName && errors.customerFullName}
+              {...getFieldProps('customerName')}
+              error={Boolean(touched.customerName && errors.customerName)}
+              helperText={touched.customerName && errors.customerName}
             />
             <TextField
-              label="Customer Address"
+              label="Customer Address*"
               name="customerAddress"
               fullWidth
               {...getFieldProps('customerAddress')}
@@ -61,12 +69,20 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik }) => {
               helperText={touched.customerAddress && errors.customerAddress}
             />
             <TextField
-              label="Customer Mobile"
+              label="Customer Mobile*"
               name="customerMobile"
+              type="number"
               fullWidth
               {...getFieldProps('customerMobile')}
               error={Boolean(touched.customerMobile && errors.customerMobile)}
               helperText={touched.customerMobile && errors.customerMobile}
+            />
+            <TextField
+              label="Customer Land Line"
+              name="customerLand"
+              type="number"
+              fullWidth
+              {...getFieldProps('customerLand')}
             />
             <TextField
               label="Customer Email"
@@ -82,22 +98,47 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik }) => {
                   {values.customerUnits.map((unit, index) => (
                     <Stack key={index} spacing={1} direction={'column'}>
                       <TextField
-                        label="Unit Brand"
-                        name={`customerUnits[${index}].unitBrand`}
-                        {...getFieldProps(`customerUnits[${index}].unitBrand`)}
-                        error={!!unit.unitBrand}
-                        helperText={unit.unitBrand}
-                      />
-                      <TextField
-                        label="Unit Model"
+                        label="Unit Model*"
                         name={`customerUnits[${index}].unitModel`}
                         {...getFieldProps(`customerUnits[${index}].unitModel`)}
-                        error={!!unit.unitModel}
-                        helperText={unit.unitModel}
+                        error={Boolean(
+                          touched.customerUnits?.[index]?.unitModel &&
+                            errors.customerUnits?.[index]?.unitModel
+                        )}
+                        helperText={
+                          touched.customerUnits?.[index]?.unitModel &&
+                          errors.customerUnits?.[index]?.unitModel
+                        }
+                      />
+                      <TextField
+                        label="Unit Serial No*"
+                        name={`customerUnits[${index}].unitSerialNo`}
+                        {...getFieldProps(`customerUnits[${index}].unitSerialNo`)}
+                        error={Boolean(
+                          touched.customerUnits?.[index]?.unitSerialNo &&
+                            errors.customerUnits?.[index]?.unitSerialNo
+                        )}
+                        helperText={
+                          touched.customerUnits?.[index]?.unitSerialNo &&
+                          errors.customerUnits?.[index]?.unitSerialNo
+                        }
                       />
                       <Stack direction={'row'} spacing={1}>
-                        <DatePicker label="Installation Date" />
-                        <DatePicker label="Next Maintenance Date" />
+                        <DatePicker
+                          label="Installation Date*"
+                          value={formik.values.customerUnits?.[index]?.unitInstalledDate}
+                          onChange={(date) => handleInstallationDateChange(date, index)}
+                        />
+                        <DatePicker
+                          label="Next Maintenance Date*"
+                          value={formik.values.customerUnits?.[index]?.unitNextMaintenanceDate}
+                          onChange={(date) =>
+                            formik.setFieldValue(
+                              `customerUnits[${index}].unitNextMaintenanceDate`,
+                              date
+                            )
+                          }
+                        />
                       </Stack>
 
                       <Button type="button" onClick={() => remove(index)}>
@@ -109,10 +150,10 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik }) => {
                     type="button"
                     onClick={() =>
                       push({
-                        unitBrand: '',
                         unitModel: '',
-                        unitInstallationDate: null,
-                        unitNextMaintenanceDate: null,
+                        unitSerialNo: '',
+                        unitInstalledDate: new Date(),
+                        unitNextMaintenanceDate: addMonths(new Date(), 3),
                       })
                     }
                   >
@@ -127,12 +168,19 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik }) => {
 
       <Card>
         <Stack direction="row" spacing={1} sx={{ p: 3 }}>
-          <Button variant="contained" fullWidth color="inherit">
+          <Button variant="contained" fullWidth color="inherit" onClick={handleClose}>
             Cancel
           </Button>
-          <Button variant="contained" fullWidth color="primary">
+          <LoadingButton
+            loading={isLoading}
+            disabled={isLoading}
+            onClick={handleSubmit}
+            variant="contained"
+            fullWidth
+            color="primary"
+          >
             Submit
-          </Button>
+          </LoadingButton>
         </Stack>
       </Card>
       {/* <Box sx={{ p: 3 }}>
@@ -155,4 +203,6 @@ CustomerDrawer.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   handleClose: PropTypes.func.isRequired,
   formik: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
