@@ -37,6 +37,7 @@ export const CustomerView = ({
   isLoadingAddCustomer,
   handleSubmitNewCust,
   handleInstallationDateChange,
+  handleClickRow,
 }) => {
   return (
     <Container maxWidth="xl">
@@ -71,7 +72,11 @@ export const CustomerView = ({
                       {customers
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => (
-                          <CustomerTableRow customer={row} key={row._id} />
+                          <CustomerTableRow
+                            customer={row}
+                            key={row._id}
+                            handleClickRow={handleClickRow}
+                          />
                         ))}
                     </>
                   )}
@@ -118,4 +123,5 @@ CustomerView.propTypes = {
   handleChangeRowsPerPage: PropTypes.func.isRequired,
   isLoadingAddCustomer: PropTypes.bool.isRequired,
   handleSubmitNewCust: PropTypes.func.isRequired,
+  handleClickRow: PropTypes.func.isRequired,
 };

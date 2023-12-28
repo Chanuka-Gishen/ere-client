@@ -10,6 +10,7 @@ export const NAVIGATION_ROUTES = {
   // main routes
   dashboard: 'dashboard',
   customers: 'customers',
+  customer_details: 'customers/details/:id',
   employees: 'employees',
   job_details: 'dashboard/jobDetails',
 };

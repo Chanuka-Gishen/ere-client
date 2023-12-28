@@ -11,6 +11,7 @@ export const IndexPage = lazy(() => import('src/pages/app'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const CustomersPage = lazy(() => import('src/pages/customers'));
+export const CustomerDetailsPage = lazy(() => import('src/pages/customer-details'));
 
 // ----------------------------------------------------------------------
 
@@ -47,6 +48,7 @@ const Router = () => {
         { path: NAVIGATION_ROUTES.customers, element: <CustomersPage /> },
         { path: NAVIGATION_ROUTES.employees, element: <EmployeesPage /> },
         { path: NAVIGATION_ROUTES.job_details, element: <JobDetailsPage /> },
+        { path: NAVIGATION_ROUTES.customer_details, element: <CustomerDetailsPage /> },
       ],
     },
     ...PublicRoutes,

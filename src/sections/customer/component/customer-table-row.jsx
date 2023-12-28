@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import { TableCell, TableRow, Typography } from '@mui/material';
 import commonUtil from 'src/utils/common-util';
 
-export const CustomerTableRow = ({ customer }) => {
+export const CustomerTableRow = ({ customer, handleClickRow }) => {
   return (
     <>
-      <TableRow hover>
+      <TableRow hover onClick={() => handleClickRow(customer._id)}>
         <TableCell component="th">
           <Typography variant="subtitle2" noWrap>
             {customer.customerName}
@@ -32,4 +32,5 @@ export const CustomerTableRow = ({ customer }) => {
 
 CustomerTableRow.propTypes = {
   customer: PropTypes.object.isRequired,
+  handleClickRow: PropTypes.func.isRequired,
 };

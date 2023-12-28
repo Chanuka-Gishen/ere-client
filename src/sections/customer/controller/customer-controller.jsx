@@ -11,6 +11,8 @@ import responseUtil from 'src/utils/responseUtil';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
 import { addMonths } from 'date-fns';
+import { useRouter } from 'src/routes/hooks';
+import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 
 // -----------------------------------------------------
 
@@ -35,6 +37,7 @@ const validationSchemaAddCust = Yup.object().shape({
 const CustomerController = () => {
   const headerLabels = ['Customer name', 'Address', 'Mobile No', 'Landline No', 'Email'];
   const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -91,6 +94,10 @@ const CustomerController = () => {
   const handleChangeRowsPerPage = (event) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
+  };
+
+  const handleClickRow = (id) => {
+    router.push('customers/details/' + id);
   };
 
   const handleSubmitNewCust = async () => {
@@ -165,6 +172,7 @@ const CustomerController = () => {
       handleChangeRowsPerPage={handleChangeRowsPerPage}
       isLoadingAddCustomer={isLoadingAddCustomer}
       handleSubmitNewCust={handleSubmitNewCust}
+      handleClickRow={handleClickRow}
     />
   );
 };

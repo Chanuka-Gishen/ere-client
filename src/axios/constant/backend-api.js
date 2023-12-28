@@ -14,4 +14,10 @@ export const BACKEND_API = {
 
   CUSTOMERS_ALL: IP_URL + '/customer/',
   CUSTOMER_ADD: IP_URL + '/customer/register',
+  CUSTOMER_INFO: IP_URL + '/customer/customer-details/',
+  CUSTOMER_INFO_UPDATE: IP_URL + '/customer/',
+  CUSTOMER_UNITS: IP_URL + '/customer/unit/',
+
+  CUSTOMER_UNIT_ADD: IP_URL + '/customer/unit',
+  CUSTOMER_UNIT_UPDATE: IP_URL + '/customer/unit',
 };
