@@ -21,6 +21,7 @@ import {
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import { CloseRounded } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 
 //------------------------------------------------------
 
@@ -36,6 +37,7 @@ export const UploadView = ({
   open,
   handleClose,
   handleSubmit,
+  isLoading,
 }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -44,17 +46,30 @@ export const UploadView = ({
     <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
       <AppBar sx={{ position: 'relative' }}>
         <Toolbar>
-          <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+            disabled={isLoading}
+          >
             <CloseIcon />
           </IconButton>
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
             Close
           </Typography>
-          <Button autoFocus color="inherit" variant="h6" onClick={handleSubmit}>
+          <LoadingButton
+            autoFocus
+            color="inherit"
+            variant="h6"
+            onClick={handleSubmit}
+            loading={isLoading}
+            disabled={isLoading}
+          >
             <Typography variant="h6">
               Save {selectedFiles.length > 0 && `${selectedFiles.length} images`}
             </Typography>
-          </Button>
+          </LoadingButton>
         </Toolbar>
       </AppBar>
       <Container maxWidth={'xl'} sx={{ mt: 4 }}>
@@ -124,8 +139,8 @@ export const UploadView = ({
 };
 
 UploadView.propTypes = {
-  getRootProps: PropTypes.object.isRequired,
-  getInputProps: PropTypes.object.isRequired,
+  getRootProps: PropTypes.func.isRequired,
+  getInputProps: PropTypes.func.isRequired,
   selectedFiles: PropTypes.array.isRequired,
   handleRemove: PropTypes.func.isRequired,
   open: PropTypes.bool.isRequired,

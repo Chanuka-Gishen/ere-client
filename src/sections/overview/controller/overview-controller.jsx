@@ -22,7 +22,7 @@ const OverviewController = () => {
   };
 
   const handleClickJob = () => {
-    router.push(NAVIGATION_ROUTES.job_details);
+    router.push(NAVIGATION_ROUTES.overview_details);
   };
 
   return (

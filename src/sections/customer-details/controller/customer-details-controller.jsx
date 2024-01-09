@@ -8,6 +8,7 @@ const CustomerDetailsController = () => {
   const headerLabels = [
     'Word Order Id',
     'Scheduled Date',
+    'Type',
     'Status',
     'Completed Date',
     'Invoice Number',
@@ -20,7 +21,12 @@ const CustomerDetailsController = () => {
   };
 
   return (
-    <CustomerDetailsView id={id} selectedUnit={selectedUnit} handleSelectUnit={handleSelectUnit} />
+    <CustomerDetailsView
+      id={id}
+      selectedUnit={selectedUnit}
+      handleSelectUnit={handleSelectUnit}
+      headerLabels={headerLabels}
+    />
   );
 };
 

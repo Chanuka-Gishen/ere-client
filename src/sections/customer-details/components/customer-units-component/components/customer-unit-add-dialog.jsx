@@ -17,7 +17,7 @@ import {
 import { FormikProvider } from 'formik';
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
-import { UNIT_STATUS } from 'src/constants/unit-status';
+import { UNIT_STATUS } from 'src/constants/common-constants';
 
 export const CustomerUnitAddDialog = ({
   isAdd,

@@ -10,6 +10,7 @@ const UploadController = ({
   isOpen,
   handleClose,
   handleSubmit,
+  isLoading = false,
 }) => {
   const onDrop = useCallback((acceptedFiles) => {
     const updatedFiles = acceptedFiles.map((file) => ({
@@ -39,16 +40,18 @@ const UploadController = ({
       open={isOpen}
       handleClose={handleClose}
       handleSubmit={handleSubmit}
+      isLoading={isLoading}
     />
   );
 };
 
 export default UploadController;
 
-UploadController.PropTypes = {
+UploadController.propTypes = {
   selectedFiles: PropTypes.array.isRequired,
-  setSelectedFiles: PropTypes.array.isRequired,
+  setSelectedFiles: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  handleClose: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool,
+  handleClose: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };

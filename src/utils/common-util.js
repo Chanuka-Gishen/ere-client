@@ -31,9 +31,20 @@ const stringIsEmptyOrSpaces = (string) => {
   return isUndefinedOrNull(string) || string.match(/^ *$/) !== null;
 };
 
+const getDirectImageLink = (googleDriveLink) => {
+  const fileIdMatch = googleDriveLink.match(/\/d\/(.+?)\//);
+  if (fileIdMatch && fileIdMatch[1]) {
+    const fileId = fileIdMatch[1];
+    return `https://drive.google.com/uc?id=${fileId}`;
+  }
+  // If the link doesn't match the expected pattern
+  return null;
+};
+
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   isUndefinedOrNull,
   roundNumber,
   stringIsEmptyOrSpaces,
+  getDirectImageLink,
 };

@@ -5,13 +5,14 @@ import DashboardLayout from 'src/layouts/dashboard';
 import { NAVIGATION_ROUTES } from './navigation-routes';
 import { useSelector } from 'react-redux';
 import EmployeesPage from 'src/pages/employees';
-import JobDetailsPage from 'src/pages/job-details';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const CustomersPage = lazy(() => import('src/pages/customers'));
 export const CustomerDetailsPage = lazy(() => import('src/pages/customer-details'));
+export const OverviewDetailsPage = lazy(() => import('src/pages/overview-details'));
+export const JobDetailsPage = lazy(() => import('src/pages/job-details'));
 
 // ----------------------------------------------------------------------
 
@@ -47,8 +48,9 @@ const Router = () => {
         { path: NAVIGATION_ROUTES.dashboard, element: <IndexPage /> },
         { path: NAVIGATION_ROUTES.customers, element: <CustomersPage /> },
         { path: NAVIGATION_ROUTES.employees, element: <EmployeesPage /> },
-        { path: NAVIGATION_ROUTES.job_details, element: <JobDetailsPage /> },
+        { path: NAVIGATION_ROUTES.overview_details, element: <OverviewDetailsPage /> },
         { path: NAVIGATION_ROUTES.customer_details, element: <CustomerDetailsPage /> },
+        { path: NAVIGATION_ROUTES.customer_job_details, element: <JobDetailsPage /> },
       ],
     },
     ...PublicRoutes,

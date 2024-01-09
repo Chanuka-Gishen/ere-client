@@ -10,7 +10,7 @@ import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
 import axios from 'axios';
 import responseUtil from 'src/utils/responseUtil';
-import { UNIT_STATUS } from 'src/constants/unit-status';
+import { UNIT_STATUS } from 'src/constants/common-constants';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
 

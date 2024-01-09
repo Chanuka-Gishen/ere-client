@@ -2,36 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-  Avatar,
   Breadcrumbs,
-  Button,
   Card,
   Chip,
   Container,
   Grid,
-  IconButton,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Paper,
   Stack,
-  Table,
-  TableBody,
   TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
   emphasize,
   styled,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import { Add } from '@mui/icons-material';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { CustomerUnits } from '../components/customer-units-component';
 import { CustomerDetailsComponent } from '../components/customer-details-component';
+import { CustomerWorkOrders } from '../components/customer-work-component';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -66,7 +51,7 @@ const CustomCell = ({ children, ...props }) => {
   );
 };
 
-export const CustomerDetailsView = ({ id, selectedUnit, handleSelectUnit }) => {
+export const CustomerDetailsView = ({ id, selectedUnit, handleSelectUnit, headerLabels }) => {
   return (
     <Container maxWidth={'xl'}>
       <Stack direction={'column'} spacing={2}>
@@ -95,35 +80,41 @@ export const CustomerDetailsView = ({ id, selectedUnit, handleSelectUnit }) => {
             </GridItem>
           </Grid>
           {selectedUnit && (
-            <Grid item xs={12} md={12}>
-              <GridItem>
-                <Stack
-                  direction={'column'}
-                  alignItems={'center'}
-                  justifyContent={'center'}
-                  spacing={1}
-                >
-                  <Typography variant="h6">{`${selectedUnit.unitModel} - ${selectedUnit.unitSerialNo}`}</Typography>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    Installed Date: {new Date(selectedUnit.unitInstalledDate).toLocaleDateString()}
-                  </Typography>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    Last Maintenance Date:{' '}
-                    {new Date(selectedUnit.unitLastMaintenanceDate).toLocaleDateString()}
-                  </Typography>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    Next Maintenance Date:{' '}
-                    {new Date(selectedUnit.unitNextMaintenanceDate).toLocaleDateString()}
-                  </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    color={selectedUnit.unitStatus === 'Active' ? 'success.main' : 'error'}
+            <>
+              <Grid item xs={12} md={12}>
+                <GridItem>
+                  <Stack
+                    direction={'column'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    spacing={1}
                   >
-                    Status: {selectedUnit.unitStatus}
-                  </Typography>
-                </Stack>
-              </GridItem>
-            </Grid>
+                    <Typography variant="h6">{`${selectedUnit.unitModel} - ${selectedUnit.unitSerialNo}`}</Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      Installed Date:{' '}
+                      {new Date(selectedUnit.unitInstalledDate).toLocaleDateString()}
+                    </Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      Last Maintenance Date:{' '}
+                      {new Date(selectedUnit.unitLastMaintenanceDate).toLocaleDateString()}
+                    </Typography>
+                    <Typography variant="subtitle1" color="textSecondary">
+                      Next Maintenance Date:{' '}
+                      {new Date(selectedUnit.unitNextMaintenanceDate).toLocaleDateString()}
+                    </Typography>
+                    <Typography
+                      variant="subtitle1"
+                      color={selectedUnit.unitStatus === 'Active' ? 'success.main' : 'error'}
+                    >
+                      Status: {selectedUnit.unitStatus}
+                    </Typography>
+                  </Stack>
+                </GridItem>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <CustomerWorkOrders id={id} selectedUnit={selectedUnit} />
+              </Grid>
+            </>
           )}
         </Grid>
       </Stack>
@@ -135,4 +126,5 @@ CustomerDetailsView.propTypes = {
   id: PropTypes.string.isRequired,
   selectedUnit: PropTypes.object,
   handleSelectUnit: PropTypes.func.isRequired,
+  headerLabels: PropTypes.array.isRequired,
 };

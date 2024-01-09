@@ -11,4 +11,5 @@ export const SNACKBAR_MESSAGE = {
     VARIANT: SNACKBAR_VARIANT.ERROR,
   },
   FILL_REQUIRED_FIELDS: 'Fill required fields',
+  EMPTY_ASSIGNIES: 'Assginees required',
 };

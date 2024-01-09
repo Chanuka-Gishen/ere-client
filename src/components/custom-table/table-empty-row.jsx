@@ -9,7 +9,7 @@ import { Typography } from '@mui/material';
 export default function TableEmptyRow({ colSpan }) {
   return (
     <TableRow>
-      <TableCell colSpan={colSpan} align="center">
+      <TableCell colSpan={colSpan} align="center" sx={{ borderBottom: 'none' }}>
         <Typography variant="subtitle2"> No data found</Typography>
       </TableCell>
     </TableRow>
