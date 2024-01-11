@@ -12,20 +12,11 @@ import {
 } from '@mui/material';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import { FieldArray, FormikProvider } from 'formik';
-import { DatePicker } from '@mui/x-date-pickers';
+import { FormikProvider } from 'formik';
 import { LoadingButton } from '@mui/lab';
-import { addMonths } from 'date-fns';
 
-export const CustomerDrawer = ({
-  isOpen,
-  handleClose,
-  formik,
-  handleInstallationDateChange,
-  isLoading,
-  handleSubmit,
-}) => {
-  const { values, touched, errors, getFieldProps } = formik;
+export const CustomerDrawer = ({ isOpen, handleClose, formik, isLoading, handleSubmit }) => {
+  const { touched, errors, getFieldProps } = formik;
 
   return (
     <Drawer
@@ -90,78 +81,6 @@ export const CustomerDrawer = ({
               fullWidth
               {...getFieldProps('customerEmail')}
             />
-            <Divider />
-            <Typography variant="subtitle2">AC Units</Typography>
-            <FieldArray name="customerUnits">
-              {({ push, remove }) => (
-                <div>
-                  {values.customerUnits.map((unit, index) => (
-                    <Stack key={index} spacing={1} direction={'column'}>
-                      <TextField
-                        label="Unit Model*"
-                        name={`customerUnits[${index}].unitModel`}
-                        {...getFieldProps(`customerUnits[${index}].unitModel`)}
-                        error={Boolean(
-                          touched.customerUnits?.[index]?.unitModel &&
-                            errors.customerUnits?.[index]?.unitModel
-                        )}
-                        helperText={
-                          touched.customerUnits?.[index]?.unitModel &&
-                          errors.customerUnits?.[index]?.unitModel
-                        }
-                      />
-                      <TextField
-                        label="Unit Serial No*"
-                        name={`customerUnits[${index}].unitSerialNo`}
-                        {...getFieldProps(`customerUnits[${index}].unitSerialNo`)}
-                        error={Boolean(
-                          touched.customerUnits?.[index]?.unitSerialNo &&
-                            errors.customerUnits?.[index]?.unitSerialNo
-                        )}
-                        helperText={
-                          touched.customerUnits?.[index]?.unitSerialNo &&
-                          errors.customerUnits?.[index]?.unitSerialNo
-                        }
-                      />
-                      <Stack direction={'row'} spacing={1}>
-                        <DatePicker
-                          label="Installation Date*"
-                          value={formik.values.customerUnits?.[index]?.unitInstalledDate}
-                          onChange={(date) => handleInstallationDateChange(date, index)}
-                        />
-                        <DatePicker
-                          label="Next Maintenance Date*"
-                          value={formik.values.customerUnits?.[index]?.unitNextMaintenanceDate}
-                          onChange={(date) =>
-                            formik.setFieldValue(
-                              `customerUnits[${index}].unitNextMaintenanceDate`,
-                              date
-                            )
-                          }
-                        />
-                      </Stack>
-
-                      <Button type="button" onClick={() => remove(index)}>
-                        Remove Unit
-                      </Button>
-                    </Stack>
-                  ))}
-                  <Button
-                    type="button"
-                    onClick={() =>
-                      push({
-                        unitModel: '',
-                        unitSerialNo: '',
-                        unitInstalledDate: new Date(),
-                        unitNextMaintenanceDate: addMonths(new Date(), 3),
-                      })
-                    }
-                  >
-                    Add Unit
-                  </Button>
-                </div>
-              )}
-            </FieldArray>
           </Stack>
         </FormikProvider>
       </Scrollbar>

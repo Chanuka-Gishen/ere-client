@@ -21,6 +21,7 @@ import Scrollbar from 'src/components/scrollbar';
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
 import { useSelector } from 'react-redux';
+import { USER_ROLE } from 'src/constants/user-role';
 
 // ----------------------------------------------------------------------
 
@@ -64,9 +65,11 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
-      {navConfig.map((item) => (
-        <NavItem key={item.title} item={item} />
-      ))}
+      {navConfig
+        .filter((item) => !item.adminOnly || (item.adminOnly && user.userRole === USER_ROLE.ADMIN))
+        .map((item) => (
+          <NavItem key={item.title} item={item} />
+        ))}
     </Stack>
   );
 

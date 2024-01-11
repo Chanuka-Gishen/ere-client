@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes, { object } from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   Breadcrumbs,
   Button,
@@ -31,7 +31,6 @@ import { UNIT_STATUS, WORK_STATUS } from 'src/constants/common-constants';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { ImageUpload } from 'src/components/upload';
 import { JobAssignDialog } from '../component/job-assign-dialog';
-import { grey } from 'src/theme/palette';
 import commonUtil from 'src/utils/common-util';
 import { JobUpdateDialog } from '../component/job-update-dialog';
 import { JobCompleteDialog } from '../component/job-complete-dialog';

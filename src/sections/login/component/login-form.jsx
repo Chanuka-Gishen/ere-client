@@ -13,6 +13,7 @@ const LoginForm = ({ handleClick, handleShowPassword, showPassword, formik, isLo
       <Stack spacing={3} sx={{ my: 3 }}>
         <TextField
           label="User Name"
+          autoComplete="off"
           {...getFieldProps('userName')}
           error={Boolean(touched.userName && errors.userName)}
           helperText={touched.userName && errors.userName}

@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { OverviewDetailsView } from '../view/overview-details-view';
+import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
+import { BACKEND_API } from 'src/axios/constant/backend-api';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import responseUtil from 'src/utils/responseUtil';
+import { useSnackbar } from 'notistack';
 
 const OverviewDetailsController = () => {
+  const { id } = useParams();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const cancelToken = axios.CancelToken.source();
+
+  const [workOrder, setWorkOrder] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
-  const [jobList, setJobList] = useState([1, 2]);
-  const [openedItem, setOpenedItem] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isUploading, setIsUploading] = useState(false);
+
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
 
   const handleOpenImageUploader = () => {
@@ -13,14 +27,79 @@ const OverviewDetailsController = () => {
   };
 
   const handleCloseImageUploader = () => {
+    setSelectedFiles([]);
     setIsUploaderOpen(false);
   };
 
-  const handleExpand = (index) => {
-    setOpenedItem(index === openedItem ? null : index);
+  const handleUploadImages = async () => {
+    if (selectedFiles.length !== 0) {
+      setIsUploading(true);
+
+      const formData = new FormData();
+
+      selectedFiles.forEach((file) => {
+        formData.append('files', file.image);
+      });
+
+      await backendAuthApi({
+        url: BACKEND_API.WORK_ORDR_UPLOAD + workOrder._id,
+        method: 'POST',
+        cancelToken: cancelToken.token,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+
+        data: formData,
+      })
+        .then((res) => {
+          const data = res.data;
+
+          if (responseUtil.isResponseSuccess(data.responseCode)) {
+            handleCloseImageUploader();
+            handleFetchWorkOrderDetails();
+          } else {
+            enqueueSnackbar(data.responseMessage, {
+              variant: responseUtil.findResponseType(data.responseCode),
+            });
+          }
+        })
+        .catch(() => {
+          setIsUploading(false);
+        })
+        .finally(() => {
+          setIsUploading(false);
+        });
+    }
   };
 
-  const handleUploadImages = () => {};
+  const handleFetchWorkOrderDetails = async () => {
+    setIsLoading(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.WORK_ORDR + id,
+      method: 'GET',
+      cancelToken: cancelToken.token,
+    })
+      .then((res) => {
+        const data = res.data;
+
+        if (responseUtil.isResponseSuccess(data.responseCode)) {
+          setWorkOrder(data.responseData);
+        }
+      })
+      .catch(() => {
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    handleFetchWorkOrderDetails();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <OverviewDetailsView
@@ -30,9 +109,9 @@ const OverviewDetailsController = () => {
       handleOpenImageUploader={handleOpenImageUploader}
       handleCloseImageUploader={handleCloseImageUploader}
       handleUploadImages={handleUploadImages}
-      jobList={jobList}
-      openedItem={openedItem}
-      handleExpand={handleExpand}
+      isLoading={isLoading}
+      workOrder={workOrder}
+      isUploading={isUploading}
     />
   );
 };

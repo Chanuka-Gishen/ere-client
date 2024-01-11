@@ -8,3 +8,8 @@ export const WORK_STATUS = {
   SCHEDULED: 'Scheduled',
   COMPLETED: 'Completed',
 };
+
+export const WORK_TYPE = {
+  SERVICE: 'Service',
+  REPAIR: 'Repair',
+};

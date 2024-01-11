@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react';
-
+import axios from 'axios';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { CustomerView } from '../view/customer-view';
-import { useFormik } from 'formik';
+
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
-import axios from 'axios';
+
 import responseUtil from 'src/utils/responseUtil';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
-import { addMonths } from 'date-fns';
 import { useRouter } from 'src/routes/hooks';
-import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 
 // -----------------------------------------------------
 
@@ -21,17 +20,7 @@ const validationSchemaAddCust = Yup.object().shape({
   customerAddress: Yup.string().required('Address is required'),
   customerMobile: Yup.string().required('Mobile is required'),
   customerLand: Yup.string(),
-  customerEmail: Yup.string().email('Invalid email format'),
-  customerUnits: Yup.array().of(
-    Yup.object()
-      .shape({
-        unitModel: Yup.string().required('Model is required'),
-        unitSerialNo: Yup.string().required('Serial number is required'),
-        unitInstalledDate: Yup.string().required('Installation Date is required'),
-        unitNextMaintenanceDate: Yup.string().required('Next Maintenance Date is required'),
-      })
-      .required('AC units not provided')
-  ),
+  customerEmail: Yup.string().email('Invalid email format').nullable,
 });
 
 const CustomerController = () => {
@@ -55,28 +44,13 @@ const CustomerController = () => {
       customerName: '',
       customerAddress: '',
       customerMobile: '',
-      customerEmail: '',
-      customerUnits: [
-        {
-          unitModel: '',
-          unitSerialNo: '',
-          unitInstalledDate: new Date(),
-          unitNextMaintenanceDate: addMonths(new Date(), 3),
-        },
-      ],
+      customerEmail: null,
     },
     validationSchema: validationSchemaAddCust,
     onSubmit: () => {
       null;
     },
   });
-
-  const handleInstallationDateChange = (date, index) => {
-    formik.setFieldValue(`customerUnits[${index}].unitInstalledDate`, date);
-
-    // Recalculate and update unitNextMaintenanceDate
-    formik.setFieldValue(`customerUnits[${index}].unitNextMaintenanceDate`, addMonths(date, 3));
-  };
 
   const handleOpenAddCustomer = () => {
     setOpenAddCust(true);
@@ -164,7 +138,6 @@ const CustomerController = () => {
       handleOpenAddCustomer={handleOpenAddCustomer}
       handleCloseAddCustomer={handleCloseAddCustomer}
       formik={formik}
-      handleInstallationDateChange={handleInstallationDateChange}
       headerLabels={headerLabels}
       page={page}
       rowsPerPage={rowsPerPage}

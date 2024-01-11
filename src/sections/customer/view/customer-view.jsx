@@ -36,7 +36,6 @@ export const CustomerView = ({
   handleChangeRowsPerPage,
   isLoadingAddCustomer,
   handleSubmitNewCust,
-  handleInstallationDateChange,
   handleClickRow,
 }) => {
   return (
@@ -88,7 +87,7 @@ export const CustomerView = ({
         <TablePagination
           page={page}
           component="div"
-          count={USERS.length}
+          count={customers.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
@@ -100,7 +99,6 @@ export const CustomerView = ({
         isOpen={openAddCust}
         handleClose={handleCloseAddCustomer}
         formik={formik}
-        handleInstallationDateChange={handleInstallationDateChange}
         isLoading={isLoadingAddCustomer}
         handleSubmit={handleSubmitNewCust}
       />
@@ -115,7 +113,6 @@ CustomerView.propTypes = {
   handleOpenAddCustomer: PropTypes.func.isRequired,
   handleCloseAddCustomer: PropTypes.func.isRequired,
   formik: PropTypes.object.isRequired,
-  handleInstallationDateChange: PropTypes.func.isRequired,
   headerLabels: PropTypes.array.isRequired,
   page: PropTypes.number.isRequired,
   rowsPerPage: PropTypes.number.isRequired,

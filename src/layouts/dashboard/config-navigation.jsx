@@ -12,16 +12,19 @@ const navConfig = [
     title: 'Dashboard',
     path: '/',
     icon: icon('ic_analytics'),
+    adminOnly: false,
   },
   {
     title: 'Customers',
     path: NAVIGATION_ROUTES.customers,
     icon: icon('ic_user'),
+    adminOnly: true,
   },
   {
     title: 'Employees',
     path: NAVIGATION_ROUTES.employees,
     icon: icon('ic_user'),
+    adminOnly: true,
   },
 ];
 

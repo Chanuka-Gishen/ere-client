@@ -98,7 +98,7 @@ export const CustomerUnitsComponentView = ({
               </TableBody>
             </Table>
           </TableContainer>
-          {units ? (
+          {units.length > 0 ? (
             <List sx={{ bgcolor: 'background.paper' }}>
               <>
                 {units.map((item, index) => (
@@ -160,7 +160,11 @@ export const CustomerUnitsComponentView = ({
               </>
             </List>
           ) : (
-            <Typography variant="subtitle1">No Units Found</Typography>
+            <Stack justifyContent={'center'} sx={{ mb: 2 }}>
+              <Typography variant="subtitle1" align="center">
+                No Units Found
+              </Typography>
+            </Stack>
           )}
 
           {isOpen && (

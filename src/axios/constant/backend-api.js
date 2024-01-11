@@ -12,6 +12,7 @@ export const BACKEND_API = {
   EMPLOYEE_UPDATE: IP_URL + '/employee/update',
   EMPLOYEE_DELETE: IP_URL + '/employee/delete/',
   EMPLOYEE_SELECT: IP_URL + '/employee/select',
+  EMPLOYEE_JOBS: IP_URL + '/work-order/emp-jobs',
 
   CUSTOMERS_ALL: IP_URL + '/customer/',
   CUSTOMER_ADD: IP_URL + '/customer/register',
@@ -28,4 +29,5 @@ export const BACKEND_API = {
   WORK_ORDR_UPLOAD: IP_URL + '/work-order/upload-images/',
   WORK_ORDR_UPDATE: IP_URL + '/work-order/',
   WORK_ORDR_FINISH: IP_URL + '/work-order/complete/',
+  WORK_ORDR_ADD: IP_URL + '/work-order/add-job',
 };

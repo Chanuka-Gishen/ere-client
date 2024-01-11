@@ -9,7 +9,7 @@ export const NAVIGATION_ROUTES = {
 
   // main routes
   dashboard: 'dashboard',
-  overview_details: 'dashboard/overviewDetails',
+  overview_details: 'dashboard/overviewDetails/:id',
   customers: 'customers',
   customer_details: 'customers/details/:id',
   customer_job_details: 'customers/details/:id/:jobId',

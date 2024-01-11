@@ -7,6 +7,7 @@ import {
   Button,
   Card,
   Chip,
+  CircularProgress,
   Collapse,
   Container,
   Divider,
@@ -15,6 +16,9 @@ import {
   FormLabel,
   Grid,
   IconButton,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
   List,
   ListItem,
   ListItemText,
@@ -28,6 +32,7 @@ import {
   TableContainer,
   TableRow,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -35,6 +40,10 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { ImageUpload } from 'src/components/upload';
 import { account } from 'src/_mock/account';
 import { Edit } from '@mui/icons-material';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import commonUtil from 'src/utils/common-util';
+import TableEmptyRow from 'src/components/custom-table/table-empty-row';
+import { USER_ROLE } from 'src/constants/user-role';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -61,6 +70,22 @@ const GridItem = styled(Card)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const LoadingComponent = () => {
+  return (
+    <Container
+      sx={{
+        maxWidth: '100%',
+        height: '30vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <CircularProgress />
+    </Container>
+  );
+};
+
 const CustomCell = ({ children, ...props }) => {
   return (
     <TableCell sx={{ borderBottom: 'none' }} {...props}>
@@ -76,10 +101,12 @@ export const OverviewDetailsView = ({
   handleOpenImageUploader,
   handleCloseImageUploader,
   handleUploadImages,
-  jobList,
-  handleExpand,
-  openedItem,
+  isUploading,
+  isLoading,
+  workOrder,
 }) => {
+  const isMobile = useMediaQuery('(max-width:600px)');
+
   return (
     <Container maxWidth={'xl'}>
       <Stack direction={'column'} spacing={2}>
@@ -90,128 +117,165 @@ export const OverviewDetailsView = ({
             label="Overview"
             icon={<HomeIcon fontSize="small" />}
           />
-          <StyledBreadcrumb component="a" href="#" label="Job-Details" disabled />
+          <StyledBreadcrumb
+            component="a"
+            href="#"
+            label={`Job-Details - ${isLoading ? 'loading...' : workOrder.workOrderCode}`}
+            disabled
+          />
         </Breadcrumbs>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6} style={{ margin: '10px' }}>
-            <GridItem>
-              <TableContainer>
-                <Table>
-                  <TableBody>
-                    <TableRow>
-                      <CustomCell>Customer Name</CustomCell>
-                      <CustomCell>{account.displayName}</CustomCell>
-                    </TableRow>
-                    <TableRow>
-                      <CustomCell>Email</CustomCell>
-                      <CustomCell>{account.email}</CustomCell>
-                    </TableRow>
-                    <TableRow>
-                      <CustomCell> Mobile Number</CustomCell>
-                      <CustomCell>{account.mobileNo}</CustomCell>
-                    </TableRow>
-                    <TableRow>
-                      <CustomCell>Address</CustomCell>
-                      <CustomCell>{account.address}</CustomCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </GridItem>
-          </Grid>
-          <Grid item xs={12} md={5} style={{ margin: '10px' }}>
-            <GridItem>Location</GridItem>
-          </Grid>
-
-          {jobList.map((job, index) => (
-            <>
-              <Grid item xs={12} md={12} style={{ margin: '10px' }}>
-                <GridItem>
-                  <List component="div" disablePadding>
-                    <ListItem key={index} onClick={() => handleExpand(index)}>
-                      <ListItemText
-                        primary={Date()}
-                        secondary={<Typography>Customer: Mr. Silva, Employee: Sanath</Typography>}
-                      />
-                      <ExpandMoreIcon />
-                    </ListItem>
-                  </List>
-                </GridItem>
-              </Grid>
-              {openedItem === index && (
-                <>
-                  <Grid item xs={12} md={4} style={{ margin: '10px' }}>
-                    <GridItem>
-                      <TableContainer>
-                        <Table>
-                          <TableBody>
-                            <TableRow>
-                              <CustomCell colSpan={2} component={'th'}>
-                                Assignees
-                              </CustomCell>
-                            </TableRow>
-                            <TableRow>
-                              <CustomCell>Sajith</CustomCell>
-                              <CustomCell align={'right'}>
-                                <Chip label={'Technician'} color="primary" />
-                              </CustomCell>
-                            </TableRow>
-                            <TableRow>
-                              <CustomCell>Shan</CustomCell>
-                              <CustomCell align={'right'}>
-                                <Chip label={'Helper'} />
-                              </CustomCell>
-                            </TableRow>
-                            <TableRow>
-                              <CustomCell>Sunil</CustomCell>
-                              <CustomCell align={'right'}>
-                                <Chip label={'Helper'} />
-                              </CustomCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
-                    </GridItem>
-                  </Grid>
-                  <Grid item xs={12} md={4} sx={{ m: '10px' }}>
-                    <GridItem>
-                      <Stack direction="column" spacing={2}>
-                        <FormControl>
-                          <FormLabel id="demo-row-radio-buttons-group-label">
-                            <Stack
-                              direction={'row'}
-                              alignItems={'center'}
-                              justifyContent={'space-between'}
-                            >
-                              <Typography>Final inspection result</Typography>
-                              <IconButton onClick={null}>
-                                <Edit />
-                              </IconButton>
-                            </Stack>
-                          </FormLabel>
-                          <RadioGroup
-                            row
-                            aria-labelledby="demo-row-radio-buttons-group-label"
-                            name="row-radio-buttons-group"
+          <Grid item xs={12} md={6} style={{ mt: '10px' }}>
+            {isLoading ? (
+              <LoadingComponent />
+            ) : (
+              <GridItem>
+                <TableContainer>
+                  <Table>
+                    <TableBody>
+                      <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
+                        <CustomCell colSpan={2}>
+                          <Button
+                            variant="contained"
+                            startIcon={<CloudUploadIcon />}
+                            onClick={handleOpenImageUploader}
                           >
-                            <FormControlLabel value="PASS" control={<Radio />} label="Pass" />
-                            <FormControlLabel value="FAIL" control={<Radio />} label="Fail" />
-                          </RadioGroup>
-                        </FormControl>
-                        <Button
-                          onClick={handleOpenImageUploader}
-                          variant="contained"
-                          color="secondary"
-                        >
-                          Upload images
-                        </Button>
-                      </Stack>
-                    </GridItem>
-                  </Grid>
-                </>
-              )}
-            </>
-          ))}
+                            Add Images
+                          </Button>
+                        </CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Customer Name</CustomCell>
+                        <CustomCell>{workOrder.workOrderCustomerId.customerName}</CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Mobile Phone Number</CustomCell>
+                        <CustomCell>{workOrder.workOrderCustomerId.customerTel.mobile}</CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell> Land Phone Number</CustomCell>
+                        <CustomCell>
+                          {workOrder.workOrderCustomerId.customerTel.landline
+                            ? workOrder.workOrderCustomerId.customerTel.landline
+                            : '-'}
+                        </CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Address</CustomCell>
+                        <CustomCell>{workOrder.workOrderCustomerId.customerAddress}</CustomCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </GridItem>
+            )}
+          </Grid>
+          <Grid item xs={12} md={6} style={{ mt: '10px' }}>
+            {isLoading ? (
+              <LoadingComponent />
+            ) : (
+              <GridItem>
+                <TableContainer>
+                  <Table>
+                    <TableBody>
+                      <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
+                        <CustomCell colSpan={2}>
+                          <Typography variant="subtitle1">Job Details</Typography>
+                        </CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>AC Unit</CustomCell>
+                        <CustomCell>{`${workOrder.workOrderUnitReference.unitModel} - ${workOrder.workOrderUnitReference.unitSerialNo}`}</CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Work Order Code</CustomCell>
+                        <CustomCell>{workOrder.workOrderCode}</CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Word Order Type</CustomCell>
+                        <CustomCell>{workOrder.workOrderType}</CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Status</CustomCell>
+                        <CustomCell>{workOrder.workOrderStatus}</CustomCell>
+                      </TableRow>
+
+                      <TableRow>
+                        <CustomCell>Sheduled Date</CustomCell>
+                        <CustomCell>
+                          {new Date(workOrder?.workOrderScheduledDate).toLocaleDateString({
+                            day: '2-digit',
+                            month: 'short',
+                            year: 'numeric',
+                          })}
+                        </CustomCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </GridItem>
+            )}
+          </Grid>
+          <Grid item xs={12} md={6} style={{ mt: '10px' }}>
+            {isLoading ? (
+              <LoadingComponent />
+            ) : (
+              <GridItem>
+                <TableContainer>
+                  <Table>
+                    <TableBody>
+                      <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
+                        <CustomCell colSpan={2}>
+                          <Typography variant="subtitle1">Job Assigned To</Typography>
+                        </CustomCell>
+                      </TableRow>
+                      {workOrder.workOrderAssignedEmployees.length === 0 ? (
+                        <TableEmptyRow colSpan={2} />
+                      ) : (
+                        <>
+                          {workOrder.workOrderAssignedEmployees.map((employee, index) => (
+                            <TableRow key={index}>
+                              <CustomCell>{employee.userFullName}</CustomCell>
+                              <CustomCell align={'right'}>
+                                <Chip
+                                  label={employee.userRole}
+                                  color={
+                                    employee.userRole === USER_ROLE.TECHNICIAN ? 'success' : 'info'
+                                  }
+                                />
+                              </CustomCell>
+                            </TableRow>
+                          ))}
+                        </>
+                      )}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </GridItem>
+            )}
+          </Grid>
+          {!isLoading && workOrder.workOrderImages.length > 0 && (
+            <Grid item xs={12} md={12}>
+              <GridItem>
+                <ImageList cols={isMobile ? 4 : 8} gap={2}>
+                  {workOrder.workOrderImages.map((image, index) => (
+                    <ImageListItem key={index}>
+                      <img
+                        //srcSet={image.imageWebUrl}
+                        src={commonUtil.getDirectImageLink(image.imageWebUrl)}
+                        alt={image.imageFileName}
+                      />
+                      <ImageListItemBar
+                        //title={image.imageFileName}
+                        subtitle={<span>by: {image.imageUploadedBy.userFullName}</span>}
+                        position="below"
+                      />
+                    </ImageListItem>
+                  ))}
+                </ImageList>
+              </GridItem>
+            </Grid>
+          )}
         </Grid>
 
         {isUploaderOpen && (
@@ -221,6 +285,7 @@ export const OverviewDetailsView = ({
             isOpen={isUploaderOpen}
             handleClose={handleCloseImageUploader}
             handleSubmit={handleUploadImages}
+            isLoading={isUploading}
           />
         )}
       </Stack>
@@ -235,6 +300,7 @@ OverviewDetailsView.propTypes = {
   handleOpenImageUploader: PropTypes.func.isRequired,
   handleCloseImageUploader: PropTypes.func.isRequired,
   handleUploadImages: PropTypes.func.isRequired,
-  jobList: PropTypes.array,
-  handleExpand: PropTypes.func.isRequired,
+  isUploading: PropTypes.bool.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+  workOrder: PropTypes.object,
 };

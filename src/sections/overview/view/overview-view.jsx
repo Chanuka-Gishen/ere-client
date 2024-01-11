@@ -5,8 +5,9 @@ import Container from '@mui/material/Container';
 import { Card, Table, TableBody, TableContainer, TablePagination, Typography } from '@mui/material';
 import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from '../../../components/custom-table/custom-table-head';
-import { JOBS } from 'src/_mock/users';
 import { JobTableRow } from '../component/job-table-row';
+import TableLoadingRow from 'src/components/custom-table/table-loading-row';
+import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 
 // ----------------------------------------------------------------------
 
@@ -17,6 +18,8 @@ export const Overview = ({
   handleChangePage,
   handleChangeRowsPerPage,
   handleClickJob,
+  jobs,
+  isLoading,
 }) => {
   return (
     <Container maxWidth="xl">
@@ -27,11 +30,25 @@ export const Overview = ({
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
-              <CustomTableHead headLabel={headLabels} />
+              <CustomTableHead headLabel={headLabels} enableAction={false} />
               <TableBody>
-                {JOBS.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                  <JobTableRow jobs={row} key={row._id} handleClickJob={handleClickJob} />
-                ))}
+                {isLoading ? (
+                  <TableLoadingRow colSpan={headLabels.length} />
+                ) : (
+                  <>
+                    {jobs.length === 0 ? (
+                      <TableEmptyRow colSpan={headLabels.length} />
+                    ) : (
+                      <>
+                        {jobs
+                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                          .map((row) => (
+                            <JobTableRow jobs={row} key={row._id} handleClickJob={handleClickJob} />
+                          ))}
+                      </>
+                    )}
+                  </>
+                )}
               </TableBody>
             </Table>
           </TableContainer>
@@ -39,7 +56,7 @@ export const Overview = ({
         <TablePagination
           page={page}
           component="div"
-          count={JOBS.length}
+          count={jobs.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}
@@ -57,4 +74,6 @@ Overview.propTypes = {
   handleChangePage: PropTypes.func.isRequired,
   handleChangeRowsPerPage: PropTypes.func.isRequired,
   handleClickJob: PropTypes.func.isRequired,
+  jobs: PropTypes.array,
+  isLoading: PropTypes.bool.isRequired,
 };
