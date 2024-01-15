@@ -52,23 +52,13 @@ jobs:
 
       - name: Set up SSH
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -qq openssh-client
+          apt-get update -qq
+          'which ssh-agent || ( apt-get install -qq openssh-client )'
           eval $(ssh-agent -s)
-          echo -e "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
+          ssh-add <(echo "$secrets.SSH_PRIVATE_KEY")
           mkdir -p ~/.ssh
-          touch ~/.ssh/known_hosts
-          ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          apt-get install -qq lftp
 
       - name: Deploy to server
         run: |
-          ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-          scp -r -i ${{ secrets.SSH_PRIVATE_KEY }} build/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.APP_PATH }}
-
-      - name: Delete existing build folder on server
-        run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} 'rm -rf ${{ secrets.APP_PATH }}/build'
-
-      - name: Move new build folder to server
-        run: |
-          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} 'mv ${{ secrets.APP_PATH }}/build/ ${{ secrets.APP_PATH }}/'
+          lftp -e "mirror -e -P 4 --transfer-all --reverse -X .* -X .*/ --verbose build/ $secrets.APP_PATH; quit" -u $secrets.SERVER_USERNAME, sftp://$secrets.SERVER_IP
