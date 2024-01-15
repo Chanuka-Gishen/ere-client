@@ -26,6 +26,10 @@ jobs:
   deploy-main:
     needs: build
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to environment
+        run: echo "Implement your deployment steps here"
   deploy-prod:
     needs: build
     runs-on: ubuntu-latest
