@@ -50,6 +50,12 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
+      - name: Create known_hosts file
+        run: touch ~/.ssh/known_hosts
+
+      - name: Update known_hosts with server key
+        run: ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
       - name: Deploy to server
         run: |
           ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
