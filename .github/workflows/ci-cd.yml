@@ -55,7 +55,7 @@ jobs:
           apt-get update -qq
           'which ssh-agent || ( apt-get install -qq openssh-client )'
           eval $(ssh-agent -s)
-          ssh-add <(echo "$DEV_SERVER_SSH_PRIVATE_KEY")
+          ssh-add <(echo "$secrets.SSH_PRIVATE_KEY")
           mkdir -p ~/.ssh
           apt-get install -qq lftp
 
