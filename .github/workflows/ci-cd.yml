@@ -46,19 +46,3 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-
-      - name: Install dependencies
-        run: yarn install
-
-      - name: Set up SSH
-        run: |
-          apt-get update -qq
-          'which ssh-agent || ( apt-get install -qq openssh-client )'
-          eval $(ssh-agent -s)
-          ssh-add <(echo "$secrets.SSH_PRIVATE_KEY")
-          mkdir -p ~/.ssh
-          apt-get install -qq lftp
-
-      - name: Deploy to server
-        run: |
-          lftp -e "mirror -e -P 4 --transfer-all --reverse -X .* -X .*/ --verbose build/ $secrets.APP_PATH; quit" -u $secrets.SERVER_USERNAME, sftp://$secrets.SERVER_IP
