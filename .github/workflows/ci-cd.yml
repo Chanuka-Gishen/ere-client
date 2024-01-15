@@ -23,3 +23,34 @@ jobs:
 
       - name: Build application
         run: yarn build
+  deploy-main:
+    needs: build
+    runs-on: ubuntu-latest
+  deploy-prod:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Deploy to server
+        run: |
+          ssh-keyscan -t rsa ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+          scp -r -i ${{ secrets.SSH_PRIVATE_KEY }} build/ ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }}:${{ secrets.APP_PATH }}
+
+      - name: Delete existing build folder on server
+        run: |
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} 'rm -rf ${{ secrets.APP_PATH }}/build'
+
+      - name: Move new build folder to server
+        run: |
+          ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} 'mv ${{ secrets.APP_PATH }}/build/ ${{ secrets.APP_PATH }}/'
