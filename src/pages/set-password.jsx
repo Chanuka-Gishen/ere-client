@@ -1,17 +1,17 @@
 import { Helmet } from 'react-helmet-async';
 
-import { LoginView } from 'src/sections/authentication/login';
+import { SetPassword } from 'src/sections/authentication/set-password';
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() {
+export default function SetPasswordPage() {
   return (
     <>
       <Helmet>
-        <title> Login | EREngineers </title>
+        <title> Password | EREngineers </title>
       </Helmet>
 
-      <LoginView />
+      <SetPassword />
     </>
   );
 }

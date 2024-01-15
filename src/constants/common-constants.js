@@ -13,3 +13,8 @@ export const WORK_TYPE = {
   SERVICE: 'Service',
   REPAIR: 'Repair',
 };
+
+export const USER_STATUS = {
+  ACTIVE: 'Active',
+  Terminated: 'Terminated',
+};

@@ -57,7 +57,13 @@ const LoginController = () => {
           const data = res.data;
           if (responseUtil.isResponseSuccess(data.responseCode)) {
             dispatch(authAction.loginUser(data.responseData));
-            router.push(NAVIGATION_ROUTES.dashboard);
+
+            if (data.responseData.userNewPwd) {
+              router.push(NAVIGATION_ROUTES.set_password);
+            } else {
+              dispatch(authAction.updateLoginStatus());
+              router.push(NAVIGATION_ROUTES.dashboard);
+            }
           } else {
             enqueueSnackbar(data.responseMessage, {
               variant: SNACKBAR_VARIANT.ERROR,

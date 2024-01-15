@@ -47,6 +47,11 @@ export const UsersView = ({
   handleCloseDeleteDialog,
   handleDeleteEmployee,
   isLoadingDelete,
+  openResetConfirmation,
+  handleOpenResetConfirmation,
+  handleCloseResetConfirmation,
+  handleResetPassword,
+  isLoadingReset,
 }) => {
   return (
     <Container maxWidth={'xl'}>
@@ -84,6 +89,7 @@ export const UsersView = ({
                                 key={row._id}
                                 handleOpenUpdateDialog={handleOpenEmployeeUpdateDialog}
                                 handleOpenDeleteDialog={handleOpenDeleteDialog}
+                                handleOpenResetConfirmation={handleOpenResetConfirmation}
                               />
                             ))}
                         </>
@@ -125,10 +131,20 @@ export const UsersView = ({
       )}
       {openDelete && (
         <ConfirmationDialog
+          contentText="Are you sure you want to terminate this employee?"
           open={openDelete}
           handleClose={handleCloseDeleteDialog}
           isLoading={isLoadingDelete}
           handleSubmit={handleDeleteEmployee}
+        />
+      )}
+      {openResetConfirmation && (
+        <ConfirmationDialog
+          contentText="Are you that you want to reset this employee password ?"
+          handleClose={handleCloseResetConfirmation}
+          open={openResetConfirmation}
+          handleSubmit={handleResetPassword}
+          isLoading={isLoadingReset}
         />
       )}
     </Container>
@@ -160,4 +176,9 @@ UsersView.propTypes = {
   handleCloseDeleteDialog: PropTypes.func.isRequired,
   handleDeleteEmployee: PropTypes.func.isRequired,
   isLoadingDelete: PropTypes.bool.isRequired,
+  openResetConfirmation: PropTypes.bool.isRequired,
+  handleOpenResetConfirmation: PropTypes.func.isRequired,
+  handleCloseResetConfirmation: PropTypes.func.isRequired,
+  handleResetPassword: PropTypes.func.isRequired,
+  isLoadingReset: PropTypes.bool.isRequired,
 };

@@ -1,6 +1,7 @@
 export const NAVIGATION_ROUTES = {
   // authentication routes
   login: 'login',
+  set_password: 'setPassword',
   register: 'register',
 
   // not found

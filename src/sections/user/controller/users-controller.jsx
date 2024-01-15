@@ -20,12 +20,6 @@ const validationSchema = Yup.object().shape({
   userRole: Yup.string()
     .required('User role required')
     .oneOf([USER_ROLE.ADMIN, USER_ROLE.TECHNICIAN, USER_ROLE.HELPER], 'Invalid user role'),
-  userPassword: Yup.string()
-    .required('Password is required')
-    .min(4, 'Password must be at least 4 characters'),
-  userConfirmPassword: Yup.string()
-    .oneOf([Yup.ref('userPassword'), null], 'Passwords must match')
-    .required('Confirm Password is required'),
 });
 
 const validationSchemaOnUpdate = Yup.object().shape({
@@ -37,7 +31,7 @@ const validationSchemaOnUpdate = Yup.object().shape({
 });
 
 const UsersController = () => {
-  const headerLables = ['Employee Name', 'User name', 'Role'];
+  const headerLables = ['Employee Name', 'User name', 'Role', 'Status'];
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -48,11 +42,13 @@ const UsersController = () => {
   const [open, setOpen] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
   const [isLoadingRegister, setIsLoadingRegister] = useState(false);
   const [isLoadingFetch, setIsLoadingFectch] = useState(false); // change to true
   const [isLoadingUpdate, setIsLodingUpdate] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [isLoadingReset, setIsLoadingReset] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
   const sourceToken = axios.CancelToken.source();
@@ -62,8 +58,6 @@ const UsersController = () => {
       userFirstName: '',
       userLastName: '',
       userRole: '',
-      userPassword: '',
-      userConfirmPassword: '',
     },
     validationSchema: validationSchema,
     onSubmit: () => {
@@ -104,6 +98,7 @@ const UsersController = () => {
 
   const handleCloseEmployeeUpdateDialog = () => {
     setOpenUpdate(false);
+    setOpen(false);
     updateFormik.resetForm();
     setSelectedEmployee(null);
   };
@@ -115,6 +110,18 @@ const UsersController = () => {
 
   const handleCloseDeleteDialog = () => {
     setOpenDelete(false);
+    setOpen(false);
+    setSelectedEmployee(null);
+  };
+
+  const handleOpenResetConfirmation = (employee) => {
+    setSelectedEmployee(employee);
+    setOpenResetConfirmation(true);
+  };
+
+  const handleCloseResetConfirmation = () => {
+    setOpenResetConfirmation(false);
+    setOpen(false);
     setSelectedEmployee(null);
   };
 
@@ -235,6 +242,34 @@ const UsersController = () => {
       });
   };
 
+  const handleResetPassword = async () => {
+    setIsLoadingReset(true);
+    console.log(selectedEmployee);
+    await backendAuthApi({
+      url: BACKEND_API.EMPLOYEES_RESET_PWD + selectedEmployee._id,
+      method: 'PUT',
+      cancelToken: sourceToken.token,
+    })
+      .then((res) => {
+        const data = res.data;
+
+        if (responseUtil.isResponseSuccess(data.responseCode)) {
+          handleCloseResetConfirmation();
+          handleFetchEmployees();
+        } else {
+          enqueueSnackbar(data.responseMessage, {
+            variant: responseUtil.findResponseType(data.responseCode),
+          });
+        }
+      })
+      .catch(() => {
+        setIsLoadingReset(false);
+      })
+      .finally(() => {
+        setIsLoadingReset(false);
+      });
+  };
+
   useEffect(() => {
     handleFetchEmployees();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -266,6 +301,11 @@ const UsersController = () => {
       handleCloseDeleteDialog={handleCloseDeleteDialog}
       handleDeleteEmployee={handleDeleteEmployee}
       isLoadingDelete={isLoadingDelete}
+      openResetConfirmation={openResetConfirmation}
+      handleOpenResetConfirmation={handleOpenResetConfirmation}
+      handleCloseResetConfirmation={handleCloseResetConfirmation}
+      handleResetPassword={handleResetPassword}
+      isLoadingReset={isLoadingReset}
     />
   );
 };

@@ -11,8 +11,14 @@ import {
 } from '@mui/material';
 import Iconify from 'src/components/iconify';
 import { useSelector } from 'react-redux';
+import { USER_STATUS } from 'src/constants/common-constants';
 
-export const UsersTableRow = ({ employee, handleOpenUpdateDialog, handleOpenDeleteDialog }) => {
+export const UsersTableRow = ({
+  employee,
+  handleOpenUpdateDialog,
+  handleOpenDeleteDialog,
+  handleOpenResetConfirmation,
+}) => {
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -37,6 +43,12 @@ export const UsersTableRow = ({ employee, handleOpenUpdateDialog, handleOpenDele
         <TableCell>
           <Chip label={employee.userRole} color="success" />
         </TableCell>
+        <TableCell>
+          <Chip
+            label={employee.userIsActive ? USER_STATUS.ACTIVE : USER_STATUS.Terminated}
+            color={employee.userIsActive ? 'success' : 'error'}
+          />
+        </TableCell>
         <TableCell align="right">
           {user.id === employee._id ? null : (
             <IconButton onClick={handleOpenMenu}>
@@ -51,18 +63,28 @@ export const UsersTableRow = ({ employee, handleOpenUpdateDialog, handleOpenDele
         onClose={handleCloseMenu}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: { width: 140 },
-        }}
+        // PaperProps={{
+        //   sx: { width: 140 },
+        // }}
       >
         <MenuItem onClick={() => handleOpenUpdateDialog(employee)}>
           <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
           Edit
         </MenuItem>
-
-        <MenuItem onClick={() => handleOpenDeleteDialog(employee)} sx={{ color: 'error.main' }}>
+        <MenuItem
+          onClick={() => handleOpenResetConfirmation(employee)}
+          disabled={!employee.userIsActive}
+        >
+          <Iconify icon="eva:refresh-fill" sx={{ mr: 2 }} />
+          Reset Password
+        </MenuItem>
+        <MenuItem
+          onClick={() => handleOpenDeleteDialog(employee)}
+          sx={{ color: 'error.main' }}
+          disabled={!employee.userIsActive}
+        >
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Delete
+          Terminate
         </MenuItem>
       </Popover>
     </>
@@ -72,4 +94,5 @@ export const UsersTableRow = ({ employee, handleOpenUpdateDialog, handleOpenDele
 UsersTableRow.propTypes = {
   employee: PropTypes.object.isRequired,
   handleOpenUpdateDialog: PropTypes.func.isRequired,
+  handleOpenResetConfirmation: PropTypes.func.isRequired,
 };

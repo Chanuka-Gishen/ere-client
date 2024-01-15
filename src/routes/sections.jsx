@@ -8,6 +8,7 @@ import EmployeesPage from 'src/pages/employees';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const LoginPage = lazy(() => import('src/pages/login'));
+export const SetPasswordPage = lazy(() => import('src/pages/set-password'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const CustomersPage = lazy(() => import('src/pages/customers'));
 export const CustomerDetailsPage = lazy(() => import('src/pages/customer-details'));
@@ -28,6 +29,7 @@ const AuthenticatedRoutes = (
 // Public Routes
 const PublicRoutes = [
   { path: NAVIGATION_ROUTES.login, element: <LoginPage /> },
+  { path: NAVIGATION_ROUTES.set_password, element: <SetPasswordPage /> },
   { path: NAVIGATION_ROUTES.not_found, element: <Page404 /> },
   { path: NAVIGATION_ROUTES.all_path, element: <Navigate to={NAVIGATION_ROUTES.login} replace /> }, // Redirect to login if not authenticated
 ];
