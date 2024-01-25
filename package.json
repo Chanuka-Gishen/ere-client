@@ -4,10 +4,12 @@
   "licence": "MIT",
   "version": "1.8.0",
   "private": false,
+  "homepage": ".",
   "scripts": {
     "dev": "vite",
     "start": "vite preview",
     "build": "vite build",
+    "build:prod": "vite build --mode production",
     "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
     "prettier": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",

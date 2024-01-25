@@ -34,6 +34,7 @@ import { JobAssignDialog } from '../component/job-assign-dialog';
 import commonUtil from 'src/utils/common-util';
 import { JobUpdateDialog } from '../component/job-update-dialog';
 import { JobCompleteDialog } from '../component/job-complete-dialog';
+import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 
 // -----------------------------------------------------------
 
@@ -93,6 +94,7 @@ export const JobDetailsView = ({
   workOrder,
   files,
   setFiles,
+  handleOnClickBreadCrumb,
   openUploadDialog,
   handleOpenCloseUploadDialog,
   handleUploadImages,
@@ -120,8 +122,7 @@ export const JobDetailsView = ({
       <Stack direction={'column'} spacing={2}>
         <Breadcrumbs aria-label="breadcrumb">
           <StyledBreadcrumb
-            component="a"
-            href="/customers"
+            onClick={() => handleOnClickBreadCrumb(NAVIGATION_ROUTES.customers)}
             label="Customers"
             icon={<HomeIcon fontSize="small" />}
           />
@@ -421,6 +422,7 @@ JobDetailsView.propTypes = {
   workOrder: PropTypes.object,
   files: PropTypes.array,
   setFiles: PropTypes.func.isRequired,
+  handleOnClickBreadCrumb: PropTypes.func.isRequired,
   openUploadDialog: PropTypes.bool.isRequired,
   handleOpenCloseUploadDialog: PropTypes.func.isRequired,
   handleUploadImages: PropTypes.func.isRequired,

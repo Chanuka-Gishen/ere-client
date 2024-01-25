@@ -44,6 +44,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import commonUtil from 'src/utils/common-util';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { USER_ROLE } from 'src/constants/user-role';
+import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -95,6 +96,7 @@ const CustomCell = ({ children, ...props }) => {
 };
 
 export const OverviewDetailsView = ({
+  onClickBreadCrumb,
   selectedFiles,
   setSelectedFiles,
   isUploaderOpen,
@@ -112,8 +114,7 @@ export const OverviewDetailsView = ({
       <Stack direction={'column'} spacing={2}>
         <Breadcrumbs aria-label="breadcrumb">
           <StyledBreadcrumb
-            component="a"
-            href="/dashboard"
+            onClick={() => onClickBreadCrumb(NAVIGATION_ROUTES.dashboard)}
             label="Overview"
             icon={<HomeIcon fontSize="small" />}
           />
@@ -294,6 +295,7 @@ export const OverviewDetailsView = ({
 };
 
 OverviewDetailsView.propTypes = {
+  onClickBreadCrumb: PropTypes.func.isRequired,
   selectedFiles: PropTypes.array.isRequired,
   setSelectedFiles: PropTypes.func.isRequired,
   isUploaderOpen: PropTypes.bool.isRequired,

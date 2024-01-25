@@ -7,10 +7,12 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import responseUtil from 'src/utils/responseUtil';
 import { useSnackbar } from 'notistack';
+import { useRouter } from 'src/routes/hooks';
 
 const OverviewDetailsController = () => {
   const { id } = useParams();
   const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
 
   const cancelToken = axios.CancelToken.source();
 
@@ -29,6 +31,10 @@ const OverviewDetailsController = () => {
   const handleCloseImageUploader = () => {
     setSelectedFiles([]);
     setIsUploaderOpen(false);
+  };
+
+  const onClickBreadCrumb = (screen) => {
+    router.replace(screen);
   };
 
   const handleUploadImages = async () => {
@@ -103,6 +109,7 @@ const OverviewDetailsController = () => {
 
   return (
     <OverviewDetailsView
+      onClickBreadCrumb={onClickBreadCrumb}
       selectedFiles={selectedFiles}
       setSelectedFiles={setSelectedFiles}
       isUploaderOpen={isUploaderOpen}

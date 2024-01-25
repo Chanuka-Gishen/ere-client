@@ -8,7 +8,6 @@ import {
   Container,
   Grid,
   Stack,
-  TableCell,
   Typography,
   emphasize,
   styled,
@@ -17,6 +16,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import { CustomerUnits } from '../components/customer-units-component';
 import { CustomerDetailsComponent } from '../components/customer-details-component';
 import { CustomerWorkOrders } from '../components/customer-work-component';
+import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -43,22 +43,18 @@ const GridItem = styled(Card)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-const CustomCell = ({ children, ...props }) => {
-  return (
-    <TableCell sx={{ borderBottom: 'none' }} {...props}>
-      {children}
-    </TableCell>
-  );
-};
-
-export const CustomerDetailsView = ({ id, selectedUnit, handleSelectUnit, headerLabels }) => {
+export const CustomerDetailsView = ({
+  id,
+  selectedUnit,
+  handleSelectUnit,
+  handleOnClickBreadCrumb,
+}) => {
   return (
     <Container maxWidth={'xl'}>
       <Stack direction={'column'} spacing={2}>
         <Breadcrumbs aria-label="breadcrumb">
           <StyledBreadcrumb
-            component="a"
-            href="/customers"
+            onClick={() => handleOnClickBreadCrumb(NAVIGATION_ROUTES.customers)}
             label="Customers"
             icon={<HomeIcon fontSize="small" />}
           />
@@ -126,5 +122,5 @@ CustomerDetailsView.propTypes = {
   id: PropTypes.string.isRequired,
   selectedUnit: PropTypes.object,
   handleSelectUnit: PropTypes.func.isRequired,
-  headerLabels: PropTypes.array.isRequired,
+  handleOnClickBreadCrumb: PropTypes.func.isRequired,
 };
