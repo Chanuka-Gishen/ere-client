@@ -12,6 +12,7 @@ import { BACKEND_API } from 'src/axios/constant/backend-api';
 import responseUtil from 'src/utils/responseUtil';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
+import { useRouter } from 'src/routes/hooks';
 
 //---------------------------------------
 
@@ -22,6 +23,7 @@ const validationSchema = Yup.object().shape({
 
 const JobDetailsController = () => {
   const { jobId } = useParams();
+  const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
   const cancelToken = axios.CancelToken.source();
@@ -85,6 +87,10 @@ const JobDetailsController = () => {
 
   const handleOpenCloseCompleteDialog = () => {
     setOpenCompleteDialog(!openCompleteDialog);
+  };
+
+  const handleOnClickBreadCrumb = (screen) => {
+    router.replace(screen);
   };
 
   const handleUploadImages = async () => {
@@ -268,6 +274,7 @@ const JobDetailsController = () => {
       workOrder={workOrder}
       files={files}
       setFiles={setFiles}
+      handleOnClickBreadCrumb={handleOnClickBreadCrumb}
       openUploadDialog={openUploadDialog}
       handleOpenCloseUploadDialog={handleOpenCloseUploadDialog}
       handleUploadImages={handleUploadImages}

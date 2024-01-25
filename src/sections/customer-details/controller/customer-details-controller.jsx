@@ -1,18 +1,11 @@
 import React, { useState } from 'react';
 import { CustomerDetailsView } from '../view/customer-details-view';
 import { useParams } from 'react-router-dom';
+import { useRouter } from 'src/routes/hooks';
 
 const CustomerDetailsController = () => {
   const { id } = useParams();
-
-  const headerLabels = [
-    'Word Order Id',
-    'Scheduled Date',
-    'Type',
-    'Status',
-    'Completed Date',
-    'Invoice Number',
-  ];
+  const router = useRouter();
 
   const [selectedUnit, setSelectedUnit] = useState(null);
 
@@ -20,12 +13,16 @@ const CustomerDetailsController = () => {
     setSelectedUnit(unit === selectedUnit ? null : unit);
   };
 
+  const handleOnClickBreadCrumb = (screen) => {
+    router.replace(screen);
+  };
+
   return (
     <CustomerDetailsView
       id={id}
       selectedUnit={selectedUnit}
       handleSelectUnit={handleSelectUnit}
-      headerLabels={headerLabels}
+      handleOnClickBreadCrumb={handleOnClickBreadCrumb}
     />
   );
 };
