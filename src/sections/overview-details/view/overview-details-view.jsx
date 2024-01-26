@@ -263,7 +263,7 @@ export const OverviewDetailsView = ({
                     <ImageListItem key={index}>
                       <img
                         //srcSet={image.imageWebUrl}
-                        src={commonUtil.getDirectImageLink(image.imageWebUrl)}
+                        src={commonUtil.getDirectImageLink(image.imageId)}
                         alt={image.imageFileName}
                       />
                       <ImageListItemBar
