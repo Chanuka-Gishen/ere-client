@@ -31,11 +31,10 @@ const stringIsEmptyOrSpaces = (string) => {
   return isUndefinedOrNull(string) || string.match(/^ *$/) !== null;
 };
 
-const getDirectImageLink = (googleDriveLink) => {
-  const fileIdMatch = googleDriveLink.match(/\/d\/(.+?)\//);
-  if (fileIdMatch && fileIdMatch[1]) {
-    const fileId = fileIdMatch[1];
-    return `https://drive.google.com/uc?id=${fileId}`;
+const getDirectImageLink = (imageId) => {
+  if (imageId) {
+    console.log(imageId);
+    return `https://drive.google.com/uc?id=${imageId}`;
   }
   // If the link doesn't match the expected pattern
   return null;
