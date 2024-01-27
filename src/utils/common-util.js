@@ -33,8 +33,8 @@ const stringIsEmptyOrSpaces = (string) => {
 
 const getDirectImageLink = (imageId) => {
   if (imageId) {
-    console.log(imageId);
-    return `https://drive.google.com/uc?id=${imageId}`;
+    return `https://drive.google.com/thumbnail?id=${imageId}`;
+    //return `https://drive.google.com/uc?id=${imageId}`;
   }
   // If the link doesn't match the expected pattern
   return null;
