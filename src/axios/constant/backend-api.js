@@ -24,6 +24,9 @@ export const BACKEND_API = {
 
   CUSTOMER_UNIT_ADD: IP_URL + '/customer/unit',
   CUSTOMER_UNIT_UPDATE: IP_URL + '/customer/unit',
+  CUSTOMER_UNIT_DETAILS_UPDATE: IP_URL + '/customer/unit-details-update',
+  CUSTOMER_UNIT_ADD_QR: IP_URL + '/unit/update-qr-code',
+  CUSTOMER_UNIT_REMOVE_QR: IP_URL + '/unit/remove-qr-code/',
 
   WORK_ORDRS_BY_UNIT: IP_URL + '/work-order/byUnit/',
   WORK_ORDR: IP_URL + '/work-order/',
@@ -32,4 +35,6 @@ export const BACKEND_API = {
   WORK_ORDR_UPDATE: IP_URL + '/work-order/',
   WORK_ORDR_FINISH: IP_URL + '/work-order/complete/',
   WORK_ORDR_ADD: IP_URL + '/work-order/add-job',
+
+  QR_CODE_AVAILABLES: IP_URL + '/qr-code/',
 };

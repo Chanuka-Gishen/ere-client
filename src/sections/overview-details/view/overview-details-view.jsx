@@ -8,23 +8,11 @@ import {
   Card,
   Chip,
   CircularProgress,
-  Collapse,
   Container,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
   Grid,
-  IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
-  List,
-  ListItem,
-  ListItemText,
-  Paper,
-  Radio,
-  RadioGroup,
   Stack,
   Table,
   TableBody,
@@ -35,16 +23,16 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import { ImageUpload } from 'src/components/upload';
-import { account } from 'src/_mock/account';
-import { Edit } from '@mui/icons-material';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import commonUtil from 'src/utils/common-util';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { USER_ROLE } from 'src/constants/user-role';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
+import { OverviewUpdateUnit } from '../component/overview-update-unit';
+import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
+import { OverviewUpdateQrCode } from '../component/overview-update-qrcode';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -106,6 +94,22 @@ export const OverviewDetailsView = ({
   isUploading,
   isLoading,
   workOrder,
+  isLoadingUpdate,
+  isUnitUpdateOpen,
+  formik,
+  handleOpenCloseUnitUpdateDialog,
+  handleSubmitUnitUpdate,
+  qrCodes,
+  selectedQrCodeValue,
+  handleSelectQrCode,
+  isLoadingAddQr,
+  handleAddQrCode,
+  isLoadingRemoveQr,
+  handleRemoveQrCode,
+  isQrSelectOpen,
+  isQrRemoveOpen,
+  handleOpenCloseSelectQrCode,
+  handleOpenCloseRemoveQrCode,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -180,13 +184,41 @@ export const OverviewDetailsView = ({
                   <Table>
                     <TableBody>
                       <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
-                        <CustomCell colSpan={2}>
+                        <CustomCell colSpan={3}>
                           <Typography variant="subtitle1">Job Details</Typography>
                         </CustomCell>
                       </TableRow>
                       <TableRow>
                         <CustomCell>AC Unit</CustomCell>
                         <CustomCell>{`${workOrder.workOrderUnitReference.unitModel} - ${workOrder.workOrderUnitReference.unitSerialNo}`}</CustomCell>
+                        <CustomCell align={'right'}>
+                          <Button variant="contained" onClick={handleOpenCloseUnitUpdateDialog}>
+                            Edit
+                          </Button>
+                        </CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>QR Code</CustomCell>
+                        <CustomCell>
+                          {!commonUtil.isUndefinedOrNull(
+                            workOrder.workOrderUnitReference.unitQrCode
+                          )
+                            ? workOrder.workOrderUnitReference.unitQrCode.qrCodeName
+                            : 'not linked'}
+                        </CustomCell>
+                        <CustomCell align={'right'}>
+                          {commonUtil.isUndefinedOrNull(
+                            workOrder.workOrderUnitReference.unitQrCode
+                          ) ? (
+                            <Button variant="contained" onClick={handleOpenCloseSelectQrCode}>
+                              Link
+                            </Button>
+                          ) : (
+                            <Button variant="contained" onClick={handleOpenCloseRemoveQrCode}>
+                              Remove
+                            </Button>
+                          )}
+                        </CustomCell>
                       </TableRow>
                       <TableRow>
                         <CustomCell>Work Order Code</CustomCell>
@@ -289,6 +321,35 @@ export const OverviewDetailsView = ({
             isLoading={isUploading}
           />
         )}
+        {isUnitUpdateOpen && (
+          <OverviewUpdateUnit
+            isOpen={isUnitUpdateOpen}
+            formik={formik}
+            handleClose={handleOpenCloseUnitUpdateDialog}
+            isLoading={isLoadingUpdate}
+            handleSubmit={handleSubmitUnitUpdate}
+          />
+        )}
+        {isQrSelectOpen && (
+          <OverviewUpdateQrCode
+            isOpen={isQrSelectOpen}
+            handleClose={handleOpenCloseSelectQrCode}
+            isLoading={isLoadingAddQr}
+            handleSubmit={handleAddQrCode}
+            codes={qrCodes}
+            value={selectedQrCodeValue}
+            handleSelect={handleSelectQrCode}
+          />
+        )}
+        {isQrRemoveOpen && (
+          <ConfirmationDialog
+            open={isQrRemoveOpen}
+            contentText="Are you sure you want to unlink this QR Code from this unit?"
+            handleClose={handleOpenCloseRemoveQrCode}
+            isLoading={isLoadingRemoveQr}
+            handleSubmit={handleRemoveQrCode}
+          />
+        )}
       </Stack>
     </Container>
   );
@@ -305,4 +366,20 @@ OverviewDetailsView.propTypes = {
   isUploading: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   workOrder: PropTypes.object,
+  isLoadingUpdate: PropTypes.bool.isRequired,
+  isUnitUpdateOpen: PropTypes.bool.isRequired,
+  formik: PropTypes.object.isRequired,
+  handleOpenCloseUnitUpdateDialog: PropTypes.func.isRequired,
+  handleSubmitUnitUpdate: PropTypes.func.isRequired,
+  qrCodes: PropTypes.array,
+  selectedQrCodeValue: PropTypes.string,
+  handleSelectQrCode: PropTypes.func.isRequired,
+  isLoadingAddQr: PropTypes.bool.isRequired,
+  handleAddQrCode: PropTypes.func.isRequired,
+  isLoadingRemoveQr: PropTypes.bool.isRequired,
+  handleRemoveQrCode: PropTypes.func.isRequired,
+  isQrSelectOpen: PropTypes.bool.isRequired,
+  isQrRemoveOpen: PropTypes.bool.isRequired,
+  handleOpenCloseSelectQrCode: PropTypes.func.isRequired,
+  handleOpenCloseRemoveQrCode: PropTypes.func.isRequired,
 };

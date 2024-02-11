@@ -18,14 +18,15 @@ import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-const
 
 const validationSchema = Yup.object().shape({
   unitModel: Yup.string().required('Model is required'),
-  unitSerialNo: Yup.string().required('Serial number is required'),
+  unitSerialNo: Yup.string(),
   unitInstalledDate: Yup.string().required('Installation Date is required'),
   unitNextMaintenanceDate: Yup.string().required('Next Maintenance Date is required'),
+  unitIsInstalled: Yup.boolean().required().oneOf([true, false]),
 });
 
 const validationUpdateSchema = Yup.object().shape({
   unitModel: Yup.string().required('Model is required'),
-  unitSerialNo: Yup.string().required('Serial number is required'),
+  unitSerialNo: Yup.string(),
   unitInstalledDate: Yup.string().required('Installation Date is required'),
   unitLastMaintenanceDate: Yup.string().required('Last Maintenance Date is required'),
   unitNextMaintenanceDate: Yup.string().required('Next Maintenance Date is required'),
@@ -55,6 +56,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       unitSerialNo: '',
       unitInstalledDate: new Date(),
       unitNextMaintenanceDate: addMonths(new Date(), 3),
+      unitIsInstalled: false,
     },
     validationSchema: validationSchema,
     onSubmit: () => {
