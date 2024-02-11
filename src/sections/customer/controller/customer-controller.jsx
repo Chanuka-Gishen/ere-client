@@ -18,8 +18,9 @@ import { useRouter } from 'src/routes/hooks';
 const validationSchemaAddCust = Yup.object().shape({
   customerName: Yup.string().required('Full Name is required'),
   customerAddress: Yup.string().required('Address is required'),
-  customerMobile: Yup.string().required('Mobile is required'),
-  customerLand: Yup.string(),
+  customerMobile: Yup.string()
+    .matches(/^\(?([1-9][0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, 'Invalid mobile number')
+    .required('Mobile number is required'),
   customerEmail: Yup.string().email('Invalid email format').nullable,
 });
 
@@ -44,7 +45,7 @@ const CustomerController = () => {
       customerName: '',
       customerAddress: '',
       customerMobile: '',
-      customerEmail: null,
+      customerEmail: '',
     },
     validationSchema: validationSchemaAddCust,
     onSubmit: () => {
@@ -81,7 +82,12 @@ const CustomerController = () => {
         url: BACKEND_API.CUSTOMER_ADD,
         method: 'POST',
         cancelToken: cancelToken.token,
-        data: formik.values,
+        data: {
+          customerName: formik.values.customerName,
+          customerAddress: formik.values.customerAddress,
+          customerEmail: formik.values.customerEmail === '' ? null : formik.values.customerEmail,
+          customerMobile: parseInt(formik.values.customerMobile.replace(/\s/g, '')),
+        },
       })
         .then((res) => {
           const data = res.data;

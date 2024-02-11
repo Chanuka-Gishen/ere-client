@@ -14,6 +14,7 @@ import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { FormikProvider } from 'formik';
 import { LoadingButton } from '@mui/lab';
+import { MobileNumberInput } from 'src/components/mobile-number-input/mobile-number-input';
 
 export const CustomerDrawer = ({ isOpen, handleClose, formik, isLoading, handleSubmit }) => {
   const { touched, errors, getFieldProps } = formik;
@@ -42,7 +43,7 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik, isLoading, handleS
 
       <Scrollbar>
         <FormikProvider value={formik}>
-          <Stack direction={'column'} spacing={1} sx={{ px: 1, py: 2 }}>
+          <Stack direction={'column'} spacing={3} sx={{ px: 1, py: 2 }}>
             <TextField
               label="Customer Name*"
               name="customerName"
@@ -59,7 +60,16 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik, isLoading, handleS
               error={Boolean(touched.customerAddress && errors.customerAddress)}
               helperText={touched.customerAddress && errors.customerAddress}
             />
-            <TextField
+            <MobileNumberInput
+              name="customerMobile"
+              value={formik.values.customerMobile}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={Boolean(touched.customerMobile && errors.customerMobile)}
+              helperText={touched.customerMobile && errors.customerMobile}
+              {...getFieldProps('customerMobile')}
+            />
+            {/* <TextField
               label="Customer Mobile*"
               name="customerMobile"
               type="number"
@@ -67,7 +77,7 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik, isLoading, handleS
               {...getFieldProps('customerMobile')}
               error={Boolean(touched.customerMobile && errors.customerMobile)}
               helperText={touched.customerMobile && errors.customerMobile}
-            />
+            /> */}
             <TextField
               label="Customer Land Line"
               name="customerLand"

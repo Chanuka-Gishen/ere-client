@@ -45,6 +45,7 @@ import commonUtil from 'src/utils/common-util';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { USER_ROLE } from 'src/constants/user-role';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
+import { OverviewUpdateUnit } from '../component/overview-update-unit';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -106,6 +107,11 @@ export const OverviewDetailsView = ({
   isUploading,
   isLoading,
   workOrder,
+  isLoadingUpdate,
+  isUnitUpdateOpen,
+  formik,
+  handleOpenCloseUnitUpdateDialog,
+  handleSubmitUnitUpdate,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -180,13 +186,18 @@ export const OverviewDetailsView = ({
                   <Table>
                     <TableBody>
                       <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
-                        <CustomCell colSpan={2}>
+                        <CustomCell colSpan={3}>
                           <Typography variant="subtitle1">Job Details</Typography>
                         </CustomCell>
                       </TableRow>
                       <TableRow>
                         <CustomCell>AC Unit</CustomCell>
                         <CustomCell>{`${workOrder.workOrderUnitReference.unitModel} - ${workOrder.workOrderUnitReference.unitSerialNo}`}</CustomCell>
+                        <CustomCell align={'right'}>
+                          <Button variant="contained" onClick={handleOpenCloseUnitUpdateDialog}>
+                            Edit
+                          </Button>
+                        </CustomCell>
                       </TableRow>
                       <TableRow>
                         <CustomCell>Work Order Code</CustomCell>
@@ -289,6 +300,15 @@ export const OverviewDetailsView = ({
             isLoading={isUploading}
           />
         )}
+        {isUnitUpdateOpen && (
+          <OverviewUpdateUnit
+            isOpen={isUnitUpdateOpen}
+            formik={formik}
+            handleClose={handleOpenCloseUnitUpdateDialog}
+            isLoading={isLoadingUpdate}
+            handleSubmit={handleSubmitUnitUpdate}
+          />
+        )}
       </Stack>
     </Container>
   );
@@ -305,4 +325,9 @@ OverviewDetailsView.propTypes = {
   isUploading: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
   workOrder: PropTypes.object,
+  isLoadingUpdate: PropTypes.bool.isRequired,
+  isUnitUpdateOpen: PropTypes.bool.isRequired,
+  formik: PropTypes.object.isRequired,
+  handleOpenCloseUnitUpdateDialog: PropTypes.func.isRequired,
+  handleSubmitUnitUpdate: PropTypes.func.isRequired,
 };

@@ -49,7 +49,7 @@ export const LoginView = ({ handleLogin, formik, isLoading }) => {
           }}
         >
           <Typography variant="h4" textAlign={'center'} sx={{ mb: 5 }}>
-            Sign in to EREngineers
+            E R Engineers
           </Typography>
 
           <LoginForm

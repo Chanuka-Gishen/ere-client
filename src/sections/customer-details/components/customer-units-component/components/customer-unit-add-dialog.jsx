@@ -45,11 +45,9 @@ export const CustomerUnitAddDialog = ({
               helperText={touched.unitModel && errors.unitModel}
             />
             <TextField
-              label="Unit Serial No*"
+              label="Unit Serial No"
               name={'unitSerialNo'}
               {...getFieldProps('unitSerialNo')}
-              error={Boolean(touched.unitSerialNo && errors.unitSerialNo)}
-              helperText={touched.unitSerialNo && errors.unitSerialNo}
             />
             <Stack direction={'row'} spacing={1}>
               <DatePicker
@@ -95,6 +93,27 @@ export const CustomerUnitAddDialog = ({
                   )}
                 </FormControl>
               </Stack>
+            )}
+            {isAdd && (
+              <FormControl>
+                <InputLabel id="select-label">Unit*</InputLabel>
+                <Select
+                  labelId="select-label"
+                  id="select"
+                  label="Unit"
+                  {...getFieldProps('unitIsInstalled')}
+                >
+                  <MenuItem value={true} defaultValue={true}>
+                    Installed
+                  </MenuItem>
+                  <MenuItem value={false}>Not Installed</MenuItem>
+                </Select>
+                {Boolean(touched.unitIsInstalled && errors.unitIsInstalled) && (
+                  <FormHelperText>
+                    {touched.unitIsInstalled && errors.unitIsInstalled}
+                  </FormHelperText>
+                )}
+              </FormControl>
             )}
           </Stack>
         </FormikProvider>

@@ -37,6 +37,7 @@ export const AddEmployeeDialog = ({
             <TextField
               label="Employee First Name*"
               fullWidth
+              autoComplete="off"
               variant="outlined"
               {...getFieldProps('userFirstName')}
               error={Boolean(touched.userFirstName && errors.userFirstName)}
@@ -45,6 +46,7 @@ export const AddEmployeeDialog = ({
             <TextField
               label="Employee Last Name*"
               fullWidth
+              autoComplete="off"
               variant="outlined"
               {...getFieldProps('userLastName')}
               error={Boolean(touched.userLastName && errors.userLastName)}
@@ -62,8 +64,8 @@ export const AddEmployeeDialog = ({
                 <MenuItem value={USER_ROLE.TECHNICIAN}>Technician</MenuItem>
                 <MenuItem value={USER_ROLE.HELPER}>Helper</MenuItem>
               </Select>
-              {Boolean(touched.userLastName && errors.userLastName) && (
-                <FormHelperText>{touched.userLastName && errors.userLastName}</FormHelperText>
+              {Boolean(touched.userRole && errors.userRole) && (
+                <FormHelperText>{touched.userRole && errors.userRole}</FormHelperText>
               )}
             </FormControl>
           </Stack>

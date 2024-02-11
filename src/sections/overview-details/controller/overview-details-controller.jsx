@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useParams } from 'react-router-dom';
+import { useSnackbar } from 'notistack';
 
 import { OverviewDetailsView } from '../view/overview-details-view';
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import responseUtil from 'src/utils/responseUtil';
-import { useSnackbar } from 'notistack';
 import { useRouter } from 'src/routes/hooks';
+
+const validationSchema = Yup.object().shape({
+  unitSerialNo: Yup.string(),
+});
 
 const OverviewDetailsController = () => {
   const { id } = useParams();
@@ -20,9 +26,21 @@ const OverviewDetailsController = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
+  const [isUnitUpdateOpen, setIsUnitUpdateOpen] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      unitSerialNo: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: () => {
+      null;
+    },
+  });
 
   const handleOpenImageUploader = () => {
     setIsUploaderOpen(true);
@@ -35,6 +53,16 @@ const OverviewDetailsController = () => {
 
   const onClickBreadCrumb = (screen) => {
     router.replace(screen);
+  };
+
+  const handleOpenCloseUnitUpdateDialog = () => {
+    setIsUnitUpdateOpen(!isUnitUpdateOpen);
+
+    if (!isUnitUpdateOpen) {
+      formik.setValues({ unitSerialNo: workOrder.workOrderUnitReference.unitSerialNo });
+    } else {
+      formik.resetForm();
+    }
   };
 
   const handleUploadImages = async () => {
@@ -74,6 +102,35 @@ const OverviewDetailsController = () => {
         })
         .finally(() => {
           setIsUploading(false);
+        });
+    }
+  };
+
+  const handleSubmitUnitUpdate = async () => {
+    if (formik.isValid && formik.dirty) {
+      setIsLoadingUpdate(true);
+      await backendAuthApi({
+        url: BACKEND_API.CUSTOMER_UNIT_DETAILS_UPDATE,
+        method: 'PUT',
+        cancelToken: cancelToken.token,
+        data: {
+          _id: workOrder.workOrderUnitReference._id,
+          ...formik.values,
+        },
+      })
+        .then((res) => {
+          const data = res.data;
+
+          if (responseUtil.isResponseSuccess(data.responseCode)) {
+            handleFetchWorkOrderDetails();
+            handleOpenCloseUnitUpdateDialog();
+          }
+        })
+        .catch(() => {
+          setIsLoadingUpdate(false);
+        })
+        .finally(() => {
+          setIsLoadingUpdate(false);
         });
     }
   };
@@ -119,6 +176,11 @@ const OverviewDetailsController = () => {
       isLoading={isLoading}
       workOrder={workOrder}
       isUploading={isUploading}
+      isLoadingUpdate={isLoadingUpdate}
+      isUnitUpdateOpen={isUnitUpdateOpen}
+      formik={formik}
+      handleOpenCloseUnitUpdateDialog={handleOpenCloseUnitUpdateDialog}
+      handleSubmitUnitUpdate={handleSubmitUnitUpdate}
     />
   );
 };
