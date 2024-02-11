@@ -4,6 +4,9 @@ export const NAVIGATION_ROUTES = {
   set_password: 'setPassword',
   register: 'register',
 
+  // public routes
+  customer_unit: 'unit/:id',
+
   // not found
   not_found: '404',
   all_path: '*',
