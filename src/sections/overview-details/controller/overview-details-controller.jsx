@@ -22,15 +22,21 @@ const OverviewDetailsController = () => {
 
   const cancelToken = axios.CancelToken.source();
 
+  const [qrCodes, setQrCodes] = useState([]);
   const [workOrder, setWorkOrder] = useState(null);
+  const [selectedQrCodeValue, setSelectedQrCodeValue] = useState('');
   const [selectedFiles, setSelectedFiles] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isLoadingAddQr, setIsLoadingAddQr] = useState(false);
+  const [isLoadingRemoveQr, setIsLoadingRemoveQr] = useState(false);
 
   const [isUploaderOpen, setIsUploaderOpen] = useState(false);
   const [isUnitUpdateOpen, setIsUnitUpdateOpen] = useState(false);
+  const [isQrSelectOpen, setIsQrSelectOpen] = useState(false);
+  const [isQrRemoveOpen, setisQrRemoveOpen] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -63,6 +69,22 @@ const OverviewDetailsController = () => {
     } else {
       formik.resetForm();
     }
+  };
+
+  const handleOpenCloseSelectQrCode = () => {
+    setIsQrSelectOpen(!isQrSelectOpen);
+
+    if (!isQrSelectOpen) {
+      setSelectedQrCodeValue(null);
+    }
+  };
+
+  const handleOpenCloseRemoveQrCode = () => {
+    setisQrRemoveOpen(!isQrRemoveOpen);
+  };
+
+  const handleSelectQrCode = (value) => {
+    setSelectedQrCodeValue(value);
   };
 
   const handleUploadImages = async () => {
@@ -135,6 +157,78 @@ const OverviewDetailsController = () => {
     }
   };
 
+  const handleAddQrCode = async () => {
+    if (selectedQrCodeValue) {
+      setIsLoadingAddQr(true);
+
+      await backendAuthApi({
+        url: BACKEND_API.CUSTOMER_UNIT_ADD_QR,
+        method: 'PUT',
+        cancelToken: cancelToken.token,
+        data: {
+          unitId: workOrder.workOrderUnitReference._id,
+          qrCodeName: selectedQrCodeValue,
+        },
+      })
+        .then((res) => {
+          const data = res.data;
+
+          if (responseUtil.isResponseSuccess(data.responseCode)) {
+            handleFetchWorkOrderDetails();
+            handleOpenCloseSelectQrCode();
+          }
+        })
+        .catch(() => {
+          setIsLoadingAddQr(false);
+        })
+        .finally(() => {
+          setIsLoadingAddQr(false);
+        });
+    }
+  };
+
+  const handleRemoveQrCode = async () => {
+    setIsLoadingRemoveQr(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.CUSTOMER_UNIT_REMOVE_QR + workOrder.workOrderUnitReference._id,
+      method: 'PUT',
+      cancelToken: cancelToken.token,
+    })
+      .then((res) => {
+        const data = res.data;
+
+        if (responseUtil.isResponseSuccess(data.responseCode)) {
+          enqueueSnackbar(data.responseMessage, {
+            variant: responseUtil.findResponseType(data.responseCode),
+          });
+          handleFetchWorkOrderDetails();
+          handleOpenCloseRemoveQrCode();
+        }
+      })
+      .catch(() => {
+        setIsLoadingRemoveQr(false);
+      })
+      .finally(() => {
+        setIsLoadingRemoveQr(false);
+      });
+  };
+
+  const handleFetchAvailableQrCodes = async () => {
+    setQrCodes([]);
+    await backendAuthApi({
+      url: BACKEND_API.QR_CODE_AVAILABLES,
+      method: 'GET',
+      cancelToken: cancelToken.token,
+    }).then((res) => {
+      const data = res.data;
+
+      if (responseUtil.isResponseSuccess(data.responseCode)) {
+        setQrCodes(data.responseData);
+      }
+    });
+  };
+
   const handleFetchWorkOrderDetails = async () => {
     setIsLoading(true);
 
@@ -160,6 +254,7 @@ const OverviewDetailsController = () => {
 
   useEffect(() => {
     handleFetchWorkOrderDetails();
+    handleFetchAvailableQrCodes();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -181,6 +276,17 @@ const OverviewDetailsController = () => {
       formik={formik}
       handleOpenCloseUnitUpdateDialog={handleOpenCloseUnitUpdateDialog}
       handleSubmitUnitUpdate={handleSubmitUnitUpdate}
+      qrCodes={qrCodes}
+      selectedQrCodeValue={selectedQrCodeValue}
+      handleSelectQrCode={handleSelectQrCode}
+      isLoadingAddQr={isLoadingAddQr}
+      handleAddQrCode={handleAddQrCode}
+      isLoadingRemoveQr={isLoadingRemoveQr}
+      handleRemoveQrCode={handleRemoveQrCode}
+      isQrSelectOpen={isQrSelectOpen}
+      isQrRemoveOpen={isQrRemoveOpen}
+      handleOpenCloseSelectQrCode={handleOpenCloseSelectQrCode}
+      handleOpenCloseRemoveQrCode={handleOpenCloseRemoveQrCode}
     />
   );
 };
