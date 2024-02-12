@@ -16,6 +16,8 @@ import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { AddCustomerJobDialog } from '../components/add-customer-job-dialog';
 import { WORK_TYPE } from 'src/constants/common-constants';
+import { SelectQrCodeDialog } from 'src/components/select-qr-code';
+import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
 
 // ---------------------------------------
 
@@ -29,6 +31,7 @@ const CustomCell = ({ children, ...props }) => {
 
 export const CustomerWorkView = ({
   headerLabels,
+  selectedUnit,
   isLoading,
   workOrders,
   handleRowClick,
@@ -114,6 +117,7 @@ export const CustomerWorkView = ({
 
 CustomerWorkView.propTypes = {
   headerLabels: PropTypes.array.isRequired,
+  selectedUnit: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   workOrders: PropTypes.array,
   handleRowClick: PropTypes.func.isRequired,

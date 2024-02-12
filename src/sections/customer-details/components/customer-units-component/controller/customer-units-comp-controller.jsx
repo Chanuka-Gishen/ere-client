@@ -42,6 +42,8 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
   const [isAdd, setIsAdd] = useState(true);
   const [open, setOpen] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenSelectQr, setIsOpenSelectQr] = useState(false);
+  const [isOpenRemoveQr, setIsOpenRemoveQr] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
@@ -126,6 +128,14 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
 
     // Recalculate and update unitNextMaintenanceDate
     formik.setFieldValue('unitNextMaintenanceDate', addMonths(date, 3));
+  };
+
+  const handleOpenSelectQrDialog = () => {
+    setIsOpenSelectQr(true);
+  };
+
+  const handleOpenRemoveQrDialog = () => {
+    setIsOpenRemoveQr(true);
   };
 
   const handleSubmitAddUnit = async () => {
@@ -213,6 +223,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
           setUnits(data.responseData);
+          handleSelectUnit(data.responseData.find((unit) => unit._id === selectedUnit._id));
         }
       })
       .finally(() => {
@@ -246,6 +257,13 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       formikUpdateUnit={formikUpdateUnit}
       handleOpenUpdateDialog={handleOpenUpdateDialog}
       handleSubmitUpdateUnit={handleSubmitUpdateUnit}
+      handleFetchCustomerUnits={handleFetchCustomerUnits}
+      isOpenSelectQr={isOpenSelectQr}
+      setIsOpenSelectQr={setIsOpenSelectQr}
+      handleOpenSelectQrDialog={handleOpenSelectQrDialog}
+      isOpenRemoveQr={isOpenRemoveQr}
+      setIsOpenRemoveQr={setIsOpenRemoveQr}
+      handleOpenRemoveQrDialog={handleOpenRemoveQrDialog}
     />
   );
 };
