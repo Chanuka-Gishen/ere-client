@@ -13,6 +13,7 @@ import {
   ImageList,
   ImageListItem,
   ImageListItemBar,
+  Link,
   Stack,
   Table,
   TableBody,
@@ -165,6 +166,23 @@ export const OverviewDetailsView = ({
                         <CustomCell>Address</CustomCell>
                         <CustomCell>{workOrder.workOrderCustomerId.customerAddress}</CustomCell>
                       </TableRow>
+                      <TableRow>
+                        <CustomCell> Location</CustomCell>
+                        <CustomCell>
+                          {workOrder.workOrderCustomerId.customerLocation ? (
+                            <Link
+                              href={workOrder.workOrderCustomerId.customerLocation}
+                              underline="hover"
+                              target="_blank"
+                              rel="noopener"
+                            >
+                              {workOrder.workOrderCustomerId.customerLocation}
+                            </Link>
+                          ) : (
+                            '-'
+                          )}
+                        </CustomCell>
+                      </TableRow>
                     </TableBody>
                   </Table>
                 </TableContainer>
@@ -221,15 +239,6 @@ export const OverviewDetailsView = ({
                         <CustomCell>{workOrder.workOrderCode}</CustomCell>
                       </TableRow>
                       <TableRow>
-                        <CustomCell>Word Order Type</CustomCell>
-                        <CustomCell>{workOrder.workOrderType}</CustomCell>
-                      </TableRow>
-                      <TableRow>
-                        <CustomCell>Status</CustomCell>
-                        <CustomCell>{workOrder.workOrderStatus}</CustomCell>
-                      </TableRow>
-
-                      <TableRow>
                         <CustomCell>Sheduled Date</CustomCell>
                         <CustomCell>
                           {new Date(workOrder?.workOrderScheduledDate).toLocaleDateString({
@@ -238,6 +247,14 @@ export const OverviewDetailsView = ({
                             year: 'numeric',
                           })}
                         </CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Word Order Type</CustomCell>
+                        <CustomCell>{workOrder.workOrderType}</CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Status</CustomCell>
+                        <CustomCell>{workOrder.workOrderStatus}</CustomCell>
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -365,7 +382,7 @@ OverviewDetailsView.propTypes = {
   handleSubmitUnitUpdate: PropTypes.func.isRequired,
   isQrSelectOpen: PropTypes.bool.isRequired,
   isQrRemoveOpen: PropTypes.bool.isRequired,
-  setisQrRemoveOpen: PropTypes.bool.isRequired,
+  setisQrRemoveOpen: PropTypes.func.isRequired,
   handleOpenCloseSelectQrCode: PropTypes.func.isRequired,
   handleOpenCloseRemoveQrCode: PropTypes.func.isRequired,
   handleFetchWorkOrderDetails: PropTypes.func.isRequired,

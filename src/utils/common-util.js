@@ -40,10 +40,23 @@ const getDirectImageLink = (imageId) => {
   return null;
 };
 
+const calculateMonthDifference = (date) => {
+  const scheduledDate = new Date(date);
+
+  const currentDate = new Date();
+
+  // Calculate the difference in months
+  const differenceInMs = scheduledDate.getTime() - currentDate.getTime();
+
+  // Determine if the date is within the same month
+  return differenceInMs <= 30 * 24 * 60 * 60 * 1000;
+};
+
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   isUndefinedOrNull,
   roundNumber,
   stringIsEmptyOrSpaces,
   getDirectImageLink,
+  calculateMonthDifference,
 };

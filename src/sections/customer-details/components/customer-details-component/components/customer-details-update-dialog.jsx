@@ -65,6 +65,12 @@ export const CustomerDetailsUpdateDialog = ({
               fullWidth
               {...getFieldProps('customerEmail')}
             />
+            <TextField
+              label="Customer Location"
+              name="customerLocation"
+              fullWidth
+              {...getFieldProps('customerLocation')}
+            />
           </Stack>
         </FormikProvider>
       </DialogContent>

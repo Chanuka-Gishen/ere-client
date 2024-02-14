@@ -25,7 +25,14 @@ const validationSchemaAddCust = Yup.object().shape({
 });
 
 const CustomerController = () => {
-  const headerLabels = ['Customer name', 'Address', 'Mobile No', 'Landline No', 'Email'];
+  const headerLabels = [
+    'Customer name',
+    'Next job date',
+    'Address',
+    'Mobile No',
+    'Landline No',
+    'Email',
+  ];
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
@@ -35,6 +42,7 @@ const CustomerController = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [customers, setCustomers] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const [isLoadingAddCustomer, setIsLoadingAddCustomer] = useState(false);
 
@@ -74,6 +82,16 @@ const CustomerController = () => {
   const handleClickRow = (id) => {
     router.push('customers/details/' + id);
   };
+
+  const handleSearchInputChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  //const filteredData = customers.filter((item) => item.customerTel.mobile.includes(searchTerm));
+  const filteredData = customers.filter((item) => {
+    const mobileNumber = item.customerTel.mobile;
+    return mobileNumber.startsWith(searchTerm);
+  });
 
   const handleSubmitNewCust = async () => {
     if (formik.isValid && formik.dirty) {
@@ -138,6 +156,9 @@ const CustomerController = () => {
 
   return (
     <CustomerView
+      searchTerm={searchTerm}
+      handleSearchInputChange={handleSearchInputChange}
+      filteredData={filteredData}
       isLoading={isLoading}
       customers={customers}
       openAddCust={openAddCust}

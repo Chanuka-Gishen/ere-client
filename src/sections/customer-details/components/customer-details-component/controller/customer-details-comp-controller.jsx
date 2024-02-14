@@ -20,6 +20,7 @@ const validationSchema = Yup.object().shape({
   customerMobile: Yup.string().required('Mobile is required'),
   customerLand: Yup.string().nullable,
   customerEmail: Yup.string().email('Invalid email format').nullable,
+  customerLocation: Yup.string().nullable,
 });
 
 const CustomerDetailsComponentController = ({ id }) => {
@@ -39,6 +40,7 @@ const CustomerDetailsComponentController = ({ id }) => {
       customerMobile: '',
       customerLand: '',
       customerEmail: '',
+      customerLocation: '',
     },
     validationSchema: validationSchema,
     onSubmit: () => {
@@ -53,6 +55,7 @@ const CustomerDetailsComponentController = ({ id }) => {
       customerMobile: customerInfo.customerTel.mobile,
       customerLand: customerInfo.customerTel.landline,
       customerEmail: customerInfo.customerEmail,
+      customerLocation: customerInfo.customerLocation,
     });
     setIsOpen(true);
   };

@@ -45,7 +45,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
   const [isOpenSelectQr, setIsOpenSelectQr] = useState(false);
   const [isOpenRemoveQr, setIsOpenRemoveQr] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
 

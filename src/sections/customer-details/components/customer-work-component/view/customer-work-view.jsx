@@ -18,6 +18,7 @@ import { AddCustomerJobDialog } from '../components/add-customer-job-dialog';
 import { WORK_TYPE } from 'src/constants/common-constants';
 import { SelectQrCodeDialog } from 'src/components/select-qr-code';
 import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
+import commonUtil from 'src/utils/common-util';
 
 // ---------------------------------------
 
@@ -64,7 +65,15 @@ export const CustomerWorkView = ({
                       {workOrders.map((item, index) => (
                         <TableRow hover key={index} onClick={() => handleRowClick(item._id)}>
                           <CustomCell component={'th'}>{item.workOrderCode}</CustomCell>
-                          <CustomCell>
+                          <CustomCell
+                            sx={{
+                              color: commonUtil.calculateMonthDifference(
+                                item.workOrderScheduledDate
+                              )
+                                ? 'red'
+                                : 'black',
+                            }}
+                          >
                             {new Date(item.workOrderScheduledDate).toLocaleDateString({
                               year: 'numeric',
                               month: 'short',

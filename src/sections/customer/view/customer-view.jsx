@@ -9,8 +9,11 @@ import {
   Stack,
   Table,
   TableBody,
+  TableCell,
   TableContainer,
   TablePagination,
+  TableRow,
+  TextField,
   Typography,
 } from '@mui/material';
 import Iconify from 'src/components/iconify';
@@ -21,8 +24,12 @@ import { USERS } from 'src/_mock/users';
 import { CustomerTableRow } from '../component/customer-table-row';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
+import CustomerSearchBar from '../component/customer-search-bar';
 
 export const CustomerView = ({
+  searchTerm,
+  handleSearchInputChange,
+  filteredData,
   isLoading,
   customers,
   openAddCust,
@@ -54,6 +61,7 @@ export const CustomerView = ({
       </Stack>
 
       <Card>
+        <CustomerSearchBar filterName={searchTerm} onFilterName={handleSearchInputChange} />
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
@@ -68,7 +76,7 @@ export const CustomerView = ({
                     <TableEmptyRow colSpan={headerLabels.length} />
                   ) : (
                     <>
-                      {customers
+                      {filteredData
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((row) => (
                           <CustomerTableRow
@@ -78,6 +86,13 @@ export const CustomerView = ({
                           />
                         ))}
                     </>
+                  )}
+                  {filteredData.length === 0 && (
+                    <TableRow>
+                      <TableCell colSpan={headerLabels.length} align="center">
+                        {`No results found for "${searchTerm}"`}
+                      </TableCell>
+                    </TableRow>
                   )}
                 </TableBody>
               )}
@@ -107,6 +122,8 @@ export const CustomerView = ({
 };
 
 CustomerView.propTypes = {
+  searchTerm: PropTypes.string.isRequired,
+  handleSearchInputChange: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
   customers: PropTypes.array,
   openAddCust: PropTypes.bool.isRequired,

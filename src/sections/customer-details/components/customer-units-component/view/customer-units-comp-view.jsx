@@ -127,7 +127,7 @@ export const CustomerUnitsComponentView = ({
             </Table>
           </TableContainer>
           {units.length > 0 ? (
-            <List sx={{ bgcolor: 'background.paper' }}>
+            <List sx={{ bgcolor: 'background.paper', maxHeight: 308, overflow: 'auto' }}>
               <>
                 {units.map((item, index) => (
                   <Fragment key={index}>
