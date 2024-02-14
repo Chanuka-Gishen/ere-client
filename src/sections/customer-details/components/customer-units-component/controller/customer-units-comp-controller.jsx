@@ -17,6 +17,7 @@ import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-const
 // -----------------------------------------------
 
 const validationSchema = Yup.object().shape({
+  unitBrand: Yup.string().required('Brand is required'),
   unitModel: Yup.string().required('Model is required'),
   unitSerialNo: Yup.string(),
   unitInstalledDate: Yup.string().required('Installation Date is required'),
@@ -25,6 +26,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const validationUpdateSchema = Yup.object().shape({
+  unitBrand: Yup.string().required('Brand is required'),
   unitModel: Yup.string().required('Model is required'),
   unitSerialNo: Yup.string(),
   unitInstalledDate: Yup.string().required('Installation Date is required'),
@@ -54,6 +56,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
 
   const formik = useFormik({
     initialValues: {
+      unitBrand: '',
       unitModel: '',
       unitSerialNo: '',
       unitInstalledDate: new Date(),
@@ -68,6 +71,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
 
   const formikUpdateUnit = useFormik({
     initialValues: {
+      unitBrand: '',
       unitModel: '',
       unitSerialNo: '',
       unitInstalledDate: new Date(),
@@ -104,6 +108,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
     setIsOpen(!isOpen);
     setIsAdd(false);
     formikUpdateUnit.setValues({
+      unitBrand: selectedItem.unitBrand,
       unitModel: selectedItem.unitModel,
       unitSerialNo: selectedItem.unitSerialNo,
       unitInstalledDate: new Date(selectedItem.unitInstalledDate),

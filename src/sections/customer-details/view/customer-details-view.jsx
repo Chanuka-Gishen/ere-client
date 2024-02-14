@@ -85,7 +85,10 @@ export const CustomerDetailsView = ({
                     justifyContent={'center'}
                     spacing={1}
                   >
-                    <Typography variant="h6">{`${selectedUnit.unitModel} - ${selectedUnit.unitSerialNo}`}</Typography>
+                    <Typography
+                      variant="h6"
+                      align="center"
+                    >{`${selectedUnit.unitBrand} - ${selectedUnit.unitModel} - ${selectedUnit.unitSerialNo}`}</Typography>
                     <Typography variant="subtitle1" color="textSecondary">
                       Installed Date:{' '}
                       {new Date(selectedUnit.unitInstalledDate).toLocaleDateString()}

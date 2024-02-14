@@ -155,7 +155,10 @@ export const JobDetailsView = ({
                     justifyContent={'center'}
                     spacing={1}
                   >
-                    <Typography variant="h6">{`${workOrder?.workOrderUnitReference.unitModel} - ${workOrder?.workOrderUnitReference.unitSerialNo}`}</Typography>
+                    <Typography
+                      variant="h6"
+                      align="center"
+                    >{`${workOrder?.workOrderUnitReference.unitBrand} - ${workOrder?.workOrderUnitReference.unitModel} - ${workOrder?.workOrderUnitReference.unitSerialNo}`}</Typography>
                     <Typography variant="subtitle1" color="textSecondary">
                       Installed Date:{' '}
                       {new Date(
@@ -427,7 +430,7 @@ export const JobDetailsView = ({
 JobDetailsView.propTypes = {
   jobId: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  workOrder: PropTypes.object,
+  workOrder: PropTypes.object.isRequired,
   files: PropTypes.array,
   setFiles: PropTypes.func.isRequired,
   handleOnClickBreadCrumb: PropTypes.func.isRequired,

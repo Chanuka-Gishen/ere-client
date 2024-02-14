@@ -87,7 +87,7 @@ export const CustomerView = ({
                         ))}
                     </>
                   )}
-                  {filteredData.length === 0 && (
+                  {filteredData.length === 0 && customers.length != 0 && (
                     <TableRow>
                       <TableCell colSpan={headerLabels.length} align="center">
                         {`No results found for "${searchTerm}"`}
