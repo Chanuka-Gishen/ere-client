@@ -20,6 +20,7 @@ export const OverviewUpdateUnit = ({ isOpen, handleClose, formik, isLoading, han
       <DialogContent>
         <FormikProvider value={formik}>
           <TextField
+            sx={{ mt: 2 }}
             label="Unit Serial No"
             name={'unitSerialNo'}
             fullWidth

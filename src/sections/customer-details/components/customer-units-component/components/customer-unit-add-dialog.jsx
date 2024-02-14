@@ -38,6 +38,13 @@ export const CustomerUnitAddDialog = ({
         <FormikProvider value={formik}>
           <Stack direction={'column'} spacing={2} sx={{ mt: 2 }}>
             <TextField
+              label="Unit Brand*"
+              name={'unitBrand'}
+              {...getFieldProps('unitBrand')}
+              error={Boolean(touched.unitBrand && errors.unitBrand)}
+              helperText={touched.unitBrand && errors.unitBrand}
+            />
+            <TextField
               label="Unit Model*"
               name={'unitModel'}
               {...getFieldProps('unitModel')}

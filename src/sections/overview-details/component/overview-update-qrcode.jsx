@@ -25,7 +25,7 @@ export const OverviewUpdateQrCode = ({
     <Dialog open={isOpen} fullWidth sx={{ px: 2 }}>
       <DialogTitle>Link QR code</DialogTitle>
       <DialogContent>
-        <Box sx={{ mt: 5 }}>
+        <Box sx={{ mt: 2 }}>
           <Autocomplete
             options={codes}
             getOptionLabel={(option) => option.qrCodeName}

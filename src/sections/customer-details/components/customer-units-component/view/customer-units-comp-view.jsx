@@ -153,10 +153,19 @@ export const CustomerUnitsComponentView = ({
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
-                        primary={`${item.unitModel} - ${item.unitSerialNo}`}
+                        primary={
+                          <Typography>{`${item.unitBrand} - ${item.unitModel} - ${item.unitSerialNo}`}</Typography>
+                        }
                         secondary={
                           <Stack direction={'column'}>
-                            <Typography variant="body">{`Next maintainance : ${new Date(
+                            <Typography
+                              variant="body"
+                              color={
+                                commonUtil.calculateMonthDifference(item.unitNextMaintenanceDate)
+                                  ? 'error'
+                                  : 'black'
+                              }
+                            >{`Next maintainance : ${new Date(
                               item.unitNextMaintenanceDate
                             ).toLocaleDateString({
                               year: 'numeric',

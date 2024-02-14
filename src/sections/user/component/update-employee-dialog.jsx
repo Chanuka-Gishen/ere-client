@@ -27,7 +27,7 @@ export const UpdateEmployeeDialog = ({ open, handleClose, formik, handleSubmit, 
       <DialogTitle>Update Employee</DialogTitle>
       <DialogContent>
         <FormikProvider value={formik}>
-          <Stack direction={'column'} spacing={2}>
+          <Stack direction={'column'} spacing={2} sx={{ mt: 2 }}>
             <TextField
               label="Employee First Name*"
               fullWidth

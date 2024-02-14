@@ -26,7 +26,7 @@ export const CustomerDetailsUpdateDialog = ({
       <DialogTitle>Update Customer</DialogTitle>
       <DialogContent>
         <FormikProvider value={formik}>
-          <Stack direction={'column'} spacing={2}>
+          <Stack direction={'column'} spacing={2} sx={{ mt: 2 }}>
             <TextField
               label="Customer Name*"
               name="customerName"
