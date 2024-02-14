@@ -13,6 +13,7 @@ import {
   ImageList,
   ImageListItem,
   ImageListItemBar,
+  Link,
   Stack,
   Table,
   TableBody,
@@ -31,8 +32,8 @@ import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { USER_ROLE } from 'src/constants/user-role';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 import { OverviewUpdateUnit } from '../component/overview-update-unit';
-import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
-import { OverviewUpdateQrCode } from '../component/overview-update-qrcode';
+import { SelectQrCodeDialog } from 'src/components/select-qr-code';
+import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -99,17 +100,13 @@ export const OverviewDetailsView = ({
   formik,
   handleOpenCloseUnitUpdateDialog,
   handleSubmitUnitUpdate,
-  qrCodes,
-  selectedQrCodeValue,
-  handleSelectQrCode,
-  isLoadingAddQr,
-  handleAddQrCode,
-  isLoadingRemoveQr,
-  handleRemoveQrCode,
   isQrSelectOpen,
+  setIsQrSelectOpen,
   isQrRemoveOpen,
+  setisQrRemoveOpen,
   handleOpenCloseSelectQrCode,
   handleOpenCloseRemoveQrCode,
+  handleFetchWorkOrderDetails,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -169,6 +166,23 @@ export const OverviewDetailsView = ({
                         <CustomCell>Address</CustomCell>
                         <CustomCell>{workOrder.workOrderCustomerId.customerAddress}</CustomCell>
                       </TableRow>
+                      <TableRow>
+                        <CustomCell> Location</CustomCell>
+                        <CustomCell>
+                          {workOrder.workOrderCustomerId.customerLocation ? (
+                            <Link
+                              href={workOrder.workOrderCustomerId.customerLocation}
+                              underline="hover"
+                              target="_blank"
+                              rel="noopener"
+                            >
+                              {workOrder.workOrderCustomerId.customerLocation}
+                            </Link>
+                          ) : (
+                            '-'
+                          )}
+                        </CustomCell>
+                      </TableRow>
                     </TableBody>
                   </Table>
                 </TableContainer>
@@ -225,15 +239,6 @@ export const OverviewDetailsView = ({
                         <CustomCell>{workOrder.workOrderCode}</CustomCell>
                       </TableRow>
                       <TableRow>
-                        <CustomCell>Word Order Type</CustomCell>
-                        <CustomCell>{workOrder.workOrderType}</CustomCell>
-                      </TableRow>
-                      <TableRow>
-                        <CustomCell>Status</CustomCell>
-                        <CustomCell>{workOrder.workOrderStatus}</CustomCell>
-                      </TableRow>
-
-                      <TableRow>
                         <CustomCell>Sheduled Date</CustomCell>
                         <CustomCell>
                           {new Date(workOrder?.workOrderScheduledDate).toLocaleDateString({
@@ -242,6 +247,14 @@ export const OverviewDetailsView = ({
                             year: 'numeric',
                           })}
                         </CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Word Order Type</CustomCell>
+                        <CustomCell>{workOrder.workOrderType}</CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Status</CustomCell>
+                        <CustomCell>{workOrder.workOrderStatus}</CustomCell>
                       </TableRow>
                     </TableBody>
                   </Table>
@@ -331,23 +344,19 @@ export const OverviewDetailsView = ({
           />
         )}
         {isQrSelectOpen && (
-          <OverviewUpdateQrCode
+          <SelectQrCodeDialog
             isOpen={isQrSelectOpen}
-            handleClose={handleOpenCloseSelectQrCode}
-            isLoading={isLoadingAddQr}
-            handleSubmit={handleAddQrCode}
-            codes={qrCodes}
-            value={selectedQrCodeValue}
-            handleSelect={handleSelectQrCode}
+            setIsOpen={setIsQrSelectOpen}
+            unit={workOrder.workOrderUnitReference}
+            handleFetchWorkOrderDetails={handleFetchWorkOrderDetails}
           />
         )}
         {isQrRemoveOpen && (
-          <ConfirmationDialog
-            open={isQrRemoveOpen}
-            contentText="Are you sure you want to unlink this QR Code from this unit?"
-            handleClose={handleOpenCloseRemoveQrCode}
-            isLoading={isLoadingRemoveQr}
-            handleSubmit={handleRemoveQrCode}
+          <RemoveQrCodeDialog
+            isOpen={isQrRemoveOpen}
+            setIsOpen={setisQrRemoveOpen}
+            unit={workOrder.workOrderUnitReference}
+            handleFetchWorkOrderDetails={handleFetchWorkOrderDetails}
           />
         )}
       </Stack>
@@ -371,15 +380,10 @@ OverviewDetailsView.propTypes = {
   formik: PropTypes.object.isRequired,
   handleOpenCloseUnitUpdateDialog: PropTypes.func.isRequired,
   handleSubmitUnitUpdate: PropTypes.func.isRequired,
-  qrCodes: PropTypes.array,
-  selectedQrCodeValue: PropTypes.string,
-  handleSelectQrCode: PropTypes.func.isRequired,
-  isLoadingAddQr: PropTypes.bool.isRequired,
-  handleAddQrCode: PropTypes.func.isRequired,
-  isLoadingRemoveQr: PropTypes.bool.isRequired,
-  handleRemoveQrCode: PropTypes.func.isRequired,
   isQrSelectOpen: PropTypes.bool.isRequired,
   isQrRemoveOpen: PropTypes.bool.isRequired,
+  setisQrRemoveOpen: PropTypes.func.isRequired,
   handleOpenCloseSelectQrCode: PropTypes.func.isRequired,
   handleOpenCloseRemoveQrCode: PropTypes.func.isRequired,
+  handleFetchWorkOrderDetails: PropTypes.func.isRequired,
 };

@@ -6,7 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 
 import Label from 'src/components/label';
-import { WORK_TYPE } from 'src/constants/common-constants';
+import { WORK_STATUS, WORK_TYPE } from 'src/constants/common-constants';
+import commonUtil from 'src/utils/common-util';
 
 // ----------------------------------------------------------------------
 
@@ -21,13 +22,30 @@ export const JobTableRow = ({ jobs, handleClickJob }) => {
         </TableCell>
 
         <TableCell>{jobs.workOrderCustomerId.customerName}</TableCell>
+        <TableCell>
+          <Label color={jobs.workOrderStatus === WORK_STATUS.CREATED ? 'warning' : 'success'}>
+            {jobs.workOrderStatus}
+          </Label>
+        </TableCell>
 
         <TableCell>
-          {new Date(jobs.workOrderScheduledDate).toLocaleDateString({
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          })}
+          {commonUtil.calculateMonthDifference(jobs.workOrderScheduledDate) ? (
+            <Label color={'error'}>
+              {new Date(jobs.workOrderScheduledDate).toLocaleDateString({
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
+            </Label>
+          ) : (
+            <>
+              {new Date(jobs.workOrderScheduledDate).toLocaleDateString({
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })}
+            </>
+          )}
         </TableCell>
 
         <TableCell>

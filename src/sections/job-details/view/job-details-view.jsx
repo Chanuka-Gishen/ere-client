@@ -259,6 +259,14 @@ export const JobDetailsView = ({
                         <CustomCell>{workOrder?.workOrderStatus}</CustomCell>
                       </TableRow>
                       <TableRow>
+                        <CustomCell>QR Code</CustomCell>
+                        <CustomCell>
+                          {workOrder?.workOrderUnitReference.unitQrCode
+                            ? workOrder?.workOrderUnitReference.unitQrCode.qrCodeName
+                            : 'not linked'}
+                        </CustomCell>
+                      </TableRow>
+                      <TableRow>
                         <CustomCell>Sheduled Date</CustomCell>
                         <CustomCell>
                           {new Date(workOrder?.workOrderScheduledDate).toLocaleDateString({

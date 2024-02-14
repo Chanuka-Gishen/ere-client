@@ -20,7 +20,7 @@ const validationSchema = Yup.object().shape({
   workOrderScheduledDate: Yup.string().required('Scheduled Date is required'),
 });
 
-const CustomerWorkController = ({ id, selectedUnit }) => {
+const CustomerWorkController = ({ id, selectedUnit, fetchUnitDetails }) => {
   const headerLabels = [
     'Word Order Id',
     'Scheduled Date',
@@ -125,6 +125,7 @@ const CustomerWorkController = ({ id, selectedUnit }) => {
   return (
     <CustomerWorkView
       headerLabels={headerLabels}
+      selectedUnit={selectedUnit}
       isLoading={isLoading}
       workOrders={workOrders}
       handleRowClick={handleRowClick}

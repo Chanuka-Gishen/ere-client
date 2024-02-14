@@ -5,6 +5,7 @@ import {
   Button,
   CircularProgress,
   Container,
+  Link,
   Stack,
   Table,
   TableBody,
@@ -85,6 +86,27 @@ export const CustomerDetailsComponentView = ({
                     <CustomCell> Landline Number</CustomCell>
                     <CustomCell>
                       {customerInfo.customerTel.landline ? customerInfo.customerTel.landline : '-'}
+                    </CustomCell>
+                  </TableRow>
+                  <TableRow>
+                    <CustomCell> Location</CustomCell>
+                    <CustomCell>
+                      {customerInfo.customerLocation ? (
+                        <Link
+                          href={customerInfo.customerLocation}
+                          underline="hover"
+                          target="_blank"
+                          rel="noopener"
+                          sx={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
+                          {customerInfo.customerLocation}
+                        </Link>
+                      ) : (
+                        '-'
+                      )}
                     </CustomCell>
                   </TableRow>
                   <TableRow>

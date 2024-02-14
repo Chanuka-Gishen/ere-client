@@ -26,7 +26,12 @@ import { Add } from '@mui/icons-material';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { CustomerUnitAddDialog } from '../components/customer-unit-add-dialog';
+import EditIcon from '@mui/icons-material/Edit';
+import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import Iconify from 'src/components/iconify';
+import commonUtil from 'src/utils/common-util';
+import { SelectQrCodeDialog } from 'src/components/select-qr-code';
+import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
 
 const CustomCell = ({ children, ...props }) => {
   return (
@@ -56,6 +61,13 @@ export const CustomerUnitsComponentView = ({
   formikUpdateUnit,
   handleOpenUpdateDialog,
   handleSubmitUpdateUnit,
+  handleFetchCustomerUnits,
+  isOpenSelectQr,
+  setIsOpenSelectQr,
+  handleOpenSelectQrDialog,
+  isOpenRemoveQr,
+  setIsOpenRemoveQr,
+  handleOpenRemoveQrDialog,
 }) => {
   return (
     <>
@@ -85,13 +97,29 @@ export const CustomerUnitsComponentView = ({
                       justifyContent={'space-between'}
                     >
                       <Typography variant="subtitle1">Units Information</Typography>
-                      <Button
-                        variant="contained"
-                        startIcon={<Add />}
-                        onClick={handleOpenCloseAddDialog}
-                      >
-                        Add
-                      </Button>
+                      <Stack direction={'row'} spacing={2}>
+                        {selectedUnit && (
+                          <>
+                            {selectedUnit.unitQrCode ? (
+                              <Button variant="contained" onClick={handleOpenRemoveQrDialog}>
+                                Remove QR
+                              </Button>
+                            ) : (
+                              <Button variant="contained" onClick={handleOpenSelectQrDialog}>
+                                Link QR
+                              </Button>
+                            )}
+                          </>
+                        )}
+
+                        <Button
+                          variant="contained"
+                          startIcon={<Add />}
+                          onClick={handleOpenCloseAddDialog}
+                        >
+                          Add
+                        </Button>
+                      </Stack>
                     </Stack>
                   </CustomCell>
                 </TableRow>
@@ -99,7 +127,7 @@ export const CustomerUnitsComponentView = ({
             </Table>
           </TableContainer>
           {units.length > 0 ? (
-            <List sx={{ bgcolor: 'background.paper' }}>
+            <List sx={{ bgcolor: 'background.paper', maxHeight: 308, overflow: 'auto' }}>
               <>
                 {units.map((item, index) => (
                   <Fragment key={index}>
@@ -126,13 +154,22 @@ export const CustomerUnitsComponentView = ({
                       </ListItemAvatar>
                       <ListItemText
                         primary={`${item.unitModel} - ${item.unitSerialNo}`}
-                        secondary={`Next maintainance : ${new Date(
-                          item.unitNextMaintenanceDate
-                        ).toLocaleDateString({
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric',
-                        })}`}
+                        secondary={
+                          <Stack direction={'column'}>
+                            <Typography variant="body">{`Next maintainance : ${new Date(
+                              item.unitNextMaintenanceDate
+                            ).toLocaleDateString({
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                            })}`}</Typography>
+                            <Typography variant="body">
+                              {`Qr Code : ${
+                                item.unitQrCode ? item.unitQrCode.qrCodeName : 'not assigned'
+                              }`}
+                            </Typography>
+                          </Stack>
+                        }
                       />
                     </ListItem>
                     <Popover
@@ -142,16 +179,15 @@ export const CustomerUnitsComponentView = ({
                       anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
                       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
                       PaperProps={{
-                        sx: { width: 140 },
+                        sx: { width: 160 },
                       }}
                     >
                       <MenuItem onClick={handleOpenUpdateDialog}>
-                        <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+                        <EditIcon sx={{ mr: 2 }} />
                         Edit
                       </MenuItem>
-
                       <MenuItem sx={{ color: 'error.main' }}>
-                        <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+                        <DeleteIcon sx={{ mr: 2 }} />
                         Delete
                       </MenuItem>
                     </Popover>
@@ -177,6 +213,22 @@ export const CustomerUnitsComponentView = ({
               handleDateChange={handleInstallationDateChange}
               handleLastMaintainenceDateChange={handleLastMaintainenceDateChange}
               isLoading={isAdd ? isLoadingAdd : isLoadingUpdate}
+            />
+          )}
+          {isOpenSelectQr && (
+            <SelectQrCodeDialog
+              isOpen={isOpenSelectQr}
+              setIsOpen={setIsOpenSelectQr}
+              unit={selectedUnit}
+              handleFetchWorkOrderDetails={handleFetchCustomerUnits}
+            />
+          )}
+          {isOpenRemoveQr && (
+            <RemoveQrCodeDialog
+              isOpen={isOpenRemoveQr}
+              setIsOpen={setIsOpenRemoveQr}
+              unit={selectedUnit}
+              handleFetchWorkOrderDetails={handleFetchCustomerUnits}
             />
           )}
         </Stack>
@@ -205,4 +257,11 @@ CustomerUnitsComponentView.propTypes = {
   formikUpdateUnit: PropTypes.object.isRequired,
   handleOpenUpdateDialog: PropTypes.func.isRequired,
   handleSubmitUpdateUnit: PropTypes.func.isRequired,
+  handleFetchCustomerUnits: PropTypes.func.isRequired,
+  isOpenSelectQr: PropTypes.bool.isRequired,
+  setIsOpenSelectQr: PropTypes.bool.isRequired,
+  handleOpenSelectQrDialog: PropTypes.func.isRequired,
+  isOpenRemoveQr: PropTypes.bool.isRequired,
+  setIsOpenRemoveQr: PropTypes.bool.isRequired,
+  handleOpenRemoveQrDialog: PropTypes.func.isRequired,
 };
