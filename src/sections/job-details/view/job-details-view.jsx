@@ -23,6 +23,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import { Add } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
@@ -35,6 +36,7 @@ import commonUtil from 'src/utils/common-util';
 import { JobUpdateDialog } from '../component/job-update-dialog';
 import { JobCompleteDialog } from '../component/job-complete-dialog';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
+import { AddTipDialog } from '../component/add-tip-dialog';
 
 // -----------------------------------------------------------
 
@@ -114,6 +116,12 @@ export const JobDetailsView = ({
   handleOpenCloseCompleteDialog,
   handleFinishJob,
   isLoadingComplete,
+  openAddTipDialog,
+  handleOpenCloseAddTipDialog,
+  totalTip,
+  isLoadingAddTip,
+  handleChangeTotalTip,
+  handleUpdateEmployeeTip,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -318,7 +326,11 @@ export const JobDetailsView = ({
                   <Table>
                     <TableBody>
                       <TableRow>
-                        <TableCell colSpan={2} component={'th'} sx={{ backgroundColor: '#f0f0f0' }}>
+                        <TableCell
+                          colSpan={workOrder.workOrderStatus === WORK_STATUS.COMPLETED ? 3 : 2}
+                          component={'th'}
+                          sx={{ backgroundColor: '#f0f0f0' }}
+                        >
                           <Stack
                             direction={'row'}
                             alignItems={'center'}
@@ -336,6 +348,15 @@ export const JobDetailsView = ({
                                   : 'Update'}
                               </Button>
                             )}
+                            {workOrder.workOrderStatus === WORK_STATUS.COMPLETED && (
+                              <Button
+                                variant="contained"
+                                startIcon={<CurrencyExchangeIcon />}
+                                onClick={handleOpenCloseAddTipDialog}
+                              >
+                                Add Tip
+                              </Button>
+                            )}
                           </Stack>
                         </TableCell>
                       </TableRow>
@@ -343,12 +364,25 @@ export const JobDetailsView = ({
                         <TableEmptyRow colSpan={2} />
                       ) : (
                         <>
-                          {workOrder.workOrderAssignedEmployees.map((employee, index) => (
+                          {workOrder.workOrderAssignedEmployees.map((record, index) => (
                             <TableRow key={index}>
-                              <CustomCell>{employee.userFullName}</CustomCell>
-                              <CustomCell align="right">
-                                <Chip label={employee.userRole} color="primary" />
+                              <CustomCell>{record.employee.userFullName}</CustomCell>
+                              <CustomCell
+                                align={
+                                  workOrder.workOrderStatus === WORK_STATUS.COMPLETED
+                                    ? 'left'
+                                    : 'right'
+                                }
+                              >
+                                <Chip
+                                  label={record.employee.userRole}
+                                  color="primary"
+                                  sx={{ width: 100 }}
+                                />
                               </CustomCell>
+                              {workOrder.workOrderStatus === WORK_STATUS.COMPLETED && (
+                                <CustomCell>{`Rs. ${record.tip.amount}`}</CustomCell>
+                              )}
                             </TableRow>
                           ))}
                         </>
@@ -423,6 +457,16 @@ export const JobDetailsView = ({
           isLoading={isLoadingComplete}
         />
       )}
+      {openAddTipDialog && (
+        <AddTipDialog
+          value={totalTip}
+          isOpen={openAddTipDialog}
+          handleChange={handleChangeTotalTip}
+          handleClose={handleOpenCloseAddTipDialog}
+          isLoading={isLoadingAddTip}
+          handleSubmit={handleUpdateEmployeeTip}
+        />
+      )}
     </Container>
   );
 };
@@ -453,4 +497,10 @@ JobDetailsView.propTypes = {
   handleOpenCloseCompleteDialog: PropTypes.func.isRequired,
   handleFinishJob: PropTypes.func.isRequired,
   isLoadingComplete: PropTypes.bool.isRequired,
+  openAddTipDialog: PropTypes.bool.isRequired,
+  handleOpenCloseAddTipDialog: PropTypes.func.isRequired,
+  totalTip: PropTypes.number.isRequired,
+  isLoadingAddTip: PropTypes.bool.isRequired,
+  handleChangeTotalTip: PropTypes.func.isRequired,
+  handleUpdateEmployeeTip: PropTypes.func.isRequired,
 };
