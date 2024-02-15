@@ -14,22 +14,28 @@ export const CustomerTableRow = ({ customer, handleClickRow }) => {
           </Typography>
         </TableCell>
         <TableCell>
-          {commonUtil.calculateMonthDifference(customer.nextMaintenanceDate) ? (
-            <Label color={'error'}>
-              {new Date(customer.nextMaintenanceDate).toLocaleDateString({
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </Label>
-          ) : (
+          {customer.nextMaintenanceDate ? (
             <>
-              {new Date(customer.nextMaintenanceDate).toLocaleDateString({
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
+              {commonUtil.calculateMonthDifference(customer.nextMaintenanceDate) ? (
+                <Label color={'error'}>
+                  {new Date(customer.nextMaintenanceDate).toLocaleDateString({
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </Label>
+              ) : (
+                <>
+                  {new Date(customer.nextMaintenanceDate).toLocaleDateString({
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric',
+                  })}
+                </>
+              )}
             </>
+          ) : (
+            '-'
           )}
         </TableCell>
 

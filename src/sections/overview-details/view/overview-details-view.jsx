@@ -279,14 +279,16 @@ export const OverviewDetailsView = ({
                         <TableEmptyRow colSpan={2} />
                       ) : (
                         <>
-                          {workOrder.workOrderAssignedEmployees.map((employee, index) => (
+                          {workOrder.workOrderAssignedEmployees.map((record, index) => (
                             <TableRow key={index}>
-                              <CustomCell>{employee.userFullName}</CustomCell>
+                              <CustomCell>{record.employee.userFullName}</CustomCell>
                               <CustomCell align={'right'}>
                                 <Chip
-                                  label={employee.userRole}
+                                  label={record.employee.userRole}
                                   color={
-                                    employee.userRole === USER_ROLE.TECHNICIAN ? 'success' : 'info'
+                                    record.employee.userRole === USER_ROLE.TECHNICIAN
+                                      ? 'success'
+                                      : 'info'
                                   }
                                 />
                               </CustomCell>

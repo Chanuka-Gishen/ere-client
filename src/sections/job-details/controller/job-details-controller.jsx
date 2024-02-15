@@ -46,16 +46,19 @@ const JobDetailsController = () => {
   const [defaultEmployees, setDefaultEmployees] = useState([]);
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [files, setFiles] = useState([]);
+  const [totalTip, setTotalTip] = useState(0);
 
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [openCompleteDialog, setOpenCompleteDialog] = useState(false);
   const [openAssignDialog, setOpenAssignDialog] = useState(false);
+  const [openAddTipDialog, setOpenAddTipDialog] = useState(false);
 
   const [isLoadingAssign, setIsLoadingAssign] = useState(false);
   const [isLoadingPhotoAdd, setIsLoadingPhotoAdd] = useState(false);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
+  const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
 
   const handleSelectEmployee = (employee) => {
     setSelectedEmployees(employee);
@@ -89,8 +92,50 @@ const JobDetailsController = () => {
     setOpenCompleteDialog(!openCompleteDialog);
   };
 
+  const handleOpenCloseAddTipDialog = () => {
+    setOpenAddTipDialog(!openAddTipDialog);
+
+    if (!openAddTipDialog) {
+      setTotalTip(workOrder.workOrderEmployeeTip);
+    }
+  };
+
   const handleOnClickBreadCrumb = (screen) => {
     router.replace(screen);
+  };
+
+  const handleChangeTotalTip = (amount) => {
+    setTotalTip(amount);
+  };
+
+  const handleUpdateEmployeeTip = async () => {
+    if (totalTip > 0) {
+      setIsLoadingAddTip(true);
+
+      await backendAuthApi({
+        url: BACKEND_API.WORK_ORDR_TIP,
+        method: 'PUT',
+        cancelToken: cancelToken.token,
+        data: {
+          id: workOrder._id,
+          amount: totalTip,
+        },
+      })
+        .then((res) => {
+          const data = res.data;
+
+          if (responseUtil.isResponseSuccess(data.responseCode)) {
+            handleFetchWorkOrderDetails();
+            handleOpenCloseAddTipDialog();
+          }
+        })
+        .catch(() => {
+          setIsLoadingAddTip(false);
+        })
+        .finally(() => {
+          setIsLoadingAddTip(false);
+        });
+    }
   };
 
   const handleUploadImages = async () => {
@@ -252,7 +297,11 @@ const JobDetailsController = () => {
           if (workOrder.workOrderInvoiceNumber) {
             formik.setFieldValue('workOrderInvoiceNumber', workOrder.workOrderInvoiceNumber);
           }
-          setDefaultEmployees(data.responseData.workOrderAssignedEmployees);
+          setDefaultEmployees(
+            data.responseData.workOrderAssignedEmployees.map(
+              (assignedEmployee) => assignedEmployee.employee
+            )
+          );
         }
       })
       .finally(() => {
@@ -294,6 +343,12 @@ const JobDetailsController = () => {
       handleOpenCloseCompleteDialog={handleOpenCloseCompleteDialog}
       handleFinishJob={handleFinishJob}
       isLoadingComplete={isLoadingComplete}
+      openAddTipDialog={openAddTipDialog}
+      handleOpenCloseAddTipDialog={handleOpenCloseAddTipDialog}
+      totalTip={totalTip}
+      isLoadingAddTip={isLoadingAddTip}
+      handleChangeTotalTip={handleChangeTotalTip}
+      handleUpdateEmployeeTip={handleUpdateEmployeeTip}
     />
   );
 };
