@@ -16,8 +16,6 @@ import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { AddCustomerJobDialog } from '../components/add-customer-job-dialog';
 import { WORK_TYPE } from 'src/constants/common-constants';
-import { SelectQrCodeDialog } from 'src/components/select-qr-code';
-import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
 import commonUtil from 'src/utils/common-util';
 
 // ---------------------------------------

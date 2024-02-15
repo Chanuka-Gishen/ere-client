@@ -37,4 +37,5 @@ export const BACKEND_API = {
   WORK_ORDR_ADD: IP_URL + '/work-order/add-job',
 
   QR_CODE_AVAILABLES: IP_URL + '/qr-code/',
+  QR_CODE_UNIT_HISTORY: IP_URL + '/unit/unit-by-qr/',
 };
