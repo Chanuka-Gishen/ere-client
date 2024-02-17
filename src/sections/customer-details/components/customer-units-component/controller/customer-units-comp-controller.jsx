@@ -21,7 +21,7 @@ const validationSchema = Yup.object().shape({
   unitModel: Yup.string().required('Model is required'),
   unitSerialNo: Yup.string(),
   unitInstalledDate: Yup.string().required('Installation Date is required'),
-  unitNextMaintenanceDate: Yup.string().required('Next Maintenance Date is required'),
+  unitNextMaintenanceDate: Yup.string().required('Next Service Date is required'),
   unitIsInstalled: Yup.boolean().required().oneOf([true, false]),
 });
 
@@ -30,8 +30,8 @@ const validationUpdateSchema = Yup.object().shape({
   unitModel: Yup.string().required('Model is required'),
   unitSerialNo: Yup.string(),
   unitInstalledDate: Yup.string().required('Installation Date is required'),
-  unitLastMaintenanceDate: Yup.string().required('Last Maintenance Date is required'),
-  unitNextMaintenanceDate: Yup.string().required('Next Maintenance Date is required'),
+  unitLastMaintenanceDate: Yup.string().required('Last Service Date is required'),
+  unitNextMaintenanceDate: Yup.string().required('Next Service Date is required'),
   unitStatus: Yup.string()
     .required('Unit status required')
     .oneOf([UNIT_STATUS.ACTIVE, UNIT_STATUS.INACTIVE]),
