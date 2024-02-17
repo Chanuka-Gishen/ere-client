@@ -18,7 +18,7 @@ import { useRouter } from 'src/routes/hooks';
 
 const validationSchema = Yup.object().shape({
   workOrderInvoiceNumber: Yup.string(),
-  workOrderScheduledDate: Yup.string().required('Next Maintenance Date is required'),
+  workOrderScheduledDate: Yup.string().required('Next Service Date is required'),
 });
 
 const JobDetailsController = () => {
@@ -292,16 +292,22 @@ const JobDetailsController = () => {
           setWorkOrder(data.responseData);
           formik.setFieldValue(
             'workOrderScheduledDate',
-            new Date(workOrder.workOrderScheduledDate)
+            new Date(data.responseData.workOrderScheduledDate)
           );
-          if (workOrder.workOrderInvoiceNumber) {
-            formik.setFieldValue('workOrderInvoiceNumber', workOrder.workOrderInvoiceNumber);
+          if (data.responseData.workOrderInvoiceNumber) {
+            formik.setFieldValue(
+              'workOrderInvoiceNumber',
+              data.responseData.workOrderInvoiceNumber
+                ? data.responseData.workOrderInvoiceNumber
+                : ''
+            );
           }
-          setDefaultEmployees(
-            data.responseData.workOrderAssignedEmployees.map(
-              (assignedEmployee) => assignedEmployee.employee
-            )
+
+          const employees = data.responseData.workOrderAssignedEmployees.map(
+            (assignedEmployee) => assignedEmployee.employee
           );
+
+          setDefaultEmployees(employees);
         }
       })
       .finally(() => {

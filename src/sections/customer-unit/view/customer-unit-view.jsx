@@ -141,11 +141,11 @@ export const CustomerUnitView = ({ isLoading, data }) => {
                       Installed Date: {new Date(data.unit.unitInstalledDate).toLocaleDateString()}
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
-                      Last Maintenance Date:{' '}
+                      Last Service Date:{' '}
                       {new Date(data.unit.unitLastMaintenanceDate).toLocaleDateString()}
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
-                      Next Maintenance Date:{' '}
+                      Next Service Date:{' '}
                       {new Date(data.unit.unitNextMaintenanceDate).toLocaleDateString()}
                     </Typography>
                     <Typography

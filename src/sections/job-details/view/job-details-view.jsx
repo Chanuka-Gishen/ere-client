@@ -174,13 +174,13 @@ export const JobDetailsView = ({
                       ).toLocaleDateString()}
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
-                      Last Maintenance Date:{' '}
+                      Last Service Date:{' '}
                       {new Date(
                         workOrder?.workOrderUnitReference.unitLastMaintenanceDate
                       ).toLocaleDateString()}
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
-                      Next Maintenance Date:{' '}
+                      Next Service Date:{' '}
                       {new Date(
                         workOrder?.workOrderUnitReference.unitNextMaintenanceDate
                       ).toLocaleDateString()}
