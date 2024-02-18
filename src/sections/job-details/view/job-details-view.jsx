@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  Box,
   Breadcrumbs,
   Button,
   Card,
@@ -8,6 +9,7 @@ import {
   CircularProgress,
   Container,
   Grid,
+  IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
@@ -24,7 +26,7 @@ import {
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
-import { Add } from '@mui/icons-material';
+import { Add, CloseOutlined } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -37,6 +39,7 @@ import { JobUpdateDialog } from '../component/job-update-dialog';
 import { JobCompleteDialog } from '../component/job-complete-dialog';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 import { AddTipDialog } from '../component/add-tip-dialog';
+import { LoadingButton } from '@mui/lab';
 
 // -----------------------------------------------------------
 
@@ -96,6 +99,8 @@ export const JobDetailsView = ({
   workOrder,
   files,
   setFiles,
+  deletedFiles,
+  handleSelectDeleteFile,
   handleOnClickBreadCrumb,
   openUploadDialog,
   handleOpenCloseUploadDialog,
@@ -122,6 +127,8 @@ export const JobDetailsView = ({
   isLoadingAddTip,
   handleChangeTotalTip,
   handleUpdateEmployeeTip,
+  isLoadingDeleteFiles,
+  handleDeleteFiles,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -397,22 +404,76 @@ export const JobDetailsView = ({
           {!isLoading && workOrder.workOrderImages.length > 0 && (
             <Grid item xs={12} md={12}>
               <GridItem>
-                <ImageList cols={isMobile ? 4 : 8} gap={2}>
-                  {workOrder.workOrderImages.map((image, index) => (
-                    <ImageListItem key={index}>
-                      <img
-                        //srcSet={image.imageWebUrl}
-                        src={commonUtil.getDirectImageLink(image.imageId)}
-                        alt={image.imageFileName}
-                      />
-                      <ImageListItemBar
-                        //title={image.imageFileName}
-                        subtitle={<span>by: {image.imageUploadedBy.userFullName}</span>}
-                        position="below"
-                      />
-                    </ImageListItem>
-                  ))}
-                </ImageList>
+                <Stack direction={'column'} spacing={2}>
+                  <ImageList cols={isMobile ? 4 : 6} gap={2}>
+                    {workOrder.workOrderImages.map((image, index) => (
+                      <>
+                        {!deletedFiles.includes(image) && (
+                          <ImageListItem key={index}>
+                            <img
+                              //srcSet={image.imageWebUrl}
+                              src={commonUtil.getDirectImageLink(image.imageId)}
+                              alt={image.imageFileName}
+                            />
+                            <ImageListItemBar
+                              //title={image.imageFileName}
+                              subtitle={
+                                <Box
+                                  sx={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'right',
+                                  }}
+                                >
+                                  <IconButton
+                                    size="small"
+                                    onClick={() => handleSelectDeleteFile(image)}
+                                    sx={{ backgroundColor: 'black' }}
+                                  >
+                                    <CloseOutlined sx={{ color: 'white' }} />
+                                  </IconButton>
+                                </Box>
+                              }
+                              position="top"
+                            />
+                            <ImageListItemBar
+                              //title={image.imageFileName}
+                              subtitle={
+                                <Box sx={{ alignItems: 'center', justifyContent: 'center' }}>
+                                  by: {image.imageUploadedBy.userFullName}
+                                </Box>
+                              }
+                              position="below"
+                            />
+                          </ImageListItem>
+                        )}
+                      </>
+                    ))}
+                  </ImageList>
+                  {deletedFiles.length > 0 && (
+                    <Grid item xs={12} md={12}>
+                      <Box
+                        sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
+                      >
+                        <Stack direction={'row'} spacing={2}>
+                          <Button
+                            onClick={() => handleSelectDeleteFile(null)}
+                            disabled={isLoadingDeleteFiles}
+                          >
+                            Cancel
+                          </Button>
+                          <LoadingButton
+                            onClick={handleDeleteFiles}
+                            loading={isLoadingDeleteFiles}
+                            disabled={isLoadingDeleteFiles}
+                          >
+                            Save
+                          </LoadingButton>
+                        </Stack>
+                      </Box>
+                    </Grid>
+                  )}
+                </Stack>
               </GridItem>
             </Grid>
           )}
@@ -477,6 +538,8 @@ JobDetailsView.propTypes = {
   workOrder: PropTypes.object.isRequired,
   files: PropTypes.array,
   setFiles: PropTypes.func.isRequired,
+  deletedFiles: PropTypes.array,
+  handleSelectDeleteFile: PropTypes.func.isRequired,
   handleOnClickBreadCrumb: PropTypes.func.isRequired,
   openUploadDialog: PropTypes.bool.isRequired,
   handleOpenCloseUploadDialog: PropTypes.func.isRequired,
@@ -503,4 +566,6 @@ JobDetailsView.propTypes = {
   isLoadingAddTip: PropTypes.bool.isRequired,
   handleChangeTotalTip: PropTypes.func.isRequired,
   handleUpdateEmployeeTip: PropTypes.func.isRequired,
+  isLoadingDeleteFiles: PropTypes.bool.isRequired,
+  handleDeleteFiles: PropTypes.func.isRequired,
 };

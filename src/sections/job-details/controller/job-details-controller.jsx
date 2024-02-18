@@ -46,6 +46,7 @@ const JobDetailsController = () => {
   const [defaultEmployees, setDefaultEmployees] = useState([]);
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [files, setFiles] = useState([]);
+  const [deletedFiles, setDeletedFiles] = useState([]);
   const [totalTip, setTotalTip] = useState(0);
 
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
@@ -59,9 +60,18 @@ const JobDetailsController = () => {
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
   const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
+  const [isLoadingDeleteFiles, setIsLoadingDeleteFiles] = useState(false);
 
   const handleSelectEmployee = (employee) => {
     setSelectedEmployees(employee);
+  };
+
+  const handleSelectDeleteFile = (file) => {
+    if (file) {
+      setDeletedFiles((prevDeletedFiles) => [...prevDeletedFiles, file]);
+    } else {
+      setDeletedFiles([]);
+    }
   };
 
   const handleOpenCloseUploadDialog = () => {
@@ -179,6 +189,40 @@ const JobDetailsController = () => {
     }
   };
 
+  const handleDeleteFiles = async () => {
+    if (deletedFiles.length > 0) {
+      setIsLoadingDeleteFiles(true);
+
+      await backendAuthApi({
+        url: BACKEND_API.WORK_ORDR_DELETE_IMAGES,
+        method: 'DELETE',
+        cancelToken: cancelToken.token,
+        data: {
+          workOrderId: workOrder._id,
+          idList: deletedFiles,
+        },
+      })
+        .then((res) => {
+          const data = res.data;
+
+          if (responseUtil.isResponseSuccess(data.responseCode)) {
+            handleFetchWorkOrderDetails();
+            setDeletedFiles([]);
+          } else {
+            enqueueSnackbar(data.responseMessage, {
+              variant: responseUtil.findResponseType(data.responseCode),
+            });
+          }
+        })
+        .catch(() => {
+          setIsLoadingDeleteFiles(false);
+        })
+        .finally(() => {
+          setIsLoadingDeleteFiles(false);
+        });
+    }
+  };
+
   const handleAssignEmployees = async () => {
     if (selectedEmployees.length != 0) {
       setIsLoadingAssign(true);
@@ -280,6 +324,7 @@ const JobDetailsController = () => {
   };
 
   const handleFetchWorkOrderDetails = async () => {
+    setIsLoading(true);
     await backendAuthApi({
       url: BACKEND_API.WORK_ORDR + jobId,
       method: 'GET',
@@ -329,6 +374,8 @@ const JobDetailsController = () => {
       workOrder={workOrder}
       files={files}
       setFiles={setFiles}
+      deletedFiles={deletedFiles}
+      handleSelectDeleteFile={handleSelectDeleteFile}
       handleOnClickBreadCrumb={handleOnClickBreadCrumb}
       openUploadDialog={openUploadDialog}
       handleOpenCloseUploadDialog={handleOpenCloseUploadDialog}
@@ -355,6 +402,8 @@ const JobDetailsController = () => {
       isLoadingAddTip={isLoadingAddTip}
       handleChangeTotalTip={handleChangeTotalTip}
       handleUpdateEmployeeTip={handleUpdateEmployeeTip}
+      isLoadingDeleteFiles={isLoadingDeleteFiles}
+      handleDeleteFiles={handleDeleteFiles}
     />
   );
 };
