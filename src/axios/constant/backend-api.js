@@ -36,6 +36,7 @@ export const BACKEND_API = {
   WORK_ORDR_FINISH: IP_URL + '/work-order/complete/',
   WORK_ORDR_ADD: IP_URL + '/work-order/add-job',
   WORK_ORDR_TIP: IP_URL + '/work-order/tips',
+  WORK_ORDR_DELETE_IMAGES: IP_URL + '/work-order/delete-files',
 
   QR_CODE_AVAILABLES: IP_URL + '/qr-code/',
   QR_CODE_UNIT_HISTORY: IP_URL + '/unit/unit-by-qr/',

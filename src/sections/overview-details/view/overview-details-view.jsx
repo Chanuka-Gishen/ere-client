@@ -34,6 +34,7 @@ import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 import { OverviewUpdateUnit } from '../component/overview-update-unit';
 import { SelectQrCodeDialog } from 'src/components/select-qr-code';
 import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
+import { WORK_STATUS } from 'src/constants/common-constants';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -135,17 +136,19 @@ export const OverviewDetailsView = ({
                 <TableContainer>
                   <Table>
                     <TableBody>
-                      <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
-                        <CustomCell colSpan={2}>
-                          <Button
-                            variant="contained"
-                            startIcon={<CloudUploadIcon />}
-                            onClick={handleOpenImageUploader}
-                          >
-                            Add Images
-                          </Button>
-                        </CustomCell>
-                      </TableRow>
+                      {workOrder.workOrderStatus != WORK_STATUS.CREATED && (
+                        <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
+                          <CustomCell colSpan={2}>
+                            <Button
+                              variant="contained"
+                              startIcon={<CloudUploadIcon />}
+                              onClick={handleOpenImageUploader}
+                            >
+                              Add Images
+                            </Button>
+                          </CustomCell>
+                        </TableRow>
+                      )}
                       <TableRow>
                         <CustomCell>Customer Name</CustomCell>
                         <CustomCell>{workOrder.workOrderCustomerId.customerName}</CustomCell>
