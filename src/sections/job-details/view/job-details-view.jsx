@@ -148,11 +148,11 @@ export const JobDetailsView = ({
             label="Customers"
             icon={<HomeIcon fontSize="small" />}
           />
-          {/* <StyledBreadcrumb
+          <StyledBreadcrumb
             component="a"
-            href={`/customers/details/${id}`}
+            href={isLoading ? '#' : `/customers/details/${workOrder.workOrderCustomerId._id}`}
             label="Customer-Details"
-          /> */}
+          />
           <StyledBreadcrumb
             component="a"
             href="#"

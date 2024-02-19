@@ -286,6 +286,6 @@ CustomerUnitsComponentView.propTypes = {
   setIsOpenSelectQr: PropTypes.func.isRequired,
   handleOpenSelectQrDialog: PropTypes.func.isRequired,
   isOpenRemoveQr: PropTypes.bool.isRequired,
-  setIsOpenRemoveQr: PropTypes.bool.isRequired,
+  setIsOpenRemoveQr: PropTypes.func.isRequired,
   handleOpenRemoveQrDialog: PropTypes.func.isRequired,
 };
