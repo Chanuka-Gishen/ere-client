@@ -40,6 +40,7 @@ import { JobCompleteDialog } from '../component/job-complete-dialog';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 import { AddTipDialog } from '../component/add-tip-dialog';
 import { LoadingButton } from '@mui/lab';
+import { ChargersView } from '../component/chargers-view';
 
 // -----------------------------------------------------------
 
@@ -129,6 +130,12 @@ export const JobDetailsView = ({
   handleUpdateEmployeeTip,
   isLoadingDeleteFiles,
   handleDeleteFiles,
+  chargersFormik,
+  handleAddNewChargeRow,
+  handleDeleteCharge,
+  handleResetChargers,
+  isLoadingChargers,
+  handleAddUpdateChargers,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -155,59 +162,57 @@ export const JobDetailsView = ({
             disabled
           />
         </Breadcrumbs>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={12} sx={{ margin: '10px' }}>
+        <Grid container spacing={2} sx={{ margin: '10px' }}>
+          <Grid item xs={12} md={12}>
             {isLoading ? (
               <GridItem>
                 <LoadingComponent />
               </GridItem>
             ) : (
               <GridItem>
-                <GridItem>
-                  <Stack
-                    direction={'column'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    spacing={1}
+                <Stack
+                  direction={'column'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                  spacing={1}
+                >
+                  <Typography
+                    variant="h6"
+                    align="center"
+                  >{`${workOrder?.workOrderUnitReference.unitBrand} - ${workOrder?.workOrderUnitReference.unitModel} - ${workOrder?.workOrderUnitReference.unitSerialNo}`}</Typography>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Installed Date:{' '}
+                    {new Date(
+                      workOrder?.workOrderUnitReference.unitInstalledDate
+                    ).toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Last Service Date:{' '}
+                    {new Date(
+                      workOrder?.workOrderUnitReference.unitLastMaintenanceDate
+                    ).toLocaleDateString()}
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    Next Service Date:{' '}
+                    {new Date(
+                      workOrder?.workOrderUnitReference.unitNextMaintenanceDate
+                    ).toLocaleDateString()}
+                  </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    color={
+                      workOrder?.workOrderUnitReference.unitStatus === UNIT_STATUS.ACTIVE
+                        ? 'success.main'
+                        : 'error'
+                    }
                   >
-                    <Typography
-                      variant="h6"
-                      align="center"
-                    >{`${workOrder?.workOrderUnitReference.unitBrand} - ${workOrder?.workOrderUnitReference.unitModel} - ${workOrder?.workOrderUnitReference.unitSerialNo}`}</Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Installed Date:{' '}
-                      {new Date(
-                        workOrder?.workOrderUnitReference.unitInstalledDate
-                      ).toLocaleDateString()}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Last Service Date:{' '}
-                      {new Date(
-                        workOrder?.workOrderUnitReference.unitLastMaintenanceDate
-                      ).toLocaleDateString()}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Next Service Date:{' '}
-                      {new Date(
-                        workOrder?.workOrderUnitReference.unitNextMaintenanceDate
-                      ).toLocaleDateString()}
-                    </Typography>
-                    <Typography
-                      variant="subtitle1"
-                      color={
-                        workOrder?.workOrderUnitReference.unitStatus === UNIT_STATUS.ACTIVE
-                          ? 'success.main'
-                          : 'error'
-                      }
-                    >
-                      Status: {workOrder?.workOrderUnitReference.unitStatus}
-                    </Typography>
-                  </Stack>
-                </GridItem>
+                    Status: {workOrder?.workOrderUnitReference.unitStatus}
+                  </Typography>
+                </Stack>
               </GridItem>
             )}
           </Grid>
-          <Grid item xs={12} md={6} sx={{ margin: '10px' }}>
+          <Grid item xs={12} md={6}>
             <GridItem>
               {isLoading ? (
                 <LoadingComponent />
@@ -324,7 +329,7 @@ export const JobDetailsView = ({
               )}
             </GridItem>
           </Grid>
-          <Grid item xs={12} md={5} sx={{ margin: '10px' }}>
+          <Grid item xs={12} md={5}>
             <GridItem>
               {isLoading ? (
                 <LoadingComponent />
@@ -477,6 +482,20 @@ export const JobDetailsView = ({
               </GridItem>
             </Grid>
           )}
+          {!isLoading && workOrder.workOrderStatus != WORK_STATUS.CREATED && (
+            <Grid item xs={12} md={12}>
+              <GridItem>
+                <ChargersView
+                  formik={chargersFormik}
+                  handleAddRow={handleAddNewChargeRow}
+                  handleDeleteCharge={handleDeleteCharge}
+                  handleResetChargers={handleResetChargers}
+                  isLoading={isLoadingChargers}
+                  handleSubmit={handleAddUpdateChargers}
+                />
+              </GridItem>
+            </Grid>
+          )}
         </Grid>
       </Stack>
       {openUploadDialog && (
@@ -535,7 +554,7 @@ export const JobDetailsView = ({
 JobDetailsView.propTypes = {
   jobId: PropTypes.string.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  workOrder: PropTypes.object.isRequired,
+  workOrder: PropTypes.object,
   files: PropTypes.array,
   setFiles: PropTypes.func.isRequired,
   deletedFiles: PropTypes.array,
@@ -568,4 +587,9 @@ JobDetailsView.propTypes = {
   handleUpdateEmployeeTip: PropTypes.func.isRequired,
   isLoadingDeleteFiles: PropTypes.bool.isRequired,
   handleDeleteFiles: PropTypes.func.isRequired,
+  chargersFormik: PropTypes.object.isRequired,
+  handleDeleteCharge: PropTypes.func.isRequired,
+  handleResetChargers: PropTypes.func.isRequired,
+  isLoadingChargers: PropTypes.bool.isRequired,
+  handleAddUpdateChargers: PropTypes.func.isRequired,
 };

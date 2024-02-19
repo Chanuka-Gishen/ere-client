@@ -32,6 +32,7 @@ import Iconify from 'src/components/iconify';
 import commonUtil from 'src/utils/common-util';
 import { SelectQrCodeDialog } from 'src/components/select-qr-code';
 import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
+import UnitSearchInput from '../components/unit-search-input';
 
 const CustomCell = ({ children, ...props }) => {
   return (
@@ -68,6 +69,9 @@ export const CustomerUnitsComponentView = ({
   isOpenRemoveQr,
   setIsOpenRemoveQr,
   handleOpenRemoveQrDialog,
+  filteredUnits,
+  handleChangeSearchParam,
+  searchParam,
 }) => {
   return (
     <>
@@ -90,14 +94,14 @@ export const CustomerUnitsComponentView = ({
               <TableBody>
                 <TableRow>
                   <CustomCell colSpan={2}>
-                    <Stack
-                      direction={'row'}
-                      spacing={2}
-                      alignItems={'center'}
-                      justifyContent={'space-between'}
-                    >
-                      <Typography variant="subtitle1">Units Information</Typography>
-                      <Stack direction={'row'} spacing={2}>
+                    <Stack direction={'column'} spacing={2} justifyContent={'start'}>
+                      <Stack
+                        direction={'row'}
+                        spacing={2}
+                        justifyContent={'space-between'}
+                        alignItems={'center'}
+                      >
+                        <Typography variant="subtitle1">Units Information</Typography>
                         {selectedUnit && (
                           <>
                             {selectedUnit.unitQrCode ? (
@@ -120,6 +124,12 @@ export const CustomerUnitsComponentView = ({
                           Add
                         </Button>
                       </Stack>
+                      {units.length > 3 && (
+                        <UnitSearchInput
+                          filterName={searchParam}
+                          onFilterName={handleChangeSearchParam}
+                        />
+                      )}
                     </Stack>
                   </CustomCell>
                 </TableRow>
@@ -127,83 +137,88 @@ export const CustomerUnitsComponentView = ({
             </Table>
           </TableContainer>
           {units.length > 0 ? (
-            <List sx={{ bgcolor: 'background.paper', maxHeight: 308, overflow: 'auto' }}>
-              <>
-                {units.map((item, index) => (
-                  <Fragment key={index}>
-                    <ListItem
-                      secondaryAction={
-                        <IconButton
-                          edge="end"
-                          aria-label="more-options"
-                          onClick={(e) => handleOpenMenu(e, item)}
-                        >
-                          <Iconify icon="eva:more-vertical-fill" />
-                        </IconButton>
-                      }
-                    >
-                      <ListItemAvatar onClick={() => handleSelectUnit(item)}>
-                        <Avatar
-                          sx={{
-                            bgcolor:
-                              item._id === selectedUnit?._id ? 'primary.main' : 'defaultColor',
-                          }}
-                        >
-                          <AcUnitIcon />
-                        </Avatar>
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={
-                          <Typography>{`${item.unitBrand} - ${item.unitModel} - ${item.unitSerialNo}`}</Typography>
+            <>
+              <List sx={{ bgcolor: 'background.paper', maxHeight: 308, overflow: 'auto' }}>
+                <>
+                  {filteredUnits.map((item, index) => (
+                    <Fragment key={index}>
+                      <ListItem
+                        secondaryAction={
+                          <IconButton
+                            edge="end"
+                            aria-label="more-options"
+                            onClick={(e) => handleOpenMenu(e, item)}
+                          >
+                            <Iconify icon="eva:more-vertical-fill" />
+                          </IconButton>
                         }
-                        secondary={
-                          <Stack direction={'column'}>
-                            <Typography
-                              variant="body"
-                              color={
-                                commonUtil.calculateMonthDifference(item.unitNextMaintenanceDate)
-                                  ? 'error'
-                                  : 'black'
-                              }
-                            >{`Next maintainance : ${new Date(
-                              item.unitNextMaintenanceDate
-                            ).toLocaleDateString({
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })}`}</Typography>
-                            <Typography variant="body">
-                              {`Qr Code : ${
-                                item.unitQrCode ? item.unitQrCode.qrCodeName : 'not assigned'
-                              }`}
-                            </Typography>
-                          </Stack>
-                        }
-                      />
-                    </ListItem>
-                    <Popover
-                      open={!!open}
-                      anchorEl={open}
-                      onClose={handleCloseMenu}
-                      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-                      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-                      PaperProps={{
-                        sx: { width: 160 },
-                      }}
-                    >
-                      <MenuItem onClick={handleOpenUpdateDialog}>
-                        <EditIcon sx={{ mr: 2 }} />
-                        Edit
-                      </MenuItem>
-                      <MenuItem sx={{ color: 'error.main' }}>
-                        <DeleteIcon sx={{ mr: 2 }} />
-                        Delete
-                      </MenuItem>
-                    </Popover>
-                  </Fragment>
-                ))}
-              </>
-            </List>
+                      >
+                        <ListItemAvatar onClick={() => handleSelectUnit(item)}>
+                          <Avatar
+                            sx={{
+                              bgcolor:
+                                item._id === selectedUnit?._id ? 'primary.main' : 'defaultColor',
+                            }}
+                          >
+                            <AcUnitIcon />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={
+                            <Typography>{`${item.unitBrand} - ${item.unitModel} - ${item.unitSerialNo}`}</Typography>
+                          }
+                          secondary={
+                            <Stack direction={'column'}>
+                              <Typography
+                                variant="body"
+                                color={
+                                  commonUtil.calculateMonthDifference(item.unitNextMaintenanceDate)
+                                    ? 'error'
+                                    : 'black'
+                                }
+                              >{`Next maintainance : ${new Date(
+                                item.unitNextMaintenanceDate
+                              ).toLocaleDateString({
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                              })}`}</Typography>
+                              <Typography variant="body">
+                                {`Qr Code : ${
+                                  item.unitQrCode ? item.unitQrCode.qrCodeName : 'not assigned'
+                                }`}
+                              </Typography>
+                            </Stack>
+                          }
+                        />
+                      </ListItem>
+                      <Popover
+                        open={!!open}
+                        anchorEl={open}
+                        onClose={handleCloseMenu}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+                        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                        PaperProps={{
+                          sx: { width: 160 },
+                        }}
+                      >
+                        <MenuItem onClick={handleOpenUpdateDialog}>
+                          <EditIcon sx={{ mr: 2 }} />
+                          Edit
+                        </MenuItem>
+                        <MenuItem sx={{ color: 'error.main' }}>
+                          <DeleteIcon sx={{ mr: 2 }} />
+                          Delete
+                        </MenuItem>
+                      </Popover>
+                    </Fragment>
+                  ))}
+                </>
+              </List>
+              {filteredUnits.length === 0 && units.length != 0 && (
+                <Typography align="center">{`No results found for "${searchParam}"`}</Typography>
+              )}
+            </>
           ) : (
             <Stack justifyContent={'center'} sx={{ mb: 2 }}>
               <Typography variant="subtitle1" align="center">
@@ -268,7 +283,7 @@ CustomerUnitsComponentView.propTypes = {
   handleSubmitUpdateUnit: PropTypes.func.isRequired,
   handleFetchCustomerUnits: PropTypes.func.isRequired,
   isOpenSelectQr: PropTypes.bool.isRequired,
-  setIsOpenSelectQr: PropTypes.bool.isRequired,
+  setIsOpenSelectQr: PropTypes.func.isRequired,
   handleOpenSelectQrDialog: PropTypes.func.isRequired,
   isOpenRemoveQr: PropTypes.bool.isRequired,
   setIsOpenRemoveQr: PropTypes.bool.isRequired,

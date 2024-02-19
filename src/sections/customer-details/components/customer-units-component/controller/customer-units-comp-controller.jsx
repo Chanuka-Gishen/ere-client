@@ -53,6 +53,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [units, setUnits] = useState([]);
+  const [searchParam, setSearchParam] = useState('');
 
   const formik = useFormik({
     initialValues: {
@@ -103,6 +104,16 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       setIsAdd(true);
     }
   };
+
+  const handleChangeSearchParam = (event) => {
+    setSearchParam(event.target.value);
+  };
+
+  const filteredUnits = units.filter((item) => {
+    const serialNo = item.unitSerialNo;
+    const searchParamRegex = new RegExp(`^${searchParam}`, 'i');
+    return searchParamRegex.test(serialNo);
+  });
 
   const handleOpenUpdateDialog = () => {
     setIsOpen(!isOpen);
@@ -269,6 +280,9 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       isOpenRemoveQr={isOpenRemoveQr}
       setIsOpenRemoveQr={setIsOpenRemoveQr}
       handleOpenRemoveQrDialog={handleOpenRemoveQrDialog}
+      filteredUnits={filteredUnits}
+      handleChangeSearchParam={handleChangeSearchParam}
+      searchParam={searchParam}
     />
   );
 };
