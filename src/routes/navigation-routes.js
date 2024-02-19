@@ -16,6 +16,6 @@ export const NAVIGATION_ROUTES = {
   overview_details: 'dashboard/overviewDetails/:id',
   customers: 'customers',
   customer_details: 'customers/details/:id',
-  customer_job_details: 'customers/details/:id/:jobId',
+  customer_job_details: 'customers/details/job/:jobId',
   employees: 'employees',
 };

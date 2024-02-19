@@ -21,23 +21,36 @@ const validationSchema = Yup.object().shape({
   workOrderScheduledDate: Yup.string().required('Next Service Date is required'),
 });
 
+const validationSchemaChargers = Yup.object().shape({
+  items: Yup.array().of(
+    Yup.object().shape({
+      item: Yup.string().required('Item is required'),
+      itemDescription: Yup.string(),
+      itemQty: Yup.number().min(0, 'Quantity must be valid'),
+      itemCost: Yup.number().min(0, 'Item cost must be valid'),
+    })
+  ),
+  labourCharges: Yup.object().shape({
+    description: Yup.string(),
+    amount: Yup.number().min(0, 'Labour Charge must be valid'),
+  }),
+  transportCharges: Yup.object().shape({
+    description: Yup.string(),
+    amount: Yup.number().min(0, 'Transport Charge must be valid'),
+  }),
+  otherCharges: Yup.object().shape({
+    description: Yup.string(),
+    amount: Yup.number().min(0, 'Other Charges must be valid'),
+  }),
+  //grandTotal: Yup.number().required('Grand Total is required').min(0, 'Grand Total must be valid'),
+});
+
 const JobDetailsController = () => {
   const { jobId } = useParams();
   const router = useRouter();
 
   const { enqueueSnackbar } = useSnackbar();
   const cancelToken = axios.CancelToken.source();
-
-  const formik = useFormik({
-    initialValues: {
-      workOrderInvoiceNumber: '',
-      workOrderScheduledDate: null,
-    },
-    validationSchema,
-    onSubmit: () => {
-      null;
-    },
-  });
 
   const [isLoading, setIsLoading] = useState(true);
   const [workOrder, setWorkOrder] = useState(null);
@@ -61,6 +74,98 @@ const JobDetailsController = () => {
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
   const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
   const [isLoadingDeleteFiles, setIsLoadingDeleteFiles] = useState(false);
+  const [isLoadingChargers, setIsLoadingChargers] = useState(false);
+
+  const formik = useFormik({
+    initialValues: {
+      workOrderInvoiceNumber: '',
+      workOrderScheduledDate: null,
+    },
+    validationSchema,
+    onSubmit: () => {
+      null;
+    },
+  });
+
+  const chargersFormik = useFormik({
+    initialValues: {
+      items: [],
+      labourCharges: {
+        description: '',
+        amount: 0,
+      },
+      transportCharges: {
+        description: '',
+        amount: 0,
+      },
+      otherCharges: {
+        description: '',
+        amount: 0,
+      },
+      grandTotal: 0,
+    },
+    validationSchema: validationSchemaChargers,
+    onSubmit: () => {
+      null;
+    },
+  });
+
+  const handleAddNewChargeRow = () => {
+    chargersFormik.setValues({
+      ...chargersFormik.values,
+      items: [
+        ...chargersFormik.values.items,
+        { item: '', itemDescription: '', itemQty: 1, itemCost: 0 },
+      ],
+    });
+  };
+
+  const handleDeleteCharge = (index) => {
+    // Create copies of the current items array
+    const updatedChargers = [...chargersFormik.values.items];
+    const updatedErrors = chargersFormik.errors.items ? [...chargersFormik.errors.items] : [];
+    const updatedTouched = chargersFormik.touched.items ? [...chargersFormik.touched.items] : [];
+
+    // Remove the entry at the specified index from each array
+    updatedChargers.splice(index, 1);
+    if (updatedErrors.length > index) {
+      updatedErrors.splice(index, 1);
+    }
+    if (updatedTouched.length > index) {
+      updatedTouched.splice(index, 1);
+    }
+
+    // Update the form values with the modified arrays
+    chargersFormik.setValues({
+      ...chargersFormik.values,
+      items: updatedChargers,
+    });
+
+    // Update the errors and touched states
+    if (chargersFormik.errors.items) {
+      chargersFormik.setErrors({
+        ...chargersFormik.errors,
+        items: updatedErrors,
+      });
+    }
+
+    if (chargersFormik.touched.items) {
+      chargersFormik.setTouched({
+        ...chargersFormik.touched,
+        items: updatedTouched,
+      });
+    }
+  };
+
+  const handleResetChargers = () => {
+    if (workOrder.workOrderChargers) {
+      chargersFormik.setValues({
+        ...workOrder.workOrderChargers,
+      });
+    } else {
+      chargersFormik.resetForm();
+    }
+  };
 
   const handleSelectEmployee = (employee) => {
     setSelectedEmployees(employee);
@@ -278,7 +383,7 @@ const JobDetailsController = () => {
           }
         })
         .finally(() => {
-          setIsLoading(false);
+          setIsLoadingUpdate(false);
           handleOpenCloseUpdateDialog();
         });
     } else {
@@ -307,6 +412,35 @@ const JobDetailsController = () => {
         setIsLoadingComplete(false);
         handleOpenCloseCompleteDialog();
       });
+  };
+
+  const handleAddUpdateChargers = async () => {
+    if (formik.isValid && formik.dirty) {
+      setIsLoadingChargers(true);
+
+      await backendAuthApi({
+        url: BACKEND_API.WORK_ORDR_CHARGERS,
+        method: 'POST',
+        cancelToken: cancelToken.token,
+        data: {
+          id: workOrder._id,
+          chargers: chargersFormik.values,
+        },
+      })
+        .then((res) => {
+          const data = res.data;
+
+          if (responseUtil.isResponseSuccess(data.responseCode)) {
+            handleFetchWorkOrderDetails();
+          }
+        })
+        .catch(() => {
+          setIsLoadingChargers(false);
+        })
+        .finally(() => {
+          setIsLoadingChargers(false);
+        });
+    }
   };
 
   const handleFetchEmployeeList = async () => {
@@ -346,6 +480,12 @@ const JobDetailsController = () => {
                 ? data.responseData.workOrderInvoiceNumber
                 : ''
             );
+          }
+
+          if (data.responseData.workOrderChargers) {
+            chargersFormik.setValues({
+              ...data.responseData.workOrderChargers,
+            });
           }
 
           const employees = data.responseData.workOrderAssignedEmployees.map(
@@ -404,6 +544,12 @@ const JobDetailsController = () => {
       handleUpdateEmployeeTip={handleUpdateEmployeeTip}
       isLoadingDeleteFiles={isLoadingDeleteFiles}
       handleDeleteFiles={handleDeleteFiles}
+      chargersFormik={chargersFormik}
+      handleAddNewChargeRow={handleAddNewChargeRow}
+      handleDeleteCharge={handleDeleteCharge}
+      handleResetChargers={handleResetChargers}
+      isLoadingChargers={isLoadingChargers}
+      handleAddUpdateChargers={handleAddUpdateChargers}
     />
   );
 };
