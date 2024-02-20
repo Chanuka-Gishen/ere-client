@@ -67,7 +67,7 @@ export const StatsComponentView = ({
         <Card elevation={2} sx={{ p: 2, pt: 3, height: 150 }}>
           <Stack direction="column" spacing={2}>
             <Typography variant="title" color={grey[700]}>
-              Today's Work Orders
+              Today's Work Orders Count
             </Typography>
             <Typography variant="h2">{isLoadingWorkCount ? 'Loading...' : workCount}</Typography>
           </Stack>
