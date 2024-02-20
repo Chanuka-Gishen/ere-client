@@ -17,6 +17,8 @@ import { JobTableRow } from '../component/job-table-row';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { StatsComponent } from '../component/stats-component';
+import { useSelector } from 'react-redux';
+import { USER_ROLE } from 'src/constants/user-role';
 
 // ----------------------------------------------------------------------
 
@@ -30,10 +32,13 @@ export const Overview = ({
   jobs,
   isLoading,
 }) => {
+  const user = useSelector((state) => state.auth.user);
+
   return (
     <Container maxWidth="xl">
       <Stack direction="column" spacing={4}>
-        <StatsComponent />
+        {user.userRole === USER_ROLE.ADMIN && <StatsComponent />}
+
         <Typography variant="h4" mb={5}>
           Scheduled Jobs
         </Typography>
