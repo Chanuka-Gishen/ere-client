@@ -38,7 +38,10 @@ export const BACKEND_API = {
   WORK_ORDR_TIP: IP_URL + '/work-order/tips',
   WORK_ORDR_DELETE_IMAGES: IP_URL + '/work-order/delete-files',
   WORK_ORDR_CHARGERS: IP_URL + '/work-order/chargers',
+  WORK_ORDR_TODAYS_COUNT: IP_URL + '/work-order/today-count',
 
   QR_CODE_AVAILABLES: IP_URL + '/qr-code/',
   QR_CODE_UNIT_HISTORY: IP_URL + '/unit/unit-by-qr/',
+  QR_CODE_GENERATE: IP_URL + '/qr-code/generate',
+  QR_CODE_COUNT: IP_URL + '/qr-code/count',
 };

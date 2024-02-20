@@ -13,7 +13,6 @@ import { useRouter } from 'src/routes/hooks';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
 import { WORK_TYPE } from 'src/constants/common-constants';
-import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 
 //------------------------------------------------------
 
