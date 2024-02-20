@@ -10,28 +10,16 @@ import Iconify from 'src/components/iconify';
 
 export default function UnitSearchInput({ filterName, onFilterName }) {
   return (
-    <Toolbar
-      sx={{
-        height: 96,
-        display: 'flex',
-        justifyContent: 'space-between',
-        p: (theme) => theme.spacing(0, 1, 0, 3),
-      }}
-    >
-      <OutlinedInput
-        value={filterName}
-        onChange={onFilterName}
-        placeholder="Search serial no..."
-        startAdornment={
-          <InputAdornment position="start">
-            <Iconify
-              icon="eva:search-fill"
-              sx={{ color: 'text.disabled', width: 20, height: 20 }}
-            />
-          </InputAdornment>
-        }
-      />
-    </Toolbar>
+    <OutlinedInput
+      value={filterName}
+      onChange={onFilterName}
+      placeholder="Search serial no..."
+      startAdornment={
+        <InputAdornment position="start">
+          <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
+        </InputAdornment>
+      }
+    />
   );
 }
 

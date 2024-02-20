@@ -2,12 +2,21 @@ import PropTypes from 'prop-types';
 
 import Container from '@mui/material/Container';
 
-import { Card, Table, TableBody, TableContainer, TablePagination, Typography } from '@mui/material';
+import {
+  Card,
+  Stack,
+  Table,
+  TableBody,
+  TableContainer,
+  TablePagination,
+  Typography,
+} from '@mui/material';
 import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from '../../../components/custom-table/custom-table-head';
 import { JobTableRow } from '../component/job-table-row';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
+import { StatsComponent } from '../component/stats-component';
 
 // ----------------------------------------------------------------------
 
@@ -23,46 +32,53 @@ export const Overview = ({
 }) => {
   return (
     <Container maxWidth="xl">
-      <Typography variant="h4" mb={5}>
-        Scheduled Jobs
-      </Typography>
-      <Card>
-        <Scrollbar>
-          <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 800 }}>
-              <CustomTableHead headLabel={headLabels} enableAction={false} />
-              <TableBody>
-                {isLoading ? (
-                  <TableLoadingRow colSpan={headLabels.length} />
-                ) : (
-                  <>
-                    {jobs.length === 0 ? (
-                      <TableEmptyRow colSpan={headLabels.length} />
-                    ) : (
-                      <>
-                        {jobs
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((row) => (
-                            <JobTableRow jobs={row} key={row._id} handleClickJob={handleClickJob} />
-                          ))}
-                      </>
-                    )}
-                  </>
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
-        <TablePagination
-          page={page}
-          component="div"
-          count={jobs.length}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Card>
+      <Stack direction="column" spacing={4}>
+        <StatsComponent />
+        <Typography variant="h4" mb={5}>
+          Scheduled Jobs
+        </Typography>
+        <Card>
+          <Scrollbar>
+            <TableContainer sx={{ overflow: 'unset' }}>
+              <Table sx={{ minWidth: 800 }}>
+                <CustomTableHead headLabel={headLabels} enableAction={false} />
+                <TableBody>
+                  {isLoading ? (
+                    <TableLoadingRow colSpan={headLabels.length} />
+                  ) : (
+                    <>
+                      {jobs.length === 0 ? (
+                        <TableEmptyRow colSpan={headLabels.length} />
+                      ) : (
+                        <>
+                          {jobs
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row) => (
+                              <JobTableRow
+                                jobs={row}
+                                key={row._id}
+                                handleClickJob={handleClickJob}
+                              />
+                            ))}
+                        </>
+                      )}
+                    </>
+                  )}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Scrollbar>
+          <TablePagination
+            page={page}
+            component="div"
+            count={jobs.length}
+            rowsPerPage={rowsPerPage}
+            onPageChange={handleChangePage}
+            rowsPerPageOptions={[5, 10, 25]}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Card>
+      </Stack>
     </Container>
   );
 };
