@@ -20,7 +20,7 @@ import SwipeableViews from 'react-swipeable-views';
 import { UnitCreatedWork } from '../component/unit-created-work';
 import { UnitCompletedWork } from '../component/unit-completed';
 import { WORK_STATUS } from 'src/constants/common-constants';
-import Footer from 'src/components/footer/footer';
+import { Footer } from 'src/components/footer/footer';
 
 // ----------------------------------------------------------------------
 
@@ -187,6 +187,7 @@ export const CustomerUnitView = ({ isLoading, data }) => {
           )}
         </>
       )}
+      <Footer />
     </Container>
   );
 };
