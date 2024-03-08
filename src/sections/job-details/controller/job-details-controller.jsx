@@ -17,7 +17,6 @@ import { useRouter } from 'src/routes/hooks';
 //---------------------------------------
 
 const validationSchema = Yup.object().shape({
-  workOrderInvoiceNumber: Yup.string(),
   workOrderScheduledDate: Yup.string().required('Next Service Date is required'),
   workOrderFrom: Yup.string(),
 });
@@ -79,7 +78,6 @@ const JobDetailsController = () => {
 
   const formik = useFormik({
     initialValues: {
-      workOrderInvoiceNumber: '',
       workOrderFrom: '',
       workOrderScheduledDate: null,
     },
@@ -372,9 +370,6 @@ const JobDetailsController = () => {
           workOrderType: workOrder.workOrderType,
           workOrderStatus: workOrder.workOrderStatus,
           workOrderScheduledDate: formik.values.workOrderScheduledDate,
-          workOrderInvoiceNumber: formik.values.workOrderInvoiceNumber
-            ? formik.values.workOrderInvoiceNumber
-            : null,
           workOrderFrom: formik.values.workOrderFrom,
         },
       })

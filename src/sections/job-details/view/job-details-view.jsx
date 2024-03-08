@@ -229,13 +229,15 @@ export const JobDetailsView = ({
                             useFlexGap
                             flexWrap="wrap"
                           >
-                            <Button
-                              variant="contained"
-                              startIcon={<SettingsIcon />}
-                              onClick={handleOpenCloseUpdateDialog}
-                            >
-                              Update
-                            </Button>
+                            {workOrder && workOrder.workOrderStatus != WORK_STATUS.COMPLETED && (
+                              <Button
+                                variant="contained"
+                                startIcon={<SettingsIcon />}
+                                onClick={handleOpenCloseUpdateDialog}
+                              >
+                                Update
+                              </Button>
+                            )}
                             {workOrder && workOrder.workOrderStatus === WORK_STATUS.SCHEDULED && (
                               <Button
                                 variant="contained"
