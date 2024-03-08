@@ -242,6 +242,10 @@ export const OverviewDetailsView = ({
                         <CustomCell>{workOrder.workOrderCode}</CustomCell>
                       </TableRow>
                       <TableRow>
+                        <CustomCell>Job From</CustomCell>
+                        <CustomCell>{workOrder.workOrderFrom}</CustomCell>
+                      </TableRow>
+                      <TableRow>
                         <CustomCell>Sheduled Date</CustomCell>
                         <CustomCell>
                           {new Date(workOrder?.workOrderScheduledDate).toLocaleDateString({

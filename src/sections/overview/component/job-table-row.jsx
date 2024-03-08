@@ -20,7 +20,7 @@ export const JobTableRow = ({ jobs, handleClickJob }) => {
             {jobs.workOrderCode}
           </Typography>
         </TableCell>
-
+        <TableCell>{jobs.workOrderFrom}</TableCell>
         <TableCell>{jobs.workOrderCustomerId.customerName}</TableCell>
         <TableCell>
           <Label color={jobs.workOrderStatus === WORK_STATUS.CREATED ? 'warning' : 'success'}>

@@ -274,6 +274,10 @@ export const JobDetailsView = ({
                         <CustomCell>{workOrder?.workOrderCode}</CustomCell>
                       </TableRow>
                       <TableRow>
+                        <CustomCell>Job From</CustomCell>
+                        <CustomCell>{workOrder?.workOrderFrom}</CustomCell>
+                      </TableRow>
+                      <TableRow>
                         <CustomCell>Word Order Type</CustomCell>
                         <CustomCell>{workOrder?.workOrderType}</CustomCell>
                       </TableRow>

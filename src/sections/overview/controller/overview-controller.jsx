@@ -16,7 +16,7 @@ const OverviewController = () => {
   const [jobs, setJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const headLabels = ['Work Id', 'Customer', 'Status', 'Service Due Date', 'Type'];
+  const headLabels = ['Work Id', 'Company', 'Customer', 'Status', 'Service Due Date', 'Type'];
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

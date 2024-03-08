@@ -18,3 +18,8 @@ export const USER_STATUS = {
   ACTIVE: 'Active',
   Terminated: 'Terminated',
 };
+
+export const COMPANIES = {
+  CMP_ERE: 'ERE',
+  CMP_SINGER: 'Singer',
+};
