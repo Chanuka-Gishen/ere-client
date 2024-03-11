@@ -178,7 +178,7 @@ export const CustomerUnitView = ({ isLoading, data }) => {
                       <UnitCreatedWork data={workOrdersCreated} />
                     </TabPanel>
                     <TabPanel value={value} index={2} dir={theme.direction}>
-                      <UnitCompletedWork data={workOrdersCompleted} />
+                      <UnitCompletedWork data={workOrdersCompleted} unit={data.unit} />
                     </TabPanel>
                   </SwipeableViews>
                 </Box>

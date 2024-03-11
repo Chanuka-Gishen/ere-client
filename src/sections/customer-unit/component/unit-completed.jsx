@@ -1,11 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Accordion, AccordionSummary, Chip, Container, Stack, Typography } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Chip,
+  Container,
+  Stack,
+  Typography,
+} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
 import { WORK_TYPE } from 'src/constants/common-constants';
+import { InvoiceView } from 'src/components/invoice/invoice-view';
 
-export const UnitCompletedWork = ({ data }) => {
+export const UnitCompletedWork = ({ data, unit }) => {
   const [expanded, setExpanded] = React.useState(false);
   const [expandedId, setExpandedId] = React.useState(null);
 
@@ -68,6 +77,14 @@ export const UnitCompletedWork = ({ data }) => {
                     />
                   </Stack>
                 </AccordionSummary>
+                <AccordionDetails>
+                  <InvoiceView
+                    workOrder={item}
+                    unit={unit}
+                    customer={unit.unitCustomerId}
+                    invoice={item.workOrderChargers}
+                  />
+                </AccordionDetails>
               </Accordion>
             ))}
         </>

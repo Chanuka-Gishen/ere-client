@@ -16,11 +16,11 @@ export const Footer = () => {
         backgroundColor: '#f0f0f0',
         padding: 2,
         textAlign: 'center',
-        position: 'fixed',
+        position: 'relative',
         bottom: 0,
         left: 0,
         width: '100%',
-        zIndex: 1000, // Adjust the z-index as needed
+        //zIndex: 1000, // Adjust the z-index as needed
       }}
     >
       <Container>

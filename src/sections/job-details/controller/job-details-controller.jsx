@@ -54,6 +54,7 @@ const JobDetailsController = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [workOrder, setWorkOrder] = useState(null);
+  const [checked, setChecked] = useState(true);
 
   const [employees, setEmployees] = useState([]);
   const [defaultEmployees, setDefaultEmployees] = useState([]);
@@ -177,6 +178,10 @@ const JobDetailsController = () => {
     } else {
       setDeletedFiles([]);
     }
+  };
+
+  const handleSwitch = (event) => {
+    setChecked(event.target.checked);
   };
 
   const handleOpenCloseUploadDialog = () => {
@@ -438,6 +443,9 @@ const JobDetailsController = () => {
         .finally(() => {
           setIsLoadingChargers(false);
         });
+    } else {
+      console.log(formik.errors);
+      enqueueSnackbar(SNACKBAR_MESSAGE.FILL_REQUIRED_FIELDS, { variant: SNACKBAR_VARIANT.WARNING });
     }
   };
 
@@ -555,6 +563,8 @@ const JobDetailsController = () => {
       handleResetChargers={handleResetChargers}
       isLoadingChargers={isLoadingChargers}
       handleAddUpdateChargers={handleAddUpdateChargers}
+      checked={checked}
+      handleSwitch={handleSwitch}
     />
   );
 };
