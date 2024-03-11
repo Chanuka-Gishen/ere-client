@@ -14,6 +14,7 @@ import {
   ImageListItem,
   ImageListItemBar,
   Stack,
+  Switch,
   Table,
   TableBody,
   TableCell,
@@ -41,6 +42,7 @@ import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 import { AddTipDialog } from '../component/add-tip-dialog';
 import { LoadingButton } from '@mui/lab';
 import { ChargersView } from '../component/chargers-view';
+import { Invoice } from 'src/components/invoice';
 
 // -----------------------------------------------------------
 
@@ -68,6 +70,39 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
     },
   };
 });
+
+const CustomSwitch = styled(Switch)(({ theme }) => ({
+  padding: 8,
+  '& .MuiSwitch-track': {
+    borderRadius: 22 / 2,
+    '&::before, &::after': {
+      content: '""',
+      position: 'absolute',
+      top: '50%',
+      transform: 'translateY(-50%)',
+      width: 16,
+      height: 16,
+    },
+    '&::before': {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>')`,
+      left: 12,
+    },
+    '&::after': {
+      backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 24 24"><path fill="${encodeURIComponent(
+        theme.palette.getContrastText(theme.palette.primary.main)
+      )}" d="M19,13H5V11H19V13Z" /></svg>')`,
+      right: 12,
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    boxShadow: 'none',
+    width: 16,
+    height: 16,
+    margin: 2,
+  },
+}));
 
 const CustomCell = ({ children, ...props }) => {
   return (
@@ -136,6 +171,8 @@ export const JobDetailsView = ({
   handleResetChargers,
   isLoadingChargers,
   handleAddUpdateChargers,
+  checked,
+  handleSwitch,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -229,13 +266,15 @@ export const JobDetailsView = ({
                             useFlexGap
                             flexWrap="wrap"
                           >
-                            <Button
-                              variant="contained"
-                              startIcon={<SettingsIcon />}
-                              onClick={handleOpenCloseUpdateDialog}
-                            >
-                              Update
-                            </Button>
+                            {workOrder && workOrder.workOrderStatus != WORK_STATUS.COMPLETED && (
+                              <Button
+                                variant="contained"
+                                startIcon={<SettingsIcon />}
+                                onClick={handleOpenCloseUpdateDialog}
+                              >
+                                Update
+                              </Button>
+                            )}
                             {workOrder && workOrder.workOrderStatus === WORK_STATUS.SCHEDULED && (
                               <Button
                                 variant="contained"
@@ -272,6 +311,10 @@ export const JobDetailsView = ({
                       <TableRow>
                         <CustomCell>Work Order Code</CustomCell>
                         <CustomCell>{workOrder?.workOrderCode}</CustomCell>
+                      </TableRow>
+                      <TableRow>
+                        <CustomCell>Job From</CustomCell>
+                        <CustomCell>{workOrder?.workOrderFrom}</CustomCell>
                       </TableRow>
                       <TableRow>
                         <CustomCell>Word Order Type</CustomCell>
@@ -485,14 +528,32 @@ export const JobDetailsView = ({
           {!isLoading && workOrder.workOrderStatus != WORK_STATUS.CREATED && (
             <Grid item xs={12} md={12}>
               <GridItem>
-                <ChargersView
-                  formik={chargersFormik}
-                  handleAddRow={handleAddNewChargeRow}
-                  handleDeleteCharge={handleDeleteCharge}
-                  handleResetChargers={handleResetChargers}
-                  isLoading={isLoadingChargers}
-                  handleSubmit={handleAddUpdateChargers}
-                />
+                <Stack direction={'row'} spacing={2} alignItems={'center'}>
+                  <CustomSwitch
+                    checked={checked}
+                    onChange={handleSwitch}
+                    inputProps={{ 'aria-label': 'controlled' }}
+                    defaultChecked
+                  />
+                  <Typography>{checked ? 'Edit On' : 'Edit Off'}</Typography>
+                </Stack>
+                {checked ? (
+                  <ChargersView
+                    formik={chargersFormik}
+                    handleAddRow={handleAddNewChargeRow}
+                    handleDeleteCharge={handleDeleteCharge}
+                    handleResetChargers={handleResetChargers}
+                    isLoading={isLoadingChargers}
+                    handleSubmit={handleAddUpdateChargers}
+                  />
+                ) : (
+                  <Invoice
+                    workOrder={workOrder}
+                    unit={workOrder.workOrderUnitReference}
+                    customer={workOrder.workOrderCustomerId}
+                    invoice={workOrder.workOrderChargers}
+                  />
+                )}
               </GridItem>
             </Grid>
           )}
@@ -592,4 +653,6 @@ JobDetailsView.propTypes = {
   handleResetChargers: PropTypes.func.isRequired,
   isLoadingChargers: PropTypes.bool.isRequired,
   handleAddUpdateChargers: PropTypes.func.isRequired,
+  checked: PropTypes.bool.isRequired,
+  handleSwitch: PropTypes.func.isRequired,
 };

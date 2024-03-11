@@ -63,6 +63,7 @@ export const CustomerWorkView = ({
                       {workOrders.map((item, index) => (
                         <TableRow hover key={index} onClick={() => handleRowClick(item._id)}>
                           <CustomCell component={'th'}>{item.workOrderCode}</CustomCell>
+                          <CustomCell>{item.workOrderFrom}</CustomCell>
                           <CustomCell
                             sx={{
                               color: commonUtil.calculateMonthDifference(

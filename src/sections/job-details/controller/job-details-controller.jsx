@@ -17,8 +17,8 @@ import { useRouter } from 'src/routes/hooks';
 //---------------------------------------
 
 const validationSchema = Yup.object().shape({
-  workOrderInvoiceNumber: Yup.string(),
   workOrderScheduledDate: Yup.string().required('Next Service Date is required'),
+  workOrderFrom: Yup.string(),
 });
 
 const validationSchemaChargers = Yup.object().shape({
@@ -54,6 +54,7 @@ const JobDetailsController = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [workOrder, setWorkOrder] = useState(null);
+  const [checked, setChecked] = useState(true);
 
   const [employees, setEmployees] = useState([]);
   const [defaultEmployees, setDefaultEmployees] = useState([]);
@@ -78,7 +79,7 @@ const JobDetailsController = () => {
 
   const formik = useFormik({
     initialValues: {
-      workOrderInvoiceNumber: '',
+      workOrderFrom: '',
       workOrderScheduledDate: null,
     },
     validationSchema,
@@ -177,6 +178,10 @@ const JobDetailsController = () => {
     } else {
       setDeletedFiles([]);
     }
+  };
+
+  const handleSwitch = (event) => {
+    setChecked(event.target.checked);
   };
 
   const handleOpenCloseUploadDialog = () => {
@@ -370,9 +375,7 @@ const JobDetailsController = () => {
           workOrderType: workOrder.workOrderType,
           workOrderStatus: workOrder.workOrderStatus,
           workOrderScheduledDate: formik.values.workOrderScheduledDate,
-          workOrderInvoiceNumber: formik.values.workOrderInvoiceNumber
-            ? formik.values.workOrderInvoiceNumber
-            : null,
+          workOrderFrom: formik.values.workOrderFrom,
         },
       })
         .then((res) => {
@@ -415,7 +418,7 @@ const JobDetailsController = () => {
   };
 
   const handleAddUpdateChargers = async () => {
-    if (formik.isValid && formik.dirty) {
+    if (chargersFormik.isValid && chargersFormik.dirty) {
       setIsLoadingChargers(true);
 
       await backendAuthApi({
@@ -440,6 +443,8 @@ const JobDetailsController = () => {
         .finally(() => {
           setIsLoadingChargers(false);
         });
+    } else {
+      enqueueSnackbar(SNACKBAR_MESSAGE.FILL_REQUIRED_FIELDS, { variant: SNACKBAR_VARIANT.WARNING });
     }
   };
 
@@ -479,6 +484,13 @@ const JobDetailsController = () => {
               data.responseData.workOrderInvoiceNumber
                 ? data.responseData.workOrderInvoiceNumber
                 : ''
+            );
+          }
+
+          if (data.responseData.workOrderFrom) {
+            formik.setFieldValue(
+              'workOrderFrom',
+              data.responseData.workOrderFrom ? data.responseData.workOrderFrom : ''
             );
           }
 
@@ -550,6 +562,8 @@ const JobDetailsController = () => {
       handleResetChargers={handleResetChargers}
       isLoadingChargers={isLoadingChargers}
       handleAddUpdateChargers={handleAddUpdateChargers}
+      checked={checked}
+      handleSwitch={handleSwitch}
     />
   );
 };

@@ -23,6 +23,7 @@ const validationSchema = Yup.object().shape({
 const CustomerWorkController = ({ id, selectedUnit, fetchUnitDetails }) => {
   const headerLabels = [
     'Word Order Id',
+    'Company',
     'Scheduled Date',
     'Type',
     'Status',
