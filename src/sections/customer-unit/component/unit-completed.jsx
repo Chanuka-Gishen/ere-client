@@ -12,7 +12,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
 import { WORK_TYPE } from 'src/constants/common-constants';
-import { InvoiceView } from 'src/components/invoice/invoice-view';
+import { Invoice } from 'src/components/invoice';
 
 export const UnitCompletedWork = ({ data, unit }) => {
   const [expanded, setExpanded] = React.useState(false);
@@ -78,7 +78,7 @@ export const UnitCompletedWork = ({ data, unit }) => {
                   </Stack>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <InvoiceView
+                  <Invoice
                     workOrder={item}
                     unit={unit}
                     customer={unit.unitCustomerId}

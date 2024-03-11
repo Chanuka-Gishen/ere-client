@@ -42,7 +42,7 @@ import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 import { AddTipDialog } from '../component/add-tip-dialog';
 import { LoadingButton } from '@mui/lab';
 import { ChargersView } from '../component/chargers-view';
-import { InvoiceView } from 'src/components/invoice/invoice-view';
+import { Invoice } from 'src/components/invoice';
 
 // -----------------------------------------------------------
 
@@ -547,7 +547,7 @@ export const JobDetailsView = ({
                     handleSubmit={handleAddUpdateChargers}
                   />
                 ) : (
-                  <InvoiceView
+                  <Invoice
                     workOrder={workOrder}
                     unit={workOrder.workOrderUnitReference}
                     customer={workOrder.workOrderCustomerId}

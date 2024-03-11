@@ -418,7 +418,7 @@ const JobDetailsController = () => {
   };
 
   const handleAddUpdateChargers = async () => {
-    if (formik.isValid && formik.dirty) {
+    if (chargersFormik.isValid && chargersFormik.dirty) {
       setIsLoadingChargers(true);
 
       await backendAuthApi({
@@ -444,7 +444,6 @@ const JobDetailsController = () => {
           setIsLoadingChargers(false);
         });
     } else {
-      console.log(formik.errors);
       enqueueSnackbar(SNACKBAR_MESSAGE.FILL_REQUIRED_FIELDS, { variant: SNACKBAR_VARIANT.WARNING });
     }
   };

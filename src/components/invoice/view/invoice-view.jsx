@@ -1,6 +1,7 @@
 import React from 'react';
 
 import {
+  Button,
   Divider,
   Stack,
   Table,
@@ -12,12 +13,32 @@ import {
   Typography,
 } from '@mui/material';
 import { formatCurrency } from 'src/utils/format-number';
+import { DownloadOutlined } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
 
-export const InvoiceView = ({ workOrder, unit, customer, invoice }) => {
+export const InvoiceView = ({
+  workOrder,
+  unit,
+  customer,
+  invoice,
+  handleDownloadPdf,
+  isDownloading,
+}) => {
   return (
     <>
       {invoice ? (
         <Stack direction="column" spacing={2}>
+          <Stack direction="row" justifyContent="flex-end" alignItems="center">
+            <LoadingButton
+              loading={isDownloading}
+              startIcon={<DownloadOutlined />}
+              variant="contained"
+              onClick={handleDownloadPdf}
+              disabled={isDownloading || !workOrder.workOrderInvoiceNumber}
+            >
+              PDF
+            </LoadingButton>
+          </Stack>
           <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
             <img
               src="/assets/ere-logo.jpg"
