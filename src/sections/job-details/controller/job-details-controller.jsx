@@ -27,20 +27,29 @@ const validationSchemaChargers = Yup.object().shape({
       item: Yup.string().required('Item is required'),
       itemDescription: Yup.string(),
       itemQty: Yup.number().min(0, 'Quantity must be valid'),
-      itemCost: Yup.number().min(0, 'Item cost must be valid'),
+      itemNetPrice: Yup.number().min(0, 'Item net price must be valid'),
+      itemGrossPrice: Yup.number().min(0, 'Item gross price must be valid'),
     })
   ),
+  serviceCharges: Yup.object().shape({
+    description: Yup.string(),
+    netAmount: Yup.number().min(0, 'Service net charge must be valid'),
+    amount: Yup.number().min(0, 'Service charge must be valid'),
+  }),
   labourCharges: Yup.object().shape({
     description: Yup.string(),
-    amount: Yup.number().min(0, 'Labour Charge must be valid'),
+    netAmount: Yup.number().min(0, 'Labour net charge must be valid'),
+    amount: Yup.number().min(0, 'Labour charge must be valid'),
   }),
   transportCharges: Yup.object().shape({
     description: Yup.string(),
-    amount: Yup.number().min(0, 'Transport Charge must be valid'),
+    netAmount: Yup.number().min(0, 'Transport net charge must be valid'),
+    amount: Yup.number().min(0, 'Transport charge must be valid'),
   }),
   otherCharges: Yup.object().shape({
     description: Yup.string(),
-    amount: Yup.number().min(0, 'Other Charges must be valid'),
+    netAmount: Yup.number().min(0, 'Other net charge must be valid'),
+    amount: Yup.number().min(0, 'Other charges must be valid'),
   }),
   //grandTotal: Yup.number().required('Grand Total is required').min(0, 'Grand Total must be valid'),
 });
@@ -91,18 +100,27 @@ const JobDetailsController = () => {
   const chargersFormik = useFormik({
     initialValues: {
       items: [],
+      serviceCharges: {
+        description: '',
+        netAmount: 0,
+        amount: 0,
+      },
       labourCharges: {
         description: '',
+        netAmount: 0,
         amount: 0,
       },
       transportCharges: {
         description: '',
+        netAmount: 0,
         amount: 0,
       },
       otherCharges: {
         description: '',
+        netAmount: 0,
         amount: 0,
       },
+      grandNetTotal: 0,
       grandTotal: 0,
     },
     validationSchema: validationSchemaChargers,
@@ -116,7 +134,7 @@ const JobDetailsController = () => {
       ...chargersFormik.values,
       items: [
         ...chargersFormik.values.items,
-        { item: '', itemDescription: '', itemQty: 1, itemCost: 0 },
+        { item: '', itemDescription: '', itemQty: 1, itemNetPrice: 0, itemGrossPrice: 0 },
       ],
     });
   };
@@ -444,7 +462,8 @@ const JobDetailsController = () => {
           setIsLoadingChargers(false);
         });
     } else {
-      enqueueSnackbar(SNACKBAR_MESSAGE.FILL_REQUIRED_FIELDS, { variant: SNACKBAR_VARIANT.WARNING });
+      console.log(chargersFormik.errors);
+      ///enqueueSnackbar(chargersFormik.errors, { variant: SNACKBAR_VARIANT.WARNING });
     }
   };
 

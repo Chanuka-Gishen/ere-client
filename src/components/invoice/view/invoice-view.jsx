@@ -102,13 +102,13 @@ export const InvoiceView = ({
                           {item.itemQty}
                         </TableCell>
                         <TableCell sx={{ border: '1px solid rgba(224, 224, 224, 1)' }}>
-                          {formatCurrency(item.itemCost)}
+                          {formatCurrency(item.itemGrossPrice)}
                         </TableCell>
                         <TableCell
                           sx={{ border: '1px solid rgba(224, 224, 224, 1)' }}
                           align="right"
                         >
-                          {formatCurrency(item.itemQty * item.itemCost)}
+                          {formatCurrency(item.itemQty * item.itemGrossPrice)}
                         </TableCell>
                       </TableRow>
                     ))}
