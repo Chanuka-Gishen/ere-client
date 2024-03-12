@@ -15,6 +15,7 @@ import {
 import { formatCurrency } from 'src/utils/format-number';
 import { DownloadOutlined } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
+import { fDate } from 'src/utils/format-time';
 
 export const InvoiceView = ({
   workOrder,
@@ -72,15 +73,7 @@ export const InvoiceView = ({
               <Typography fontWeight={'bold'}>Invoice#</Typography>
               <Typography>{workOrder.workOrderInvoiceNumber}</Typography>
               <Typography fontWeight={'bold'}>Completed Date#</Typography>
-              <Typography>
-                {workOrder.workOrderCompletedDate
-                  ? new Date(workOrder.workOrderCompletedDate).toLocaleDateString({
-                      day: '2-digit',
-                      month: 'short',
-                      year: 'numeric',
-                    })
-                  : '-'}
-              </Typography>
+              <Typography>{fDate(workOrder.workOrderCompletedDate)}</Typography>
             </Stack>
           </Stack>
           <TableContainer>

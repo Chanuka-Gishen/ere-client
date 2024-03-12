@@ -17,6 +17,7 @@ import { CustomerUnits } from '../components/customer-units-component';
 import { CustomerDetailsComponent } from '../components/customer-details-component';
 import { CustomerWorkOrders } from '../components/customer-work-component';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
+import { fDate } from 'src/utils/format-time';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -90,16 +91,13 @@ export const CustomerDetailsView = ({
                       align="center"
                     >{`${selectedUnit.unitBrand} - ${selectedUnit.unitModel} - ${selectedUnit.unitSerialNo}`}</Typography>
                     <Typography variant="subtitle1" color="textSecondary">
-                      Installed Date:{' '}
-                      {new Date(selectedUnit.unitInstalledDate).toLocaleDateString()}
+                      Installed Date: {fDate(selectedUnit.unitInstalledDate)}
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
-                      Last Service Date:{' '}
-                      {new Date(selectedUnit.unitLastMaintenanceDate).toLocaleDateString()}
+                      Last Service Date: {fDate(selectedUnit.unitLastMaintenanceDate)}
                     </Typography>
                     <Typography variant="subtitle1" color="textSecondary">
-                      Next Service Date:{' '}
-                      {new Date(selectedUnit.unitNextMaintenanceDate).toLocaleDateString()}
+                      Next Service Date: {fDate(selectedUnit.unitNextMaintenanceDate)}
                     </Typography>
                     <Typography
                       variant="subtitle1"

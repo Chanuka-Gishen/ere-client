@@ -43,6 +43,7 @@ import { AddTipDialog } from '../component/add-tip-dialog';
 import { LoadingButton } from '@mui/lab';
 import { ChargersView } from '../component/chargers-view';
 import { Invoice } from 'src/components/invoice';
+import { fDate } from 'src/utils/format-time';
 
 // -----------------------------------------------------------
 
@@ -218,22 +219,15 @@ export const JobDetailsView = ({
                     align="center"
                   >{`${workOrder?.workOrderUnitReference.unitBrand} - ${workOrder?.workOrderUnitReference.unitModel} - ${workOrder?.workOrderUnitReference.unitSerialNo}`}</Typography>
                   <Typography variant="subtitle1" color="textSecondary">
-                    Installed Date:{' '}
-                    {new Date(
-                      workOrder?.workOrderUnitReference.unitInstalledDate
-                    ).toLocaleDateString()}
+                    Installed Date: {fDate(workOrder?.workOrderUnitReference.unitInstalledDate)}
                   </Typography>
                   <Typography variant="subtitle1" color="textSecondary">
                     Last Service Date:{' '}
-                    {new Date(
-                      workOrder?.workOrderUnitReference.unitLastMaintenanceDate
-                    ).toLocaleDateString()}
+                    {fDate(workOrder?.workOrderUnitReference.unitLastMaintenanceDate)}
                   </Typography>
                   <Typography variant="subtitle1" color="textSecondary">
                     Next Service Date:{' '}
-                    {new Date(
-                      workOrder?.workOrderUnitReference.unitNextMaintenanceDate
-                    ).toLocaleDateString()}
+                    {fDate(workOrder?.workOrderUnitReference.unitNextMaintenanceDate)}
                   </Typography>
                   <Typography
                     variant="subtitle1"
@@ -334,27 +328,13 @@ export const JobDetailsView = ({
                       </TableRow>
                       <TableRow>
                         <CustomCell>Sheduled Date</CustomCell>
-                        <CustomCell>
-                          {new Date(workOrder?.workOrderScheduledDate).toLocaleDateString({
-                            day: '2-digit',
-                            month: 'short',
-                            year: 'numeric',
-                          })}
-                        </CustomCell>
+                        <CustomCell>{fDate(workOrder?.workOrderScheduledDate)}</CustomCell>
                       </TableRow>
                       {workOrder?.workOrderStatus === WORK_STATUS.COMPLETED && (
                         <>
                           <TableRow>
                             <CustomCell>Completed Date</CustomCell>
-                            <CustomCell>
-                              {workOrder?.workOrderCompletedDate
-                                ? new Date(workOrder?.workOrderCompletedDate).toLocaleDateString({
-                                    day: '2-digit',
-                                    month: 'short',
-                                    year: 'numeric',
-                                  })
-                                : '-'}
-                            </CustomCell>
+                            <CustomCell>{fDate(workOrder?.workOrderCompletedDate)}</CustomCell>
                           </TableRow>
                           <TableRow>
                             <CustomCell>Invoice Number</CustomCell>

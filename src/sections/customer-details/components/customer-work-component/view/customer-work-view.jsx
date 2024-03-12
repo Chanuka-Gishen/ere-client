@@ -17,6 +17,7 @@ import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { AddCustomerJobDialog } from '../components/add-customer-job-dialog';
 import { WORK_TYPE } from 'src/constants/common-constants';
 import commonUtil from 'src/utils/common-util';
+import { fDate } from 'src/utils/format-time';
 
 // ---------------------------------------
 
@@ -73,11 +74,7 @@ export const CustomerWorkView = ({
                                 : 'black',
                             }}
                           >
-                            {new Date(item.workOrderScheduledDate).toLocaleDateString({
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric',
-                            })}
+                            {fDate(item.workOrderScheduledDate)}
                           </CustomCell>
                           <CustomCell>
                             <Chip
@@ -90,11 +87,7 @@ export const CustomerWorkView = ({
                           <CustomCell>{item.workOrderStatus}</CustomCell>
                           <CustomCell>
                             {item.workOrderCompletedDate
-                              ? new Date(item.workOrderCompletedDate).toLocaleDateString({
-                                  year: 'numeric',
-                                  month: 'short',
-                                  day: 'numeric',
-                                })
+                              ? fDate(item.workOrderCompletedDate)
                               : '--'}
                           </CustomCell>
                           <CustomCell>
