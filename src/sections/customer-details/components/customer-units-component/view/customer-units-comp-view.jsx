@@ -33,6 +33,7 @@ import commonUtil from 'src/utils/common-util';
 import { SelectQrCodeDialog } from 'src/components/select-qr-code';
 import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
 import UnitSearchInput from '../components/unit-search-input';
+import { fDate } from 'src/utils/format-time';
 
 const CustomCell = ({ children, ...props }) => {
   return (
@@ -176,13 +177,9 @@ export const CustomerUnitsComponentView = ({
                                     ? 'error'
                                     : 'black'
                                 }
-                              >{`Next maintainance : ${new Date(
+                              >{`Next maintainance : ${fDate(
                                 item.unitNextMaintenanceDate
-                              ).toLocaleDateString({
-                                year: 'numeric',
-                                month: 'short',
-                                day: 'numeric',
-                              })}`}</Typography>
+                              )}`}</Typography>
                               <Typography variant="body">
                                 {`Qr Code : ${
                                   item.unitQrCode ? item.unitQrCode.qrCodeName : 'not assigned'

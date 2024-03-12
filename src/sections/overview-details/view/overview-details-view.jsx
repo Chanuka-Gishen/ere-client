@@ -35,6 +35,7 @@ import { OverviewUpdateUnit } from '../component/overview-update-unit';
 import { SelectQrCodeDialog } from 'src/components/select-qr-code';
 import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
 import { WORK_STATUS } from 'src/constants/common-constants';
+import { fDate } from 'src/utils/format-time';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -201,18 +202,36 @@ export const OverviewDetailsView = ({
                   <Table>
                     <TableBody>
                       <TableRow sx={{ backgroundColor: '#f0f0f0' }}>
-                        <CustomCell colSpan={3}>
+                        <CustomCell>
                           <Typography variant="subtitle1">Job Details</Typography>
+                        </CustomCell>
+                        <CustomCell align="right">
+                          <Stack
+                            direction={'row'}
+                            alignItems="center"
+                            justifyContent="flex-end"
+                            spacing={2}
+                          >
+                            <Button variant="contained" onClick={handleOpenCloseUnitUpdateDialog}>
+                              Edit
+                            </Button>
+                            {commonUtil.isUndefinedOrNull(
+                              workOrder.workOrderUnitReference.unitQrCode
+                            ) ? (
+                              <Button variant="contained" onClick={handleOpenCloseSelectQrCode}>
+                                Link
+                              </Button>
+                            ) : (
+                              <Button variant="contained" onClick={handleOpenCloseRemoveQrCode}>
+                                Remove
+                              </Button>
+                            )}
+                          </Stack>
                         </CustomCell>
                       </TableRow>
                       <TableRow>
                         <CustomCell>AC Unit</CustomCell>
                         <CustomCell>{`${workOrder.workOrderUnitReference.unitModel} - ${workOrder.workOrderUnitReference.unitSerialNo}`}</CustomCell>
-                        <CustomCell align={'right'}>
-                          <Button variant="contained" onClick={handleOpenCloseUnitUpdateDialog}>
-                            Edit
-                          </Button>
-                        </CustomCell>
                       </TableRow>
                       <TableRow>
                         <CustomCell>QR Code</CustomCell>
@@ -222,19 +241,6 @@ export const OverviewDetailsView = ({
                           )
                             ? workOrder.workOrderUnitReference.unitQrCode.qrCodeName
                             : 'not linked'}
-                        </CustomCell>
-                        <CustomCell align={'right'}>
-                          {commonUtil.isUndefinedOrNull(
-                            workOrder.workOrderUnitReference.unitQrCode
-                          ) ? (
-                            <Button variant="contained" onClick={handleOpenCloseSelectQrCode}>
-                              Link
-                            </Button>
-                          ) : (
-                            <Button variant="contained" onClick={handleOpenCloseRemoveQrCode}>
-                              Remove
-                            </Button>
-                          )}
                         </CustomCell>
                       </TableRow>
                       <TableRow>
@@ -247,13 +253,7 @@ export const OverviewDetailsView = ({
                       </TableRow>
                       <TableRow>
                         <CustomCell>Sheduled Date</CustomCell>
-                        <CustomCell>
-                          {new Date(workOrder?.workOrderScheduledDate).toLocaleDateString({
-                            day: '2-digit',
-                            month: 'short',
-                            year: 'numeric',
-                          })}
-                        </CustomCell>
+                        <CustomCell>{fDate(workOrder?.workOrderScheduledDate)}</CustomCell>
                       </TableRow>
                       <TableRow>
                         <CustomCell>Word Order Type</CustomCell>

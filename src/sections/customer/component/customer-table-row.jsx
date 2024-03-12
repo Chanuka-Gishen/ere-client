@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { TableCell, TableRow, Typography } from '@mui/material';
 import commonUtil from 'src/utils/common-util';
 import Label from 'src/components/label';
+import { fDate } from 'src/utils/format-time';
 
 export const CustomerTableRow = ({ customer, handleClickRow }) => {
   return (
@@ -17,21 +18,9 @@ export const CustomerTableRow = ({ customer, handleClickRow }) => {
           {customer.nextMaintenanceDate ? (
             <>
               {commonUtil.calculateMonthDifference(customer.nextMaintenanceDate) ? (
-                <Label color={'error'}>
-                  {new Date(customer.nextMaintenanceDate).toLocaleDateString({
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                </Label>
+                <Label color={'error'}>{fDate(customer.nextMaintenanceDate)}</Label>
               ) : (
-                <>
-                  {new Date(customer.nextMaintenanceDate).toLocaleDateString({
-                    year: 'numeric',
-                    month: 'short',
-                    day: 'numeric',
-                  })}
-                </>
+                <>{fDate(customer.nextMaintenanceDate)}</>
               )}
             </>
           ) : (

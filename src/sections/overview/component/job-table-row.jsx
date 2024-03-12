@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import Label from 'src/components/label';
 import { WORK_STATUS, WORK_TYPE } from 'src/constants/common-constants';
 import commonUtil from 'src/utils/common-util';
+import { fDate } from 'src/utils/format-time';
 
 // ----------------------------------------------------------------------
 
@@ -30,21 +31,9 @@ export const JobTableRow = ({ jobs, handleClickJob }) => {
 
         <TableCell>
           {commonUtil.calculateMonthDifference(jobs.workOrderScheduledDate) ? (
-            <Label color={'error'}>
-              {new Date(jobs.workOrderScheduledDate).toLocaleDateString({
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </Label>
+            <Label color={'error'}>{fDate(jobs.workOrderScheduledDate)}</Label>
           ) : (
-            <>
-              {new Date(jobs.workOrderScheduledDate).toLocaleDateString({
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-              })}
-            </>
+            <>{fDate(jobs.workOrderScheduledDate)}</>
           )}
         </TableCell>
 
