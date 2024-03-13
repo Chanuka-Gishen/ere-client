@@ -1,21 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack } from '@mui/material';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormControl,
+  FormHelperText,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+} from '@mui/material';
 import { FormikProvider } from 'formik';
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
+import { WORK_TYPE } from 'src/constants/common-constants';
 
 export const AddCustomerJobDialog = ({ formik, isOpen, handleClose, isLoading, handleSubmit }) => {
+  const { values, setFieldValue, getFieldProps, touched, errors } = formik;
   return (
     <Dialog open={isOpen} fullWidth sx={{ px: 2 }}>
-      <DialogTitle>Add Repair Job</DialogTitle>
+      <DialogTitle>Add New Job</DialogTitle>
       <DialogContent>
         <FormikProvider value={formik}>
           <Stack direction={'column'} spacing={2} sx={{ mt: 2 }}>
+            <FormControl>
+              <InputLabel id="select-label">Order Type*</InputLabel>
+              <Select
+                labelId="select-label"
+                id="select"
+                label="Order Type"
+                {...getFieldProps('workOrderType')}
+              >
+                <MenuItem value={WORK_TYPE.INSTALLATION}>Installation</MenuItem>
+                <MenuItem value={WORK_TYPE.SERVICE}>Service</MenuItem>
+                <MenuItem value={WORK_TYPE.REPAIR}>Repair</MenuItem>
+              </Select>
+              {Boolean(touched.workOrderType && errors.workOrderType) && (
+                <FormHelperText>{touched.workOrderType && errors.workOrderType}</FormHelperText>
+              )}
+            </FormControl>
             <DatePicker
               label="Scheduled Date*"
-              value={formik.values.unitInstalledDate}
-              onChange={(date) => formik.setFieldValue('workOrderScheduledDate', date)}
+              value={values.unitInstalledDate}
+              onChange={(date) => setFieldValue('workOrderScheduledDate', date)}
             />
           </Stack>
         </FormikProvider>

@@ -27,7 +27,7 @@ import {
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
-import { Add, CloseOutlined } from '@mui/icons-material';
+import { Add, CloseOutlined, DeleteForeverRounded } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -44,6 +44,7 @@ import { LoadingButton } from '@mui/lab';
 import { ChargersView } from '../component/chargers-view';
 import { Invoice } from 'src/components/invoice';
 import { fDate } from 'src/utils/format-time';
+import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
 
 // -----------------------------------------------------------
 
@@ -174,6 +175,10 @@ export const JobDetailsView = ({
   handleAddUpdateChargers,
   checked,
   handleSwitch,
+  openDeleteJobDialog,
+  isLoadingDeleteJob,
+  handleOpenCloseJobDeleteDialog,
+  handleDeleteJob,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -267,6 +272,15 @@ export const JobDetailsView = ({
                                 onClick={handleOpenCloseUpdateDialog}
                               >
                                 Update
+                              </Button>
+                            )}
+                            {workOrder && workOrder.workOrderStatus === WORK_STATUS.CREATED && (
+                              <Button
+                                variant="contained"
+                                startIcon={<DeleteForeverRounded />}
+                                onClick={handleOpenCloseJobDeleteDialog}
+                              >
+                                Delete Job
                               </Button>
                             )}
                             {workOrder && workOrder.workOrderStatus === WORK_STATUS.SCHEDULED && (
@@ -588,6 +602,15 @@ export const JobDetailsView = ({
           handleSubmit={handleUpdateEmployeeTip}
         />
       )}
+      {openDeleteJobDialog && (
+        <ConfirmationDialog
+          open={openDeleteJobDialog}
+          handleClose={handleOpenCloseJobDeleteDialog}
+          contentText="Are you sure that you want to delete this job ? This cannot be undone."
+          handleSubmit={handleDeleteJob}
+          isLoading={isLoadingDeleteJob}
+        />
+      )}
     </Container>
   );
 };
@@ -635,4 +658,8 @@ JobDetailsView.propTypes = {
   handleAddUpdateChargers: PropTypes.func.isRequired,
   checked: PropTypes.bool.isRequired,
   handleSwitch: PropTypes.func.isRequired,
+  openDeleteJobDialog: PropTypes.bool.isRequired,
+  isLoadingDeleteJob: PropTypes.bool.isRequired,
+  handleOpenCloseJobDeleteDialog: PropTypes.func.isRequired,
+  handleDeleteJob: PropTypes.func.isRequired,
 };

@@ -20,17 +20,16 @@ const validationSchema = Yup.object().shape({
   unitBrand: Yup.string().required('Brand is required'),
   unitModel: Yup.string().required('Model is required'),
   unitSerialNo: Yup.string(),
-  unitInstalledDate: Yup.string().required('Installation Date is required'),
+  unitInstalledDate: Yup.string().nullable(),
   unitNextMaintenanceDate: Yup.string().required('Next Service Date is required'),
-  unitIsInstalled: Yup.boolean().required().oneOf([true, false]),
 });
 
 const validationUpdateSchema = Yup.object().shape({
   unitBrand: Yup.string().required('Brand is required'),
   unitModel: Yup.string().required('Model is required'),
   unitSerialNo: Yup.string(),
-  unitInstalledDate: Yup.string().required('Installation Date is required'),
-  unitLastMaintenanceDate: Yup.string().required('Last Service Date is required'),
+  unitInstalledDate: Yup.string().nullable(),
+  unitLastMaintenanceDate: Yup.string().nullable(),
   unitNextMaintenanceDate: Yup.string().required('Next Service Date is required'),
   unitStatus: Yup.string()
     .required('Unit status required')
@@ -46,10 +45,12 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenSelectQr, setIsOpenSelectQr] = useState(false);
   const [isOpenRemoveQr, setIsOpenRemoveQr] = useState(false);
+  const [isOpenDeleteUnit, setIsOpenDeleteUnit] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
+  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [units, setUnits] = useState([]);
@@ -60,9 +61,8 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       unitBrand: '',
       unitModel: '',
       unitSerialNo: '',
-      unitInstalledDate: new Date(),
-      unitNextMaintenanceDate: addMonths(new Date(), 3),
-      unitIsInstalled: false,
+      unitInstalledDate: null,
+      unitNextMaintenanceDate: addMonths(new Date(), 4),
     },
     validationSchema: validationSchema,
     onSubmit: () => {
@@ -75,9 +75,9 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       unitBrand: '',
       unitModel: '',
       unitSerialNo: '',
-      unitInstalledDate: new Date(),
-      unitLastMaintenanceDate: addMonths(new Date(), 3),
-      unitNextMaintenanceDate: addMonths(new Date(), 3),
+      unitInstalledDate: null,
+      unitLastMaintenanceDate: null,
+      unitNextMaintenanceDate: addMonths(new Date(), 4),
       unitStatus: UNIT_STATUS.ACTIVE,
     },
     validationSchema: validationUpdateSchema,
@@ -105,6 +105,14 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
     }
   };
 
+  const handleOpenCloseDeleteUnitDialog = () => {
+    setIsOpenDeleteUnit(!isOpenDeleteUnit);
+
+    if (!isOpenDeleteUnit) {
+      handleCloseMenu();
+    }
+  };
+
   const handleChangeSearchParam = (event) => {
     setSearchParam(event.target.value);
   };
@@ -122,8 +130,12 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       unitBrand: selectedItem.unitBrand,
       unitModel: selectedItem.unitModel,
       unitSerialNo: selectedItem.unitSerialNo,
-      unitInstalledDate: new Date(selectedItem.unitInstalledDate),
-      unitLastMaintenanceDate: new Date(selectedItem.unitLastMaintenanceDate),
+      unitInstalledDate: selectedItem.unitInstalledDate
+        ? new Date(selectedItem.unitInstalledDate)
+        : null,
+      unitLastMaintenanceDate: selectedItem.unitLastMaintenanceDate
+        ? new Date(selectedItem.unitLastMaintenanceDate)
+        : null,
       unitNextMaintenanceDate: new Date(selectedItem.unitNextMaintenanceDate),
       unitStatus: selectedItem.unitStatus,
     });
@@ -133,10 +145,17 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
   };
 
   const handleInstallationDateChange = (date) => {
-    formik.setFieldValue('unitInstalledDate', date);
+    if (isAdd) {
+      formik.setFieldValue('unitInstalledDate', date);
 
-    // Recalculate and update unitNextMaintenanceDate
-    formik.setFieldValue('unitNextMaintenanceDate', addMonths(date, 3));
+      // Recalculate and update unitNextMaintenanceDate
+      formik.setFieldValue('unitNextMaintenanceDate', addMonths(date, 4));
+    } else {
+      formikUpdateUnit.setFieldValue('unitInstalledDate', date);
+
+      // Recalculate and update unitNextMaintenanceDate
+      formikUpdateUnit.setFieldValue('unitLastMaintenanceDate', addMonths(date, 4));
+    }
   };
 
   const handleLastMaintainenceDateChange = (date) => {
@@ -171,6 +190,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
           const data = res.data;
 
           if (responseUtil.isResponseSuccess(data.responseCode)) {
+            handleCloseMenu();
             handleFetchCustomerUnits();
           } else {
             enqueueSnackbar(data.responseMessage, {
@@ -184,6 +204,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
           handleOpenCloseAddDialog();
         });
     } else {
+      console.log(formik.errors);
       enqueueSnackbar(SNACKBAR_MESSAGE.FILL_REQUIRED_FIELDS, {
         variant: SNACKBAR_VARIANT.WARNING,
       });
@@ -207,6 +228,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
           const data = res.data;
 
           if (responseUtil.isResponseSuccess(data.responseCode)) {
+            handleCloseMenu();
             handleFetchCustomerUnits();
           } else {
             enqueueSnackbar(data.responseMessage, {
@@ -223,6 +245,34 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       enqueueSnackbar(SNACKBAR_MESSAGE.FILL_REQUIRED_FIELDS, {
         variant: SNACKBAR_VARIANT.WARNING,
       });
+    }
+  };
+
+  const handleDeleteUnit = async () => {
+    if (selectedUnit) {
+      setIsLoadingDelete(true);
+
+      await backendAuthApi({
+        url: BACKEND_API.CUSTOMER_UNIT_DELETE + selectedUnit._id,
+        method: 'DELETE',
+        cancelToken: cancelToken.token,
+      })
+        .then((res) => {
+          if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+            handleOpenCloseDeleteUnitDialog();
+            handleFetchCustomerUnits();
+          } else {
+            enqueueSnackbar(res.data.responseMessage, {
+              variant: responseUtil.findResponseType(res.data.responseCode),
+            });
+          }
+        })
+        .catch(() => {
+          setIsLoadingDelete(false);
+        })
+        .finally(() => {
+          setIsLoadingDelete(false);
+        });
     }
   };
 
@@ -283,6 +333,10 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       filteredUnits={filteredUnits}
       handleChangeSearchParam={handleChangeSearchParam}
       searchParam={searchParam}
+      handleDeleteUnit={handleDeleteUnit}
+      isLoadingDelete={isLoadingDelete}
+      isOpenDeleteUnit={isOpenDeleteUnit}
+      handleOpenCloseDeleteUnitDialog={handleOpenCloseDeleteUnitDialog}
     />
   );
 };

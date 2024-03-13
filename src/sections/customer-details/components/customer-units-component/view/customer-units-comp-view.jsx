@@ -34,6 +34,7 @@ import { SelectQrCodeDialog } from 'src/components/select-qr-code';
 import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
 import UnitSearchInput from '../components/unit-search-input';
 import { fDate } from 'src/utils/format-time';
+import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
 
 const CustomCell = ({ children, ...props }) => {
   return (
@@ -73,6 +74,10 @@ export const CustomerUnitsComponentView = ({
   filteredUnits,
   handleChangeSearchParam,
   searchParam,
+  handleDeleteUnit,
+  isLoadingDelete,
+  isOpenDeleteUnit,
+  handleOpenCloseDeleteUnitDialog,
 }) => {
   return (
     <>
@@ -203,7 +208,10 @@ export const CustomerUnitsComponentView = ({
                           <EditIcon sx={{ mr: 2 }} />
                           Edit
                         </MenuItem>
-                        <MenuItem sx={{ color: 'error.main' }}>
+                        <MenuItem
+                          sx={{ color: 'error.main' }}
+                          onClick={handleOpenCloseDeleteUnitDialog}
+                        >
                           <DeleteIcon sx={{ mr: 2 }} />
                           Delete
                         </MenuItem>
@@ -252,6 +260,15 @@ export const CustomerUnitsComponentView = ({
               handleFetchWorkOrderDetails={handleFetchCustomerUnits}
             />
           )}
+          {isOpenDeleteUnit && (
+            <ConfirmationDialog
+              open={isOpenDeleteUnit}
+              contentText="Are you sure that you want to delete this unit ?"
+              handleClose={handleOpenCloseDeleteUnitDialog}
+              isLoading={isLoadingDelete}
+              handleSubmit={handleDeleteUnit}
+            />
+          )}
         </Stack>
       )}
     </>
@@ -285,4 +302,8 @@ CustomerUnitsComponentView.propTypes = {
   isOpenRemoveQr: PropTypes.bool.isRequired,
   setIsOpenRemoveQr: PropTypes.func.isRequired,
   handleOpenRemoveQrDialog: PropTypes.func.isRequired,
+  handleDeleteUnit: PropTypes.func.isRequired,
+  isLoadingDelete: PropTypes.bool.isRequired,
+  isOpenDeleteUnit: PropTypes.bool.isRequired,
+  handleOpenCloseDeleteUnitDialog: PropTypes.func.isRequired,
 };

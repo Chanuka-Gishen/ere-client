@@ -28,7 +28,9 @@ export default function ConfirmationDialog({
         <DialogContentText id="alert-dialog-description">{contentText}</DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleClose} disabled={isLoading}>
+          Cancel
+        </Button>
         <LoadingButton disabled={isLoading} loading={isLoading} onClick={handleSubmit} autoFocus>
           Confirm
         </LoadingButton>

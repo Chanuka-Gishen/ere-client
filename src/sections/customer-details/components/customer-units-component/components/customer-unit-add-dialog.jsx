@@ -58,7 +58,7 @@ export const CustomerUnitAddDialog = ({
             />
             <Stack direction={'row'} spacing={1}>
               <DatePicker
-                label="Installation Date*"
+                label="Installation Date"
                 value={formik.values.unitInstalledDate}
                 onChange={(date) => handleDateChange(date)}
               />
@@ -70,7 +70,7 @@ export const CustomerUnitAddDialog = ({
                 />
               ) : (
                 <DatePicker
-                  label="Last Maintenance Date*"
+                  label="Last Maintenance Date"
                   value={formik.values.unitLastMaintenanceDate}
                   onChange={(date) => handleLastMaintainenceDateChange(date)}
                 />
@@ -100,27 +100,6 @@ export const CustomerUnitAddDialog = ({
                   )}
                 </FormControl>
               </Stack>
-            )}
-            {isAdd && (
-              <FormControl>
-                <InputLabel id="select-label">Unit*</InputLabel>
-                <Select
-                  labelId="select-label"
-                  id="select"
-                  label="Unit"
-                  {...getFieldProps('unitIsInstalled')}
-                >
-                  <MenuItem value={true} defaultValue={true}>
-                    Installed
-                  </MenuItem>
-                  <MenuItem value={false}>Not Installed</MenuItem>
-                </Select>
-                {Boolean(touched.unitIsInstalled && errors.unitIsInstalled) && (
-                  <FormHelperText>
-                    {touched.unitIsInstalled && errors.unitIsInstalled}
-                  </FormHelperText>
-                )}
-              </FormControl>
             )}
           </Stack>
         </FormikProvider>

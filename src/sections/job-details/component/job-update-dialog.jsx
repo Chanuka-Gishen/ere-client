@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
-import { COMPANIES } from 'src/constants/common-constants';
+import { COMPANIES, WORK_TYPE } from 'src/constants/common-constants';
 
 export const JobUpdateDialog = ({ formik, isOpen, handleClose, isLoading, handleSubmit }) => {
   const { getFieldProps, touched, errors } = formik;
@@ -26,6 +26,22 @@ export const JobUpdateDialog = ({ formik, isOpen, handleClose, isLoading, handle
       <DialogTitle>Update Work Order</DialogTitle>
       <DialogContent>
         <Stack direction={'column'} spacing={2} sx={{ mt: 2 }}>
+          <FormControl>
+            <InputLabel id="select-label">Order Type*</InputLabel>
+            <Select
+              labelId="select-label"
+              id="select"
+              label="Order Type"
+              {...getFieldProps('workOrderType')}
+            >
+              <MenuItem value={WORK_TYPE.INSTALLATION}>Installation</MenuItem>
+              <MenuItem value={WORK_TYPE.SERVICE}>Service</MenuItem>
+              <MenuItem value={WORK_TYPE.REPAIR}>Repair</MenuItem>
+            </Select>
+            {Boolean(touched.workOrderType && errors.workOrderType) && (
+              <FormHelperText>{touched.workOrderType && errors.workOrderType}</FormHelperText>
+            )}
+          </FormControl>
           <DatePicker
             label="Scheduled Date*"
             value={formik.values.workOrderScheduledDate}
