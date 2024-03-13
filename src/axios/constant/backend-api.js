@@ -31,7 +31,7 @@ export const BACKEND_API = {
 
   WORK_ORDRS_BY_UNIT: IP_URL + '/work-order/byUnit/',
   WORK_ORDR: IP_URL + '/work-order/',
-  WORK_ORDR_DELETE: IP_URL + '/work-order/',
+  WORK_ORDR_DELETE: IP_URL + '/work-order/delete-job/',
   WORK_ORDR_ASSIGN: IP_URL + '/work-order/add-employees',
   WORK_ORDR_UPLOAD: IP_URL + '/work-order/upload-images/',
   WORK_ORDR_UPDATE: IP_URL + '/work-order/',
