@@ -13,10 +13,14 @@ import responseUtil from 'src/utils/responseUtil';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
 import { useRouter } from 'src/routes/hooks';
+import { WORK_TYPE } from 'src/constants/common-constants';
 
 //---------------------------------------
 
 const validationSchema = Yup.object().shape({
+  workOrderType: Yup.string()
+    .required()
+    .oneOf([WORK_TYPE.SERVICE, WORK_TYPE.REPAIR, WORK_TYPE.INSTALLATION], 'Invalid type'),
   workOrderScheduledDate: Yup.string().required('Next Service Date is required'),
   workOrderFrom: Yup.string(),
 });
@@ -77,6 +81,7 @@ const JobDetailsController = () => {
   const [openCompleteDialog, setOpenCompleteDialog] = useState(false);
   const [openAssignDialog, setOpenAssignDialog] = useState(false);
   const [openAddTipDialog, setOpenAddTipDialog] = useState(false);
+  const [openDeleteJobDialog, setOpenDeleteJobDialog] = useState(false);
 
   const [isLoadingAssign, setIsLoadingAssign] = useState(false);
   const [isLoadingPhotoAdd, setIsLoadingPhotoAdd] = useState(false);
@@ -85,9 +90,11 @@ const JobDetailsController = () => {
   const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
   const [isLoadingDeleteFiles, setIsLoadingDeleteFiles] = useState(false);
   const [isLoadingChargers, setIsLoadingChargers] = useState(false);
+  const [isLoadingDeleteJob, setIsLoadingDeleteJob] = useState(false);
 
   const formik = useFormik({
     initialValues: {
+      workOrderType: '',
       workOrderFrom: '',
       workOrderScheduledDate: null,
     },
@@ -236,6 +243,10 @@ const JobDetailsController = () => {
     if (!openAddTipDialog) {
       setTotalTip(workOrder.workOrderEmployeeTip);
     }
+  };
+
+  const handleOpenCloseJobDeleteDialog = () => {
+    setOpenDeleteJobDialog(!openDeleteJobDialog);
   };
 
   const handleOnClickBreadCrumb = (screen) => {
@@ -390,8 +401,7 @@ const JobDetailsController = () => {
         cancelToken: cancelToken.token,
         data: {
           _id: workOrder._id,
-          workOrderType: workOrder.workOrderType,
-          workOrderStatus: workOrder.workOrderStatus,
+          workOrderType: formik.values.workOrderType,
           workOrderScheduledDate: formik.values.workOrderScheduledDate,
           workOrderFrom: formik.values.workOrderFrom,
         },
@@ -467,6 +477,34 @@ const JobDetailsController = () => {
     }
   };
 
+  const handleDeleteJob = async () => {
+    setIsLoadingDeleteJob(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.WORK_ORDR_DELETE + workOrder._id,
+      method: 'DELETE',
+      cancelToken: cancelToken.token,
+    })
+      .then((res) => {
+        const data = res.data;
+
+        if (responseUtil.isResponseSuccess(data.responseCode)) {
+          handleOpenCloseJobDeleteDialog();
+        } else {
+          enqueueSnackbar(data.responseMessage, {
+            variant: responseUtil.findResponseType(data.responseCode),
+          });
+        }
+      })
+      .catch(() => {
+        setIsLoadingDeleteJob(false);
+      })
+      .finally(() => {
+        setIsLoadingDeleteJob(false);
+        router.replace(`customers/details/${workOrder.workOrderCustomerId._id}`);
+      });
+  };
+
   const handleFetchEmployeeList = async () => {
     await backendAuthApi({
       url: BACKEND_API.EMPLOYEE_SELECT,
@@ -493,6 +531,7 @@ const JobDetailsController = () => {
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
           setWorkOrder(data.responseData);
+          formik.setFieldValue('workOrderType', data.responseData.workOrderType);
           formik.setFieldValue(
             'workOrderScheduledDate',
             new Date(data.responseData.workOrderScheduledDate)
@@ -583,6 +622,10 @@ const JobDetailsController = () => {
       handleAddUpdateChargers={handleAddUpdateChargers}
       checked={checked}
       handleSwitch={handleSwitch}
+      openDeleteJobDialog={openDeleteJobDialog}
+      isLoadingDeleteJob={isLoadingDeleteJob}
+      handleOpenCloseJobDeleteDialog={handleOpenCloseJobDeleteDialog}
+      handleDeleteJob={handleDeleteJob}
     />
   );
 };

@@ -12,6 +12,7 @@ export const WORK_STATUS = {
 export const WORK_TYPE = {
   SERVICE: 'Service',
   REPAIR: 'Repair',
+  INSTALLATION: 'Installation',
 };
 
 export const USER_STATUS = {

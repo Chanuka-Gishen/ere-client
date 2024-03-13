@@ -11,6 +11,7 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { formatCurrency } from 'src/utils/format-number';
 import { DownloadOutlined } from '@mui/icons-material';
@@ -25,6 +26,8 @@ export const InvoiceView = ({
   handleDownloadPdf,
   isDownloading,
 }) => {
+  const isMobile = useMediaQuery('(max-width:600px)');
+
   return (
     <>
       {invoice ? (
@@ -40,40 +43,66 @@ export const InvoiceView = ({
               PDF
             </LoadingButton>
           </Stack>
-          <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
+          <Stack
+            direction="row"
+            spacing={2}
+            justifyContent="space-between"
+            alignItems={isMobile ? 'start' : 'center'}
+          >
             <img
               src="/assets/ere-logo.jpg"
               alt="Logo"
               style={{
-                maxWidth: 250, // Adjust the size as needed
+                maxWidth: isMobile ? 100 : 250, // Adjust the size as needed
                 marginRight: 2,
               }}
             />
-            <Stack direction="column" spacing={2}>
-              <Typography fontWeight={'bold'} variant="h4">
+            <Stack direction="column" spacing={isMobile ? 1 : 2}>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h6' : 'h4'}>
                 E R Engineers
               </Typography>
-              <Typography>NO: 70/1A,, KORALAWELLA Road, KORALAWELLA, MORATUWA.</Typography>
+              <Typography variant={isMobile ? 'h7' : 'h4'}>
+                NO: 70/1A,, KORALAWELLA Road, KORALAWELLA, MORATUWA.
+              </Typography>
 
-              <Typography>0112645675 {'( WORKSHOP )'} | 0773878080 | 0716092000</Typography>
-              <Typography>erengineersere@gmail.com</Typography>
+              <Typography variant={isMobile ? 'h7' : 'h4'}>
+                0112645675 {'( WORKSHOP )'} | 0773878080 | 0716092000
+              </Typography>
+              <Typography variant={isMobile ? 'h7' : 'h4'}>erengineersere@gmail.com</Typography>
             </Stack>
           </Stack>
           <Divider />
           <Stack direction="row" justifyContent="space-between">
-            <Stack direction="column" spacing={2}>
-              <Typography fontWeight={'bold'}>Bill To:</Typography>
-              <Typography>{customer.customerName}</Typography>
-              <Typography fontWeight={'bold'}>Unit Reference:</Typography>
-              <Typography>{`${unit.unitBrand}-${unit.unitModel}-${unit.unitSerialNo}`}</Typography>
+            <Stack direction="column" spacing={isMobile ? 1 : 2}>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                Bill To:
+              </Typography>
+              <Typography variant={isMobile ? 'h7' : 'body1'}>{customer.customerName}</Typography>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                Unit Reference:
+              </Typography>
+              <Typography variant={isMobile ? 'h7' : 'body1'}>
+                {' '}
+                {`${unit.unitBrand}-${unit.unitModel}-${unit.unitSerialNo}`}
+              </Typography>
             </Stack>
             <Stack direction="column" spacing={2}>
-              <Typography fontWeight={'bold'}>JobCode#</Typography>
-              <Typography>{workOrder.workOrderCode}</Typography>
-              <Typography fontWeight={'bold'}>Invoice#</Typography>
-              <Typography>{workOrder.workOrderInvoiceNumber}</Typography>
-              <Typography fontWeight={'bold'}>Completed Date#</Typography>
-              <Typography>{fDate(workOrder.workOrderCompletedDate)}</Typography>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                JobCode#
+              </Typography>
+              <Typography variant={isMobile ? 'h7' : 'body1'}>{workOrder.workOrderCode}</Typography>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                Invoice#
+              </Typography>
+              <Typography variant={isMobile ? 'h7' : 'body1'}>
+                {workOrder.workOrderInvoiceNumber}
+              </Typography>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                Completed Date#
+              </Typography>
+              <Typography variant={isMobile ? 'h7' : 'body1'}>
+                {fDate(workOrder.workOrderCompletedDate)}
+              </Typography>
             </Stack>
           </Stack>
           <TableContainer>
@@ -114,6 +143,14 @@ export const InvoiceView = ({
                     ))}
                   </>
                 )}
+                <TableRow>
+                  <TableCell colSpan={4} sx={{ border: 'none' }} align="right" variant="th">
+                    Service Chargers
+                  </TableCell>
+                  <TableCell align="right" sx={{ border: '1px solid rgba(224, 224, 224, 1)' }}>
+                    {formatCurrency(invoice.serviceCharges.amount)}
+                  </TableCell>
+                </TableRow>
                 <TableRow>
                   <TableCell colSpan={4} sx={{ border: 'none' }} align="right" variant="th">
                     Labour Chargers

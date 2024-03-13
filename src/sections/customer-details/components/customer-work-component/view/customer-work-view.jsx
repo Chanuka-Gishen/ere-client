@@ -45,7 +45,7 @@ export const CustomerWorkView = ({
     <>
       <Stack direction={'row'} justifyContent={'flex-end'} sx={{ m: 2 }}>
         <Button variant="contained" onClick={handleOpenCloseAddJobDialog}>
-          Add Repair Job
+          Add New Job
         </Button>
       </Stack>
       <Scrollbar>

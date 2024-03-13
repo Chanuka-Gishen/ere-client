@@ -17,6 +17,9 @@ import { WORK_TYPE } from 'src/constants/common-constants';
 //------------------------------------------------------
 
 const validationSchema = Yup.object().shape({
+  workOrderType: Yup.string()
+    .required()
+    .oneOf([WORK_TYPE.SERVICE, WORK_TYPE.REPAIR, WORK_TYPE.INSTALLATION], 'Invalid type'),
   workOrderScheduledDate: Yup.string().required('Scheduled Date is required'),
 });
 
@@ -43,6 +46,7 @@ const CustomerWorkController = ({ id, selectedUnit, fetchUnitDetails }) => {
 
   const formik = useFormik({
     initialValues: {
+      workOrderType: '',
       workOrderScheduledDate: new Date(),
     },
     validationSchema,
@@ -72,7 +76,7 @@ const CustomerWorkController = ({ id, selectedUnit, fetchUnitDetails }) => {
         method: 'POST',
         cancelToken: cancelToken.token,
         data: {
-          workOrderType: WORK_TYPE.REPAIR,
+          workOrderType: formik.values.workOrderType,
           workOrderUnit: selectedUnit._id,
           workOrderScheduledDate: formik.values.workOrderScheduledDate,
         },
