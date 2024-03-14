@@ -18,4 +18,6 @@ export const NAVIGATION_ROUTES = {
   customer_details: 'customers/details/:id',
   customer_job_details: 'customers/details/job/:jobId',
   employees: 'employees',
+  work_orders: 'work-orders',
+  work_order_details: 'work-orders/:jobId',
 };

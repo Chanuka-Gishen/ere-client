@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -9,8 +9,7 @@ import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import ListItemButton from '@mui/material/ListItemButton';
 
-import { usePathname } from 'src/routes/hooks';
-import { RouterLink } from 'src/routes/components';
+import { usePathname, useRouter } from 'src/routes/hooks';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -22,14 +21,22 @@ import { NAV } from './config-layout';
 import navConfig from './config-navigation';
 import { useSelector } from 'react-redux';
 import { USER_ROLE } from 'src/constants/user-role';
+import { NAVBAR_ITEMS } from './common/navigation-names';
 
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
+
   const user = useSelector((state) => state.auth.user);
 
+  const [selected, setSelected] = useState(NAVBAR_ITEMS.DASHBOARD);
+
   const upLg = useResponsive('up', 'lg');
+
+  const handleSelect = (name) => {
+    setSelected(name);
+  };
 
   useEffect(() => {
     if (openNav) {
@@ -68,7 +75,7 @@ export default function Nav({ openNav, onCloseNav }) {
       {navConfig
         .filter((item) => !item.adminOnly || (item.adminOnly && user.userRole === USER_ROLE.ADMIN))
         .map((item) => (
-          <NavItem key={item.title} item={item} />
+          <NavItem key={item.title} item={item} selected={selected} handleSelect={handleSelect} />
         ))}
     </Stack>
   );
@@ -134,15 +141,21 @@ Nav.propTypes = {
 
 // ----------------------------------------------------------------------
 
-function NavItem({ item }) {
-  const pathname = usePathname();
+function NavItem({ item, selected, handleSelect }) {
+  const router = useRouter();
 
-  const active = '/' + item.path === pathname;
+  const active = item.name === selected;
+
+  const handleClick = () => {
+    handleSelect(item.name);
+    router.push(item.path);
+  };
 
   return (
     <ListItemButton
-      component={RouterLink}
-      href={item.path}
+      //component={RouterLink}
+      //href={item.path}
+      onClick={handleClick}
       sx={{
         minHeight: 44,
         borderRadius: 0.75,
