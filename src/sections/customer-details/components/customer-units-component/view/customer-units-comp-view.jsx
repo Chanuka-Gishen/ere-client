@@ -25,16 +25,16 @@ import {
 import { Add } from '@mui/icons-material';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { CustomerUnitAddDialog } from '../components/customer-unit-add-dialog';
 import EditIcon from '@mui/icons-material/Edit';
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 import Iconify from 'src/components/iconify';
+
+import { CustomerUnitAddDialog } from '../components/customer-unit-add-dialog';
 import commonUtil from 'src/utils/common-util';
 import { SelectQrCodeDialog } from 'src/components/select-qr-code';
 import { RemoveQrCodeDialog } from 'src/components/remove-qr-code';
-import UnitSearchInput from '../components/unit-search-input';
 import { fDate } from 'src/utils/format-time';
 import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
+import SearchInput from 'src/components/search-input/search-input';
 
 const CustomCell = ({ children, ...props }) => {
   return (
@@ -131,9 +131,10 @@ export const CustomerUnitsComponentView = ({
                         </Button>
                       </Stack>
                       {units.length > 3 && (
-                        <UnitSearchInput
+                        <SearchInput
                           filterName={searchParam}
                           onFilterName={handleChangeSearchParam}
+                          placeHolder={'Search serial no...'}
                         />
                       )}
                     </Stack>

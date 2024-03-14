@@ -1,29 +1,40 @@
-import SvgColor from 'src/components/svg-color';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
+import { NAVBAR_ITEMS } from './common/navigation-names';
+
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import GroupIcon from '@mui/icons-material/Group';
+import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
+import ListIcon from '@mui/icons-material/List';
 
 // ----------------------------------------------------------------------
-
-const icon = (name) => (
-  <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
-);
 
 const navConfig = [
   {
     title: 'Dashboard',
-    path: '/',
-    icon: icon('ic_analytics'),
+    name: NAVBAR_ITEMS.DASHBOARD,
+    path: '',
+    icon: <DashboardIcon />,
     adminOnly: false,
   },
   {
     title: 'Customers',
+    name: NAVBAR_ITEMS.CUSTOMERS,
     path: NAVIGATION_ROUTES.customers,
-    icon: icon('ic_user'),
+    icon: <GroupIcon />,
+    adminOnly: true,
+  },
+  {
+    title: 'Work Orders',
+    name: NAVBAR_ITEMS.WORKORDERS,
+    path: NAVIGATION_ROUTES.work_orders,
+    icon: <ListIcon />,
     adminOnly: true,
   },
   {
     title: 'Employees',
+    name: NAVBAR_ITEMS.EMPLOYEES,
     path: NAVIGATION_ROUTES.employees,
-    icon: icon('ic_user'),
+    icon: <PeopleOutlineIcon />,
     adminOnly: true,
   },
 ];

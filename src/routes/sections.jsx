@@ -15,6 +15,7 @@ export const CustomerDetailsPage = lazy(() => import('src/pages/customer-details
 export const OverviewDetailsPage = lazy(() => import('src/pages/overview-details'));
 export const JobDetailsPage = lazy(() => import('src/pages/job-details'));
 export const CustomerUnitPage = lazy(() => import('src/pages/customer-unit-page'));
+export const WorkOrdersPage = lazy(() => import('src/pages/work-orders-page'));
 
 // ----------------------------------------------------------------------
 
@@ -58,6 +59,8 @@ const Router = () => {
         { path: NAVIGATION_ROUTES.overview_details, element: <OverviewDetailsPage /> },
         { path: NAVIGATION_ROUTES.customer_details, element: <CustomerDetailsPage /> },
         { path: NAVIGATION_ROUTES.customer_job_details, element: <JobDetailsPage /> },
+        { path: NAVIGATION_ROUTES.work_orders, element: <WorkOrdersPage /> },
+        { path: NAVIGATION_ROUTES.work_order_details, element: <JobDetailsPage /> },
       ],
     },
     ...PublicRoutes,

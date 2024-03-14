@@ -30,6 +30,7 @@ export const BACKEND_API = {
   CUSTOMER_UNIT_REMOVE_QR: IP_URL + '/unit/remove-qr-code/',
 
   WORK_ORDRS_BY_UNIT: IP_URL + '/work-order/byUnit/',
+  WORK_ORDERS: IP_URL + '/work-order/jobs',
   WORK_ORDR: IP_URL + '/work-order/',
   WORK_ORDR_DELETE: IP_URL + '/work-order/delete-job/',
   WORK_ORDR_ASSIGN: IP_URL + '/work-order/add-employees',

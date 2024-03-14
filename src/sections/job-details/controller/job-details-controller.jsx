@@ -250,7 +250,7 @@ const JobDetailsController = () => {
   };
 
   const handleOnClickBreadCrumb = (screen) => {
-    router.replace(screen);
+    router.push(screen);
   };
 
   const handleChangeTotalTip = (amount) => {

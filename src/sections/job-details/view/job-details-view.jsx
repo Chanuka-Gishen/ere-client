@@ -45,6 +45,9 @@ import { ChargersView } from '../component/chargers-view';
 import { Invoice } from 'src/components/invoice';
 import { fDate } from 'src/utils/format-time';
 import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
+import { useLocation } from 'react-router-dom';
+
+import ListIcon from '@mui/icons-material/List';
 
 // -----------------------------------------------------------
 
@@ -182,29 +185,54 @@ export const JobDetailsView = ({
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
+  const location = useLocation();
+
+  // Check if the pathname matches the pattern 'work-orders/:id'
+  const isFromWorkOrders = /work-orders\/\d+/.test(location.pathname);
+
   return (
     <Container maxWidth="xl">
       <Stack direction={'column'} spacing={2}>
-        <Breadcrumbs aria-label="breadcrumb">
-          <StyledBreadcrumb
-            onClick={() => handleOnClickBreadCrumb(NAVIGATION_ROUTES.customers)}
-            label="Customers"
-            icon={<HomeIcon fontSize="small" />}
-          />
-          <StyledBreadcrumb
-            component="a"
-            href={isLoading ? '#' : `/customers/details/${workOrder.workOrderCustomerId._id}`}
-            label="Customer-Details"
-          />
-          <StyledBreadcrumb
-            component="a"
-            href="#"
-            label={`Work-Order-${
-              isLoading ? 'Loading...' : workOrder.workOrderCode ? workOrder.workOrderCode : jobId
-            }`}
-            disabled
-          />
-        </Breadcrumbs>
+        {isFromWorkOrders ? (
+          <Breadcrumbs aria-label="breadcrumb">
+            <StyledBreadcrumb
+              onClick={() => handleOnClickBreadCrumb(NAVIGATION_ROUTES.work_orders)}
+              label="Work Orders"
+              icon={<ListIcon fontSize="small" />}
+            />
+            <StyledBreadcrumb
+              component="a"
+              href="#"
+              label={`Work-Order-${
+                isLoading ? 'Loading...' : workOrder.workOrderCode ? workOrder.workOrderCode : jobId
+              }`}
+              disabled
+            />
+          </Breadcrumbs>
+        ) : (
+          <Breadcrumbs aria-label="breadcrumb">
+            <StyledBreadcrumb
+              onClick={() => handleOnClickBreadCrumb(NAVIGATION_ROUTES.customers)}
+              label="Customers"
+              icon={<HomeIcon fontSize="small" />}
+            />
+            <StyledBreadcrumb
+              onClick={() =>
+                handleOnClickBreadCrumb(`customers/details/${workOrder.workOrderCustomerId._id}`)
+              }
+              label="Customer-Details"
+            />
+            <StyledBreadcrumb
+              component="a"
+              href="#"
+              label={`Work-Order-${
+                isLoading ? 'Loading...' : workOrder.workOrderCode ? workOrder.workOrderCode : jobId
+              }`}
+              disabled
+            />
+          </Breadcrumbs>
+        )}
+
         <Grid container spacing={2} sx={{ margin: '10px' }}>
           <Grid item xs={12} md={12}>
             {isLoading ? (
@@ -449,9 +477,9 @@ export const JobDetailsView = ({
                 <Stack direction={'column'} spacing={2}>
                   <ImageList cols={isMobile ? 4 : 6} gap={2}>
                     {workOrder.workOrderImages.map((image, index) => (
-                      <>
+                      <React.Fragment key={index}>
                         {!deletedFiles.includes(image) && (
-                          <ImageListItem key={index}>
+                          <ImageListItem>
                             <img
                               //srcSet={image.imageWebUrl}
                               src={commonUtil.getDirectImageLink(image.imageId)}
@@ -489,7 +517,7 @@ export const JobDetailsView = ({
                             />
                           </ImageListItem>
                         )}
-                      </>
+                      </React.Fragment>
                     ))}
                   </ImageList>
                   {deletedFiles.length > 0 && (
@@ -527,7 +555,6 @@ export const JobDetailsView = ({
                     checked={checked}
                     onChange={handleSwitch}
                     inputProps={{ 'aria-label': 'controlled' }}
-                    defaultChecked
                   />
                   <Typography>{checked ? 'Edit On' : 'Edit Off'}</Typography>
                 </Stack>
