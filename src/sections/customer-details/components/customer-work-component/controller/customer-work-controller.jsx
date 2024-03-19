@@ -12,7 +12,7 @@ import responseUtil from 'src/utils/responseUtil';
 import { useRouter } from 'src/routes/hooks';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
-import { WORK_TYPE } from 'src/constants/common-constants';
+import { COMPANIES, WORK_TYPE } from 'src/constants/common-constants';
 
 //------------------------------------------------------
 
@@ -21,6 +21,9 @@ const validationSchema = Yup.object().shape({
     .required()
     .oneOf([WORK_TYPE.SERVICE, WORK_TYPE.REPAIR, WORK_TYPE.INSTALLATION], 'Invalid type'),
   workOrderScheduledDate: Yup.string().required('Scheduled Date is required'),
+  workOrderFrom: Yup.string()
+    .required()
+    .oneOf([COMPANIES.CMP_ERE, COMPANIES.CMP_SINGER], 'Invalid type'),
 });
 
 const CustomerWorkController = ({ id, selectedUnit, fetchUnitDetails }) => {
@@ -48,6 +51,7 @@ const CustomerWorkController = ({ id, selectedUnit, fetchUnitDetails }) => {
     initialValues: {
       workOrderType: '',
       workOrderScheduledDate: new Date(),
+      workOrderFrom: '',
     },
     validationSchema,
     onSubmit: () => {
@@ -79,6 +83,7 @@ const CustomerWorkController = ({ id, selectedUnit, fetchUnitDetails }) => {
           workOrderType: formik.values.workOrderType,
           workOrderUnit: selectedUnit._id,
           workOrderScheduledDate: formik.values.workOrderScheduledDate,
+          workOrderFrom: formik.values.workOrderFrom,
         },
       })
         .then((res) => {

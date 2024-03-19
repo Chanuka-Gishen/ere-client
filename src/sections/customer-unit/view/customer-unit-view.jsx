@@ -15,7 +15,6 @@ import {
 import { useTheme } from '@mui/material/styles';
 import { QrViewLoading } from '../component/qr-view-loading';
 import commonUtil from 'src/utils/common-util';
-import { UnitScheduledWork } from '../component/unit-scheduled-work';
 import SwipeableViews from 'react-swipeable-views';
 import { UnitCreatedWork } from '../component/unit-created-work';
 import { UnitCompletedWork } from '../component/unit-completed';
@@ -69,10 +68,6 @@ const StyledTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }
 
 export const CustomerUnitView = ({ isLoading, data }) => {
   const theme = useTheme();
-
-  const workOrdersScheduled = data
-    ? data.workOrders.filter((order) => order.workOrderStatus === WORK_STATUS.SCHEDULED)
-    : [];
 
   const workOrdersCreated = data
     ? data.workOrders.filter((order) => order.workOrderStatus === WORK_STATUS.CREATED)
@@ -161,9 +156,8 @@ export const CustomerUnitView = ({ isLoading, data }) => {
                 <Box sx={{ width: '100%' }}>
                   <AppBar position="static">
                     <StyledTabs value={value} onChange={handleChange} variant="fullWidth">
-                      <StyledTab label="Scheduled" {...a11yProps(0)} />
-                      <StyledTab label="Created" {...a11yProps(1)} />
-                      <StyledTab label="Completed" {...a11yProps(2)} />
+                      <StyledTab label="Created" {...a11yProps(0)} />
+                      <StyledTab label="Completed" {...a11yProps(1)} />
                     </StyledTabs>
                   </AppBar>
                   <SwipeableViews
@@ -172,12 +166,9 @@ export const CustomerUnitView = ({ isLoading, data }) => {
                     onChangeIndex={handleChangeIndex}
                   >
                     <TabPanel value={value} index={0} dir={theme.direction}>
-                      <UnitScheduledWork data={workOrdersScheduled} />
-                    </TabPanel>
-                    <TabPanel value={value} index={1} dir={theme.direction}>
                       <UnitCreatedWork data={workOrdersCreated} />
                     </TabPanel>
-                    <TabPanel value={value} index={2} dir={theme.direction}>
+                    <TabPanel value={value} index={1} dir={theme.direction}>
                       <UnitCompletedWork data={workOrdersCompleted} unit={data.unit} />
                     </TabPanel>
                   </SwipeableViews>

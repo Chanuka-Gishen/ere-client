@@ -13,13 +13,14 @@ import {
   MenuItem,
   Select,
   Stack,
+  TextField,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
 import { COMPANIES, WORK_TYPE } from 'src/constants/common-constants';
 
 export const JobUpdateDialog = ({ formik, isOpen, handleClose, isLoading, handleSubmit }) => {
-  const { getFieldProps, touched, errors } = formik;
+  const { getFieldProps, touched, errors, values } = formik;
 
   return (
     <Dialog open={isOpen} fullWidth sx={{ px: 2 }}>
@@ -62,6 +63,14 @@ export const JobUpdateDialog = ({ formik, isOpen, handleClose, isLoading, handle
               <FormHelperText>{touched.workOrderFrom && errors.workOrderFrom}</FormHelperText>
             )}
           </FormControl>
+          {values.workOrderFrom === COMPANIES.CMP_SINGER && (
+            <TextField
+              name={`workOrderInvoiceNumber`}
+              label={'Invoice Number'}
+              fullWidth
+              {...getFieldProps('workOrderInvoiceNumber')}
+            />
+          )}
         </Stack>
       </DialogContent>
       <DialogActions>
