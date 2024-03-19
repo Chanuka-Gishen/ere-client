@@ -16,7 +16,7 @@ import {
 import { FormikProvider } from 'formik';
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
-import { WORK_TYPE } from 'src/constants/common-constants';
+import { COMPANIES, WORK_TYPE } from 'src/constants/common-constants';
 
 export const AddCustomerJobDialog = ({ formik, isOpen, handleClose, isLoading, handleSubmit }) => {
   const { values, setFieldValue, getFieldProps, touched, errors } = formik;
@@ -42,9 +42,24 @@ export const AddCustomerJobDialog = ({ formik, isOpen, handleClose, isLoading, h
                 <FormHelperText>{touched.workOrderType && errors.workOrderType}</FormHelperText>
               )}
             </FormControl>
+            <FormControl>
+              <InputLabel id="select-label">Company*</InputLabel>
+              <Select
+                labelId="select-label"
+                id="select"
+                label="User Role"
+                {...getFieldProps('workOrderFrom')}
+              >
+                <MenuItem value={COMPANIES.CMP_ERE}>ERE</MenuItem>
+                <MenuItem value={COMPANIES.CMP_SINGER}>Singer</MenuItem>
+              </Select>
+              {Boolean(touched.workOrderFrom && errors.workOrderFrom) && (
+                <FormHelperText>{touched.workOrderFrom && errors.workOrderFrom}</FormHelperText>
+              )}
+            </FormControl>
             <DatePicker
               label="Scheduled Date*"
-              value={values.unitInstalledDate}
+              value={values.workOrderScheduledDate}
               onChange={(date) => setFieldValue('workOrderScheduledDate', date)}
             />
           </Stack>

@@ -21,7 +21,6 @@ const validationSchema = Yup.object().shape({
   unitModel: Yup.string().required('Model is required'),
   unitSerialNo: Yup.string(),
   unitInstalledDate: Yup.string().nullable(),
-  unitNextMaintenanceDate: Yup.string().required('Next Service Date is required'),
 });
 
 const validationUpdateSchema = Yup.object().shape({
@@ -62,7 +61,6 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       unitModel: '',
       unitSerialNo: '',
       unitInstalledDate: null,
-      unitNextMaintenanceDate: addMonths(new Date(), 4),
     },
     validationSchema: validationSchema,
     onSubmit: () => {
@@ -147,22 +145,13 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
   const handleInstallationDateChange = (date) => {
     if (isAdd) {
       formik.setFieldValue('unitInstalledDate', date);
-
-      // Recalculate and update unitNextMaintenanceDate
-      formik.setFieldValue('unitNextMaintenanceDate', addMonths(date, 4));
     } else {
       formikUpdateUnit.setFieldValue('unitInstalledDate', date);
-
-      // Recalculate and update unitNextMaintenanceDate
-      formikUpdateUnit.setFieldValue('unitLastMaintenanceDate', addMonths(date, 4));
     }
   };
 
   const handleLastMaintainenceDateChange = (date) => {
     formik.setFieldValue('unitLastMaintenanceDate', date);
-
-    // Recalculate and update unitNextMaintenanceDate
-    formik.setFieldValue('unitNextMaintenanceDate', addMonths(date, 3));
   };
 
   const handleOpenSelectQrDialog = () => {

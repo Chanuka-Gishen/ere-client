@@ -311,22 +311,21 @@ export const JobDetailsView = ({
                                 Delete Job
                               </Button>
                             )}
-                            {workOrder && workOrder.workOrderStatus === WORK_STATUS.SCHEDULED && (
+
+                            <Button
+                              variant="contained"
+                              startIcon={<CloudUploadIcon />}
+                              onClick={handleOpenCloseUploadDialog}
+                            >
+                              Add Images
+                            </Button>
+                            {workOrder && workOrder.workOrderStatus === WORK_STATUS.CREATED && (
                               <Button
                                 variant="contained"
                                 startIcon={<ChangeCircleIcon />}
                                 onClick={handleOpenCloseCompleteDialog}
                               >
                                 Finish Job
-                              </Button>
-                            )}
-                            {workOrder && workOrder.workOrderStatus !== WORK_STATUS.CREATED && (
-                              <Button
-                                variant="contained"
-                                startIcon={<CloudUploadIcon />}
-                                onClick={handleOpenCloseUploadDialog}
-                              >
-                                Add Images
                               </Button>
                             )}
                           </Stack>
@@ -372,21 +371,19 @@ export const JobDetailsView = ({
                         <CustomCell>Sheduled Date</CustomCell>
                         <CustomCell>{fDate(workOrder?.workOrderScheduledDate)}</CustomCell>
                       </TableRow>
+                      <TableRow>
+                        <CustomCell>Invoice Number</CustomCell>
+                        <CustomCell>
+                          {workOrder?.workOrderInvoiceNumber
+                            ? workOrder?.workOrderInvoiceNumber
+                            : '-'}
+                        </CustomCell>
+                      </TableRow>
                       {workOrder?.workOrderStatus === WORK_STATUS.COMPLETED && (
-                        <>
-                          <TableRow>
-                            <CustomCell>Completed Date</CustomCell>
-                            <CustomCell>{fDate(workOrder?.workOrderCompletedDate)}</CustomCell>
-                          </TableRow>
-                          <TableRow>
-                            <CustomCell>Invoice Number</CustomCell>
-                            <CustomCell>
-                              {workOrder?.workOrderInvoiceNumber
-                                ? workOrder?.workOrderInvoiceNumber
-                                : '-'}
-                            </CustomCell>
-                          </TableRow>
-                        </>
+                        <TableRow>
+                          <CustomCell>Completed Date</CustomCell>
+                          <CustomCell>{fDate(workOrder?.workOrderCompletedDate)}</CustomCell>
+                        </TableRow>
                       )}
                     </TableBody>
                   </Table>
@@ -547,7 +544,7 @@ export const JobDetailsView = ({
               </GridItem>
             </Grid>
           )}
-          {!isLoading && workOrder.workOrderStatus != WORK_STATUS.CREATED && (
+          {!isLoading && (
             <Grid item xs={12} md={12}>
               <GridItem>
                 <Stack direction={'row'} spacing={2} alignItems={'center'}>

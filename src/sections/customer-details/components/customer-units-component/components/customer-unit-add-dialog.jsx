@@ -62,13 +62,7 @@ export const CustomerUnitAddDialog = ({
                 value={formik.values.unitInstalledDate}
                 onChange={(date) => handleDateChange(date)}
               />
-              {isAdd ? (
-                <DatePicker
-                  label="Next Service Date*"
-                  value={formik.values.unitNextMaintenanceDate}
-                  onChange={(date) => formik.setFieldValue('unitNextMaintenanceDate', date)}
-                />
-              ) : (
+              {!isAdd && (
                 <DatePicker
                   label="Last Maintenance Date"
                   value={formik.values.unitLastMaintenanceDate}

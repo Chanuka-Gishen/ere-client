@@ -13,7 +13,7 @@ import responseUtil from 'src/utils/responseUtil';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
 import { useRouter } from 'src/routes/hooks';
-import { WORK_TYPE } from 'src/constants/common-constants';
+import { COMPANIES, WORK_TYPE } from 'src/constants/common-constants';
 
 //---------------------------------------
 
@@ -22,7 +22,10 @@ const validationSchema = Yup.object().shape({
     .required()
     .oneOf([WORK_TYPE.SERVICE, WORK_TYPE.REPAIR, WORK_TYPE.INSTALLATION], 'Invalid type'),
   workOrderScheduledDate: Yup.string().required('Next Service Date is required'),
-  workOrderFrom: Yup.string(),
+  workOrderFrom: Yup.string()
+    .required()
+    .oneOf([COMPANIES.CMP_ERE, COMPANIES.CMP_SINGER], 'Invalid type'),
+  workOrderInvoiceNumber: Yup.string(),
 });
 
 const validationSchemaChargers = Yup.object().shape({
@@ -96,6 +99,7 @@ const JobDetailsController = () => {
     initialValues: {
       workOrderType: '',
       workOrderFrom: '',
+      workOrderInvoiceNumber: '',
       workOrderScheduledDate: null,
     },
     validationSchema,
