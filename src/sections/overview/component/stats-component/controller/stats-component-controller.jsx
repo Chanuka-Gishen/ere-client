@@ -14,7 +14,7 @@ const StatsComponentController = ({}) => {
 
   const open = Boolean(anchorEl);
 
-  const [isOpenQrConfirmation, setIsOpenQrConfirmation] = useState();
+  const [isOpenQrConfirmation, setIsOpenQrConfirmation] = useState(false);
   const [isLoadingQrCount, setIsLoadingQrCount] = useState(true);
   const [isLoadingQrGenerate, setIsLoadingQrGenerate] = useState(false);
   const [isLoadingWorkCount, setIsLoadingWorkCount] = useState(false);
