@@ -87,7 +87,7 @@ export const StatsComponentView = ({
 };
 
 StatsComponentView.propTypes = {
-  anchorEl: PropTypes.any.isRequired,
+  anchorEl: PropTypes.any,
   open: PropTypes.bool.isRequired,
   handleClick: PropTypes.func.isRequired,
   handleClose: PropTypes.func.isRequired,

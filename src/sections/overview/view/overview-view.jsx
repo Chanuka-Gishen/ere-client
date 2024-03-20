@@ -19,6 +19,8 @@ import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { StatsComponent } from '../component/stats-component';
 import { useSelector } from 'react-redux';
 import { USER_ROLE } from 'src/constants/user-role';
+import { Calender } from 'src/components/calender';
+import { Fragment } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +39,12 @@ export const Overview = ({
   return (
     <Container maxWidth="xl">
       <Stack direction="column" spacing={4}>
-        {user.userRole === USER_ROLE.ADMIN && <StatsComponent />}
+        {user.userRole === USER_ROLE.ADMIN && (
+          <Fragment>
+            <StatsComponent />
+            <Calender />
+          </Fragment>
+        )}
 
         <Typography variant="h4" mb={5}>
           Scheduled Jobs
