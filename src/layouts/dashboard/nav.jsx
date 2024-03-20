@@ -32,7 +32,7 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const [selected, setSelected] = useState(NAVBAR_ITEMS.DASHBOARD);
 
-  const upLg = useResponsive('up', 'lg');
+  const upLg = false;
 
   const handleSelect = (name) => {
     setSelected(name);

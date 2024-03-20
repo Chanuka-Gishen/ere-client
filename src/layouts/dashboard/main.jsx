@@ -11,7 +11,7 @@ import { NAV, HEADER } from './config-layout';
 const SPACING = 8;
 
 export default function Main({ children, sx, ...other }) {
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = false;
 
   return (
     <Box
@@ -22,11 +22,6 @@ export default function Main({ children, sx, ...other }) {
         display: 'flex',
         flexDirection: 'column',
         py: `${HEADER.H_MOBILE + SPACING}px`,
-        ...(lgUp && {
-          px: 2,
-          py: `${HEADER.H_DESKTOP + SPACING}px`,
-          width: `calc(100% - ${NAV.WIDTH}px)`,
-        }),
         ...sx,
       }}
       {...other}

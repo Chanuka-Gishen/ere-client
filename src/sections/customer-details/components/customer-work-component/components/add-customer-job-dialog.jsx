@@ -47,7 +47,7 @@ export const AddCustomerJobDialog = ({ formik, isOpen, handleClose, isLoading, h
               <Select
                 labelId="select-label"
                 id="select"
-                label="User Role"
+                label="Company"
                 {...getFieldProps('workOrderFrom')}
               >
                 <MenuItem value={COMPANIES.CMP_ERE}>ERE</MenuItem>

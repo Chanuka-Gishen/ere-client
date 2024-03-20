@@ -198,7 +198,7 @@ export const JobDetailsView = ({
             <StyledBreadcrumb
               onClick={() => handleOnClickBreadCrumb(NAVIGATION_ROUTES.work_orders)}
               label="Work Orders"
-              icon={<ListIcon fontSize="small" />}
+              icon={<HomeIcon fontSize="small" />}
             />
             <StyledBreadcrumb
               component="a"
@@ -293,15 +293,13 @@ export const JobDetailsView = ({
                             useFlexGap
                             flexWrap="wrap"
                           >
-                            {workOrder && workOrder.workOrderStatus != WORK_STATUS.COMPLETED && (
-                              <Button
-                                variant="contained"
-                                startIcon={<SettingsIcon />}
-                                onClick={handleOpenCloseUpdateDialog}
-                              >
-                                Update
-                              </Button>
-                            )}
+                            <Button
+                              variant="contained"
+                              startIcon={<SettingsIcon />}
+                              onClick={handleOpenCloseUpdateDialog}
+                            >
+                              Update
+                            </Button>
                             {workOrder && workOrder.workOrderStatus === WORK_STATUS.CREATED && (
                               <Button
                                 variant="contained"
