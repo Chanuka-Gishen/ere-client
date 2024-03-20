@@ -13,6 +13,7 @@ import {
   TableContainer,
   TableRow,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { Edit } from '@mui/icons-material';
 import { CustomerDetailsUpdateDialog } from '../components/customer-details-update-dialog';
@@ -35,6 +36,8 @@ export const CustomerDetailsComponentView = ({
   handleClose,
   handleUpdateCustomer,
 }) => {
+  const isMobile = useMediaQuery('(max-width:600px)');
+
   return (
     <>
       {isLoading ? (
@@ -100,6 +103,9 @@ export const CustomerDetailsComponentView = ({
                           sx={{
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            maxWidth: isMobile ? '200px' : '300px', // Adjust width based on media query
+                            display: 'inline-block', // Ensure the link behaves as an inline-block element
                           }}
                         >
                           {customerInfo.customerLocation}

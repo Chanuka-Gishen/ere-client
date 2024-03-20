@@ -24,6 +24,7 @@ import { fDate } from 'src/utils/format-time';
 import { WORK_STATUS, WORK_TYPE } from 'src/constants/common-constants';
 import Label from 'src/components/label';
 import SearchInput from 'src/components/search-input/search-input';
+import { useResponsive } from 'src/hooks/use-responsive';
 
 // ---------------------------------------------------------------------------
 
@@ -50,6 +51,7 @@ export const WorkOrdrsView = ({
   handleChangeSearchParamJobCode,
   filteredData,
 }) => {
+  const isMobile = useResponsive('down', 'lg');
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" mb={5}>
@@ -57,7 +59,7 @@ export const WorkOrdrsView = ({
       </Typography>
 
       <Card>
-        <Stack direction="row" spacing={2}>
+        <Stack direction={isMobile ? 'column' : 'row'} spacing={isMobile ? 0 : 2}>
           <Toolbar
             sx={{
               height: 96,

@@ -10,10 +10,11 @@ export const CurrencyInput = React.forwardRef(function CurrencyInput(props, ref)
       {...other}
       getInputRef={ref}
       onValueChange={(values) => {
+        const value = values.value === null ? 0 : values.value;
         onChange({
           target: {
             name: props.name,
-            value: values.value,
+            value: value,
           },
         });
       }}

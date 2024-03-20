@@ -20,7 +20,7 @@ import AccountPopover from './common/account-popover';
 export default function Header({ onOpenNav }) {
   const theme = useTheme();
 
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = false;
 
   const renderContent = (
     <>
