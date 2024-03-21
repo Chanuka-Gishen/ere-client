@@ -20,4 +20,5 @@ export const NAVIGATION_ROUTES = {
   employees: 'employees',
   work_orders: 'work-orders',
   work_order_details: 'work-orders/:jobId',
+  invoices: 'invoices',
 };

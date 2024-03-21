@@ -171,7 +171,7 @@ export const WorkOrdrsView = ({
           count={filteredData.length}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[10, 20, 30]}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Card>
