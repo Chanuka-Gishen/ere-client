@@ -1,0 +1,124 @@
+import React, { useEffect, useState } from 'react';
+import { InvoicesView } from '../view/invoices_view';
+import axios from 'axios';
+import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
+import { BACKEND_API } from 'src/axios/constant/backend-api';
+import responseUtil from 'src/utils/responseUtil';
+
+const InvoicesController = () => {
+  const header = [
+    'Job Id',
+    'Invoice Id',
+    'Company',
+    'Customer',
+    'Date',
+    'Total Items (Net)',
+    'Total Items (Gross)',
+    'Service Chargers (Net)',
+    'Service Chargers (Gross)',
+    'Other Chargers (Net)',
+    'Other Chargers (Gross)',
+    'Net Total',
+    'Gross Total',
+  ];
+
+  const sourceToken = axios.CancelToken.source();
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const [filteredDate, setFilteredDate] = useState(null);
+  const [data, setData] = useState([]);
+  const [stats, setStats] = useState(null);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingStats, setIsLoadingStats] = useState(true);
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
+  };
+
+  const handleChangeDate = (date) => {
+    setFilteredDate(date);
+  };
+
+  const handleDeleteFilteredDate = () => {
+    setFilteredDate(null);
+  };
+
+  const fetchStats = async () => {
+    setIsLoadingStats(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.WORK_ORDR_INVOICE_STATS,
+      method: 'POST',
+      cancelToken: sourceToken.token,
+      data: { filteredDate },
+    })
+      .then((res) => {
+        if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+          setStats(res.data.responseData);
+        }
+      })
+      .catch(() => {
+        setIsLoadingStats(false);
+      })
+      .finally(() => {
+        setIsLoadingStats(false);
+      });
+  };
+
+  const fetchInvoices = async () => {
+    setIsLoading(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.WORK_ORDR_ALL_INVOICES,
+      method: 'POST',
+      cancelToken: sourceToken.token,
+      data: {
+        filteredDate,
+      },
+    })
+      .then((res) => {
+        if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+          setData(res.data.responseData);
+        }
+      })
+      .catch(() => {
+        setIsLoading(false);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    fetchInvoices();
+    fetchStats();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filteredDate]);
+
+  return (
+    <InvoicesView
+      isLoading={isLoading}
+      data={data}
+      header={header}
+      filteredDate={filteredDate}
+      handleChangeDate={handleChangeDate}
+      handleDeleteFilteredDate={handleDeleteFilteredDate}
+      page={page}
+      rowsPerPage={rowsPerPage}
+      handleChangePage={handleChangePage}
+      handleChangeRowsPerPage={handleChangeRowsPerPage}
+      stats={stats}
+      isLoadingStats={isLoadingStats}
+    />
+  );
+};
+
+export default InvoicesController;

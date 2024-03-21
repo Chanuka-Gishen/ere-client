@@ -3,4 +3,5 @@ export const NAVBAR_ITEMS = {
   CUSTOMERS: 'customers',
   WORKORDERS: 'workorders',
   EMPLOYEES: 'employees',
+  INVOICES: 'invoices',
 };

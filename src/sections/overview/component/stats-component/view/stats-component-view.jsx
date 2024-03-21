@@ -59,7 +59,9 @@ export const StatsComponentView = ({
                 <MenuItem onClick={handleOpenCloseQrConfirmationDialog}>Generate</MenuItem>
               </Menu>
             </Stack>
-            <Typography variant="h2">{isLoadingQrCount ? 'Loading...' : qrCount}</Typography>
+            <Typography variant={isLoadingQrCount ? 'h6' : 'h2'}>
+              {isLoadingQrCount ? 'Loading...' : qrCount}
+            </Typography>
           </Stack>
         </Card>
       </Grid>
@@ -69,7 +71,9 @@ export const StatsComponentView = ({
             <Typography variant="title" color={grey[700]}>
               Today's Work Orders Count
             </Typography>
-            <Typography variant="h2">{isLoadingWorkCount ? 'Loading...' : workCount}</Typography>
+            <Typography variant={isLoadingWorkCount ? 'h6' : 'h2'}>
+              {isLoadingWorkCount ? 'Loading...' : workCount}
+            </Typography>
           </Stack>
         </Card>
       </Grid>

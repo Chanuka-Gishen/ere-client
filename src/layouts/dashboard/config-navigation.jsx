@@ -5,6 +5,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import GroupIcon from '@mui/icons-material/Group';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import ListIcon from '@mui/icons-material/List';
+import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,13 @@ const navConfig = [
     name: NAVBAR_ITEMS.WORKORDERS,
     path: NAVIGATION_ROUTES.work_orders,
     icon: <ListIcon />,
+    adminOnly: true,
+  },
+  {
+    title: 'Invoices',
+    name: NAVBAR_ITEMS.INVOICES,
+    path: NAVIGATION_ROUTES.invoices,
+    icon: <RequestQuoteIcon />,
     adminOnly: true,
   },
   {
