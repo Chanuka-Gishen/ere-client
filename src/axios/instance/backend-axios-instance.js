@@ -10,6 +10,7 @@ import { enqueueSnackbar as enqueueSnackbarAction } from 'src/store/action/snack
 import { reduxPersistStore } from 'src/store/persistStore';
 import { SNACKBAR_MESSAGE } from 'src/constants/snackbar-constants';
 import authAction from 'src/store/action/authAction';
+import responseUtil from 'src/utils/responseUtil';
 
 const enqueueSnackbar = (...args) => reduxPersistStore.dispatch(enqueueSnackbarAction(...args));
 
@@ -33,11 +34,13 @@ backendAuthApi.interceptors.response.use(
   (error) => {
     if (error && !axios.isCancel(error)) {
       let errorMessage = SNACKBAR_MESSAGE.SOMETHING_WENT_WRONG.MESSAGE;
+      let errorCode = null;
 
       if (error.response) {
         const errorResponse = error.response.data;
         if (!common_util.isUndefinedOrNull(errorResponse.responseMessage)) {
           errorMessage = errorResponse.responseMessage;
+          errorCode = errorResponse.responseCode;
         }
 
         /**
@@ -59,7 +62,9 @@ backendAuthApi.interceptors.response.use(
         message: errorMessage,
         options: {
           key: uuid(),
-          variant: SNACKBAR_MESSAGE.SOMETHING_WENT_WRONG.VARIANT,
+          variant: errorCode
+            ? responseUtil.findResponseType(errorCode)
+            : SNACKBAR_MESSAGE.SOMETHING_WENT_WRONG.VARIANT,
         },
       });
     }
