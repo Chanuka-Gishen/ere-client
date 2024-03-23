@@ -441,6 +441,10 @@ const JobDetailsController = () => {
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
           handleFetchWorkOrderDetails();
+        } else {
+          enqueueSnackbar(data.responseMessage, {
+            variant: responseUtil.findResponseType(data.responseCode),
+          });
         }
       })
       .finally(() => {

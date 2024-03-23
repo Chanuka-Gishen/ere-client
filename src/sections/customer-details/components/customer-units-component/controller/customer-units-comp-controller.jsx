@@ -29,7 +29,7 @@ const validationUpdateSchema = Yup.object().shape({
   unitSerialNo: Yup.string(),
   unitInstalledDate: Yup.string().nullable(),
   unitLastMaintenanceDate: Yup.string().nullable(),
-  unitNextMaintenanceDate: Yup.string().required('Next Service Date is required'),
+  unitNextMaintenanceDate: Yup.string().nullable(),
   unitStatus: Yup.string()
     .required('Unit status required')
     .oneOf([UNIT_STATUS.ACTIVE, UNIT_STATUS.INACTIVE]),
@@ -75,7 +75,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       unitSerialNo: '',
       unitInstalledDate: null,
       unitLastMaintenanceDate: null,
-      unitNextMaintenanceDate: addMonths(new Date(), 4),
+      unitNextMaintenanceDate: null,
       unitStatus: UNIT_STATUS.ACTIVE,
     },
     validationSchema: validationUpdateSchema,

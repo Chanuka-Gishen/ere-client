@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
-import { WORK_TYPE } from 'src/constants/common-constants';
+import { COMPANIES, WORK_TYPE } from 'src/constants/common-constants';
 import { Invoice } from 'src/components/invoice';
 
 export const UnitCompletedWork = ({ data, unit }) => {
@@ -78,12 +78,18 @@ export const UnitCompletedWork = ({ data, unit }) => {
                   </Stack>
                 </AccordionSummary>
                 <AccordionDetails>
-                  <Invoice
-                    workOrder={item}
-                    unit={unit}
-                    customer={unit.unitCustomerId}
-                    invoice={item.workOrderChargers}
-                  />
+                  {item.workOrderFrom === COMPANIES.CMP_ERE ? (
+                    <Invoice
+                      workOrder={item}
+                      unit={unit}
+                      customer={unit.unitCustomerId}
+                      invoice={item.workOrderChargers}
+                    />
+                  ) : (
+                    <Container>
+                      <Typography align="center">Invoice not available</Typography>
+                    </Container>
+                  )}
                 </AccordionDetails>
               </Accordion>
             ))}
