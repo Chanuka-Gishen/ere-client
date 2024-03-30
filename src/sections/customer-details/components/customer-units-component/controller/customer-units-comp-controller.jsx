@@ -116,8 +116,8 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
   };
 
   const filteredUnits = units.filter((item) => {
-    const serialNo = item.unitSerialNo;
-    const searchParamRegex = new RegExp(`^${searchParam}`, 'i');
+    const serialNo = item.unitQrCode ? item.unitQrCode.qrCodeName : null;
+    const searchParamRegex = new RegExp(`${searchParam}`, 'i');
     return searchParamRegex.test(serialNo);
   });
 

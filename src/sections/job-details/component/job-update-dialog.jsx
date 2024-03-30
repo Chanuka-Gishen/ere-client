@@ -69,12 +69,13 @@ export const JobUpdateDialog = ({
             >
               <MenuItem value={COMPANIES.CMP_ERE}>ERE</MenuItem>
               <MenuItem value={COMPANIES.CMP_SINGER}>Singer</MenuItem>
+              <MenuItem value={COMPANIES.CMP_SINGER_DIR}>Singer Direct Pay</MenuItem>
             </Select>
             {Boolean(touched.workOrderFrom && errors.workOrderFrom) && (
               <FormHelperText>{touched.workOrderFrom && errors.workOrderFrom}</FormHelperText>
             )}
           </FormControl>
-          {values.workOrderFrom === COMPANIES.CMP_SINGER && (
+          {values.workOrderFrom != COMPANIES.CMP_ERE && (
             <TextField
               name={`workOrderInvoiceNumber`}
               label={'Invoice Number'}

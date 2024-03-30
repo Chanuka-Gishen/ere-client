@@ -426,7 +426,7 @@ export const JobDetailsView = ({
                                 startIcon={<CurrencyExchangeIcon />}
                                 onClick={handleOpenCloseAddTipDialog}
                               >
-                                Add Tip
+                                Add Points
                               </Button>
                             )}
                           </Stack>

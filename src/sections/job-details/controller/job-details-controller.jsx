@@ -24,7 +24,7 @@ const validationSchema = Yup.object().shape({
   workOrderScheduledDate: Yup.string().required('Next Service Date is required'),
   workOrderFrom: Yup.string()
     .required()
-    .oneOf([COMPANIES.CMP_ERE, COMPANIES.CMP_SINGER], 'Invalid type'),
+    .oneOf([COMPANIES.CMP_ERE, COMPANIES.CMP_SINGER, COMPANIES.CMP_SINGER_DIR], 'Invalid type'),
   workOrderInvoiceNumber: Yup.string(),
 });
 
@@ -57,6 +57,10 @@ const validationSchemaChargers = Yup.object().shape({
     description: Yup.string(),
     netAmount: Yup.number().min(0, 'Other net charge must be valid'),
     amount: Yup.number().min(0, 'Other charges must be valid'),
+  }),
+  discount: Yup.object().shape({
+    percentage: Yup.number().min(0, 'Discount must be valid').max(100),
+    //amount: Yup.number().min(0, 'Discount must be valid'),
   }),
   //grandTotal: Yup.number().required('Grand Total is required').min(0, 'Grand Total must be valid'),
 });
@@ -129,6 +133,10 @@ const JobDetailsController = () => {
       otherCharges: {
         description: '',
         netAmount: 0,
+        amount: 0,
+      },
+      discount: {
+        percentage: 0,
         amount: 0,
       },
       grandNetTotal: 0,
@@ -230,10 +238,16 @@ const JobDetailsController = () => {
     setOpenUpdateDialog(!openUpdateDialog);
 
     if (!openUpdateDialog) {
-      formik.setFieldValue('workOrderScheduledDate', new Date(workOrder.workOrderScheduledDate));
-      if (workOrder.workOrderInvoiceNumber) {
-        formik.setFieldValue('workOrderInvoiceNumber', workOrder.workOrderInvoiceNumber);
-      }
+      formik.setValues({
+        workOrderFrom: workOrder.workOrderFrom,
+        workOrderType: workOrder.workOrderType,
+        workOrderScheduledDate: new Date(workOrder.workOrderScheduledDate),
+        workOrderInvoiceNumber: workOrder.workOrderInvoiceNumber
+          ? workOrder.workOrderInvoiceNumber
+          : '',
+      });
+    } else {
+      formik.resetForm();
     }
   };
 
@@ -408,6 +422,7 @@ const JobDetailsController = () => {
           workOrderType: formik.values.workOrderType,
           workOrderScheduledDate: formik.values.workOrderScheduledDate,
           workOrderFrom: formik.values.workOrderFrom,
+          workOrderInvoiceNumber: formik.values.workOrderInvoiceNumber,
         },
       })
         .then((res) => {
