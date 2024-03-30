@@ -58,7 +58,7 @@ export const InvoiceView = ({
               }}
             />
             <Stack direction="column" spacing={isMobile ? 1 : 2}>
-              <Typography fontWeight={'bold'} variant={isMobile ? 'h6' : 'h4'}>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h3' : 'h2'}>
                 E R Engineers
               </Typography>
               <Typography variant={isMobile ? 'h7' : 'h4'}>
@@ -105,6 +105,33 @@ export const InvoiceView = ({
               </Typography>
             </Stack>
           </Stack>
+          <Divider />
+          <Stack spacing={isMobile ? 1 : 2}>
+            <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+              Bank account details
+            </Typography>
+            <Stack direction="row" spacing={isMobile ? 1 : 2}>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                Bank name
+              </Typography>
+              <Typography variant={isMobile ? 'h7' : 'body1'}>
+                Nations Trust Bank - Moratuwa
+              </Typography>
+            </Stack>
+            <Stack direction="row" spacing={isMobile ? 1 : 2}>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                Account holder name
+              </Typography>
+              <Typography variant={isMobile ? 'h7' : 'body1'}>ER Engineers</Typography>
+            </Stack>
+            <Stack direction="row" spacing={isMobile ? 1 : 2}>
+              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                Account number
+              </Typography>
+              <Typography variant={isMobile ? 'h7' : 'body1'}>014212025778</Typography>
+            </Stack>
+          </Stack>
+          <Divider />
           <TableContainer>
             <Table>
               <TableHead>
@@ -173,6 +200,14 @@ export const InvoiceView = ({
                   </TableCell>
                   <TableCell align="right" sx={{ border: '1px solid rgba(224, 224, 224, 1)' }}>
                     {formatCurrency(invoice.otherCharges.amount)}
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={4} sx={{ border: 'none' }} align="right" variant="th">
+                    Discount
+                  </TableCell>
+                  <TableCell align="right" sx={{ border: '1px solid rgba(224, 224, 224, 1)' }}>
+                    {`${invoice.discount.percentage} %`}
                   </TableCell>
                 </TableRow>
                 <TableRow>

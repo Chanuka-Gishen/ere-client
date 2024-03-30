@@ -23,4 +23,5 @@ export const USER_STATUS = {
 export const COMPANIES = {
   CMP_ERE: 'ERE',
   CMP_SINGER: 'Singer',
+  CMP_SINGER_DIR: 'Singer Direct Pay',
 };

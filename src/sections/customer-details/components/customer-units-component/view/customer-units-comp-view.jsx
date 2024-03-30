@@ -134,7 +134,7 @@ export const CustomerUnitsComponentView = ({
                         <SearchInput
                           filterName={searchParam}
                           onFilterName={handleChangeSearchParam}
-                          placeHolder={'Search serial no...'}
+                          placeHolder={'Search qr...'}
                         />
                       )}
                     </Stack>

@@ -566,6 +566,40 @@ export const ChargersView = ({
               </CustomCell>
             </TableRow>
             <TableRow>
+              <CustomCell colSpan={4} align="left">
+                Discount Percentage
+              </CustomCell>
+              <CustomCell align="right">
+                <TextField
+                  size="small"
+                  name="discount.percentage"
+                  fullWidth
+                  onChange={(e) => {
+                    const { value } = e.target;
+                    handleChange(`discount.percentage`)(e);
+                  }}
+                  type="number"
+                  {...getFieldProps('discount.percentage')}
+                  error={Boolean(
+                    touched.discount &&
+                      touched.discount.percentage &&
+                      errors.discount &&
+                      errors.discount.percentage
+                  )}
+                  helperText={
+                    (touched.discount &&
+                      touched.discount.percentage &&
+                      errors.discount &&
+                      errors.discount.percentage) ||
+                    ''
+                  }
+                  InputProps={{
+                    endAdornment: <InputAdornment position="start">{'%'}</InputAdornment>,
+                  }}
+                />
+              </CustomCell>
+            </TableRow>
+            <TableRow>
               <CustomCell colSpan={3} align="right">
                 Grand total
               </CustomCell>
