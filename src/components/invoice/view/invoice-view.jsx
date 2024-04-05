@@ -38,7 +38,7 @@ export const InvoiceView = ({
               startIcon={<DownloadOutlined />}
               variant="contained"
               onClick={handleDownloadPdf}
-              disabled={isDownloading || !workOrder.workOrderInvoiceNumber}
+              disabled={isDownloading || !workOrder.workOrderInvoice}
             >
               PDF
             </LoadingButton>
@@ -95,7 +95,7 @@ export const InvoiceView = ({
                 Invoice#
               </Typography>
               <Typography variant={isMobile ? 'h7' : 'body1'}>
-                {workOrder.workOrderInvoiceNumber}
+                {workOrder.workOrderInvoice.invoiceNumber}
               </Typography>
               <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
                 Completed Date#

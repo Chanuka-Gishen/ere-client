@@ -109,9 +109,11 @@ export const InvoicesView = ({
                     <>
                       {data.length > 0 ? (
                         <>
-                          {data.map((item, index) => (
-                            <InvoicesRow key={index} invoice={item} />
-                          ))}
+                          {data
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((item, index) => (
+                              <InvoicesRow key={index} invoice={item} />
+                            ))}
                         </>
                       ) : (
                         <>

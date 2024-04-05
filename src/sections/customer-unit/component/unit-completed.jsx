@@ -83,7 +83,7 @@ export const UnitCompletedWork = ({ data, unit }) => {
                       workOrder={item}
                       unit={unit}
                       customer={unit.unitCustomerId}
-                      invoice={item.workOrderChargers}
+                      invoice={item.workOrderInvoice}
                     />
                   ) : (
                     <Container>

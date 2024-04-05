@@ -182,6 +182,8 @@ export const JobDetailsView = ({
   isLoadingDeleteJob,
   handleOpenCloseJobDeleteDialog,
   handleDeleteJob,
+  availableJobList,
+  isLoadingJobList,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -372,8 +374,8 @@ export const JobDetailsView = ({
                       <TableRow>
                         <CustomCell>Invoice Number</CustomCell>
                         <CustomCell>
-                          {workOrder?.workOrderInvoiceNumber
-                            ? workOrder?.workOrderInvoiceNumber
+                          {workOrder?.workOrderInvoice && workOrder?.workOrderInvoice.invoiceNumber
+                            ? workOrder?.workOrderInvoice.invoiceNumber
                             : '-'}
                         </CustomCell>
                       </TableRow>
@@ -567,7 +569,7 @@ export const JobDetailsView = ({
                     workOrder={workOrder}
                     unit={workOrder.workOrderUnitReference}
                     customer={workOrder.workOrderCustomerId}
-                    invoice={workOrder.workOrderChargers}
+                    invoice={workOrder.workOrderInvoice}
                   />
                 )}
               </GridItem>
@@ -600,6 +602,8 @@ export const JobDetailsView = ({
         <JobUpdateDialog
           formik={formik}
           workOrder={workOrder}
+          availableJobList={availableJobList}
+          isLoadingJobList={isLoadingJobList}
           isOpen={openUpdateDialog}
           handleClose={handleOpenCloseUpdateDialog}
           isLoading={isLoadingUpdate}
@@ -684,4 +688,6 @@ JobDetailsView.propTypes = {
   isLoadingDeleteJob: PropTypes.bool.isRequired,
   handleOpenCloseJobDeleteDialog: PropTypes.func.isRequired,
   handleDeleteJob: PropTypes.func.isRequired,
+  availableJobList: PropTypes.array.isRequired,
+  isLoadingJobList: PropTypes.bool.isRequired,
 };

@@ -278,7 +278,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
           setUnits(data.responseData);
-          handleSelectUnit(data.responseData.find((unit) => unit._id === selectedUnit._id));
+          //handleSelectUnit(data.responseData.find((unit) => unit._id === selectedUnit._id));
         }
       })
       .finally(() => {

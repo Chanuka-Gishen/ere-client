@@ -26,6 +26,7 @@ const validationSchema = Yup.object().shape({
     .required()
     .oneOf([COMPANIES.CMP_ERE, COMPANIES.CMP_SINGER, COMPANIES.CMP_SINGER_DIR], 'Invalid type'),
   workOrderInvoiceNumber: Yup.string(),
+  workOrderLinkedJobs: Yup.array(),
 });
 
 const validationSchemaChargers = Yup.object().shape({
@@ -82,6 +83,7 @@ const JobDetailsController = () => {
   const [files, setFiles] = useState([]);
   const [deletedFiles, setDeletedFiles] = useState([]);
   const [totalTip, setTotalTip] = useState(0);
+  const [availableJobList, setAvailableJobList] = useState([]);
 
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
@@ -98,6 +100,7 @@ const JobDetailsController = () => {
   const [isLoadingDeleteFiles, setIsLoadingDeleteFiles] = useState(false);
   const [isLoadingChargers, setIsLoadingChargers] = useState(false);
   const [isLoadingDeleteJob, setIsLoadingDeleteJob] = useState(false);
+  const [isLoadingJobList, setIsLoadingJobList] = useState(true);
 
   const formik = useFormik({
     initialValues: {
@@ -105,6 +108,8 @@ const JobDetailsController = () => {
       workOrderFrom: '',
       workOrderInvoiceNumber: '',
       workOrderScheduledDate: null,
+      workOrderIsLinked: false,
+      workOrderLinkedJobs: [],
     },
     validationSchema,
     onSubmit: () => {
@@ -196,9 +201,9 @@ const JobDetailsController = () => {
   };
 
   const handleResetChargers = () => {
-    if (workOrder.workOrderChargers) {
+    if (workOrder.workOrderInvoice) {
       chargersFormik.setValues({
-        ...workOrder.workOrderChargers,
+        ...workOrder.workOrderInvoice,
       });
     } else {
       chargersFormik.resetForm();
@@ -238,6 +243,8 @@ const JobDetailsController = () => {
     setOpenUpdateDialog(!openUpdateDialog);
 
     if (!openUpdateDialog) {
+      handleFetchAvailableJobsToLink();
+
       formik.setValues({
         workOrderFrom: workOrder.workOrderFrom,
         workOrderType: workOrder.workOrderType,
@@ -245,6 +252,7 @@ const JobDetailsController = () => {
         workOrderInvoiceNumber: workOrder.workOrderInvoiceNumber
           ? workOrder.workOrderInvoiceNumber
           : '',
+        workOrderLinkedJobs: workOrder.workOrderLinked,
       });
     } else {
       formik.resetForm();
@@ -423,6 +431,7 @@ const JobDetailsController = () => {
           workOrderScheduledDate: formik.values.workOrderScheduledDate,
           workOrderFrom: formik.values.workOrderFrom,
           workOrderInvoiceNumber: formik.values.workOrderInvoiceNumber,
+          workOrderLinkedJobs: formik.values.workOrderLinkedJobs,
         },
       })
         .then((res) => {
@@ -473,12 +482,15 @@ const JobDetailsController = () => {
       setIsLoadingChargers(true);
 
       await backendAuthApi({
-        url: BACKEND_API.WORK_ORDR_CHARGERS,
+        url: BACKEND_API.INVOICE_CREAE_UDPATE,
         method: 'POST',
         cancelToken: cancelToken.token,
         data: {
           id: workOrder._id,
-          chargers: chargersFormik.values,
+          chargers: {
+            ...chargersFormik.values,
+            items: chargersFormik.values.items.length === 0 ? [] : chargersFormik.values.items,
+          },
         },
       })
         .then((res) => {
@@ -528,6 +540,35 @@ const JobDetailsController = () => {
       });
   };
 
+  const handleFetchAvailableJobsToLink = async () => {
+    setIsLoadingJobList(true);
+    await backendAuthApi({
+      url: BACKEND_API.WORK_ORDR_LINK_AV_LIST,
+      method: 'POST',
+      cancelToken: cancelToken.token,
+      data: {
+        customerId: workOrder.workOrderCustomerId._id,
+        scheduledDate: workOrder.workOrderScheduledDate,
+      },
+    })
+      .then((res) => {
+        if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+          const filteredData = res.data.responseData.map((item) => ({
+            _id: item._id,
+            workOrderCode: item.workOrderCode,
+            workOrderType: item.workOrderType,
+          }));
+          setAvailableJobList(filteredData);
+        }
+      })
+      .catch(() => {
+        setIsLoadingJobList(false);
+      })
+      .finally(() => {
+        setIsLoadingJobList(false);
+      });
+  };
+
   const handleFetchEmployeeList = async () => {
     await backendAuthApi({
       url: BACKEND_API.EMPLOYEE_SELECT,
@@ -554,30 +595,20 @@ const JobDetailsController = () => {
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
           setWorkOrder(data.responseData);
-          formik.setFieldValue('workOrderType', data.responseData.workOrderType);
-          formik.setFieldValue(
-            'workOrderScheduledDate',
-            new Date(data.responseData.workOrderScheduledDate)
-          );
-          if (data.responseData.workOrderInvoiceNumber) {
-            formik.setFieldValue(
-              'workOrderInvoiceNumber',
-              data.responseData.workOrderInvoiceNumber
-                ? data.responseData.workOrderInvoiceNumber
-                : ''
-            );
-          }
 
-          if (data.responseData.workOrderFrom) {
-            formik.setFieldValue(
-              'workOrderFrom',
-              data.responseData.workOrderFrom ? data.responseData.workOrderFrom : ''
-            );
-          }
+          formik.setValues({
+            workOrderType: data.responseData.workOrderType,
+            workOrderScheduledDate: new Date(data.responseData.workOrderScheduledDate),
+            workOrderInvoiceNumber: data.responseData.workOrderInvoice
+              ? data.responseData.workOrderInvoice.invoiceNumber
+              : '',
+            workOrderFrom: data.responseData.workOrderFrom ? data.responseData.workOrderFrom : '',
+            workOrderLinkedJobs: data.responseData.workOrderLinked,
+          });
 
-          if (data.responseData.workOrderChargers) {
+          if (data.responseData.workOrderInvoice) {
             chargersFormik.setValues({
-              ...data.responseData.workOrderChargers,
+              ...data.responseData.workOrderInvoice,
             });
           }
 
@@ -649,6 +680,8 @@ const JobDetailsController = () => {
       isLoadingDeleteJob={isLoadingDeleteJob}
       handleOpenCloseJobDeleteDialog={handleOpenCloseJobDeleteDialog}
       handleDeleteJob={handleDeleteJob}
+      availableJobList={availableJobList}
+      isLoadingJobList={isLoadingJobList}
     />
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
+  Autocomplete,
   Button,
   Dialog,
   DialogActions,
@@ -9,11 +10,14 @@ import {
   DialogTitle,
   FormControl,
   FormHelperText,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
   Stack,
+  Switch,
   TextField,
+  Typography,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
@@ -26,8 +30,10 @@ export const JobUpdateDialog = ({
   isLoading,
   handleSubmit,
   workOrder,
+  availableJobList,
+  isLoadingJobList,
 }) => {
-  const { getFieldProps, touched, errors, values } = formik;
+  const { getFieldProps, touched, errors, values, setFieldValue, handleChange } = formik;
 
   return (
     <Dialog open={isOpen} fullWidth sx={{ px: 2 }}>
@@ -52,11 +58,17 @@ export const JobUpdateDialog = ({
                   <FormHelperText>{touched.workOrderType && errors.workOrderType}</FormHelperText>
                 )}
               </FormControl>
-              <DatePicker
-                label="Scheduled Date*"
-                value={formik.values.workOrderScheduledDate}
-                onChange={(date) => formik.setFieldValue('workOrderScheduledDate', date)}
-              />
+              <Grid container alignItems="center">
+                <Grid item xs={12} sm={8}>
+                  <Stack>
+                    <DatePicker
+                      label="Scheduled Date*"
+                      value={formik.values.workOrderScheduledDate}
+                      onChange={(date) => formik.setFieldValue('workOrderScheduledDate', date)}
+                    />
+                  </Stack>
+                </Grid>
+              </Grid>
             </>
           )}
           <FormControl>
@@ -82,6 +94,34 @@ export const JobUpdateDialog = ({
               fullWidth
               {...getFieldProps('workOrderInvoiceNumber')}
             />
+          )}
+          {isLoadingJobList ? (
+            <Typography align="center">Available Jobs Loading</Typography>
+          ) : (
+            <>
+              {availableJobList && availableJobList.length === 1 ? (
+                <Typography align="center"> No Jobs available to link </Typography>
+              ) : (
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={availableJobList}
+                  getOptionLabel={(option) => `${option.workOrderCode} - ${option.workOrderType}`}
+                  value={values.workOrderLinkedJobs}
+                  defaultValue={
+                    values.workOrderLinkedJobs.length > 0
+                      ? values.workOrderLinkedJobs
+                      : availableJobList
+                  }
+                  filterSelectedOptions
+                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                  onChange={(event, newValue) => setFieldValue('workOrderLinkedJobs', newValue)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Select Jobs To Link" placeholder="Jobs" />
+                  )}
+                />
+              )}
+            </>
           )}
         </Stack>
       </DialogContent>

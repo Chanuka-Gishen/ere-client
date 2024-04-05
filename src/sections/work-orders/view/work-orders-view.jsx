@@ -153,7 +153,7 @@ export const WorkOrdrsView = ({
                                   : '--'}
                               </CustomCell>
                               <CustomCell>
-                                {item.workOrderInvoiceNumber ? item.workOrderInvoiceNumber : '--'}
+                                {item.workOrderInvoice ? item.workOrderInvoice.invoiceNumber : '--'}
                               </CustomCell>
                             </TableRow>
                           ))}

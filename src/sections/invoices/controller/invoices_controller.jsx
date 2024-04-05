@@ -18,6 +18,8 @@ const InvoicesController = () => {
     'Service Chargers (Gross)',
     'Other Chargers (Net)',
     'Other Chargers (Gross)',
+    'Discount (%)',
+    'Discount',
     'Net Total',
     'Gross Total',
   ];
