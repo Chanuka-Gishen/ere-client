@@ -42,11 +42,11 @@ export const BACKEND_API = {
   WORK_ORDR_TIP: IP_URL + '/work-order/tips',
   WORK_ORDR_DELETE_IMAGES: IP_URL + '/work-order/delete-files',
   WORK_ORDR_TODAYS_COUNT: IP_URL + '/work-order/today-count',
-  WORK_ORDR_DOWNLOAD_INVOICE: IP_URL + '/work-order/download-invoice/',
   WORK_ORDR_ALL_INVOICES: IP_URL + '/invoice/invoices',
   WORK_ORDR_INVOICE_STATS: IP_URL + '/invoice/invoices-stats',
   WORK_ORDR_LINK_AV_LIST: IP_URL + '/work-order/link-jobs',
 
+  INVOICE_DOWNLOAD: IP_URL + '/invoice/download-invoice/',
   INVOICE_CREAE_UDPATE: IP_URL + '/invoice/chargers',
 
   QR_CODE_AVAILABLES: IP_URL + '/qr-code/',

@@ -569,7 +569,7 @@ export const JobDetailsView = ({
                     workOrder={workOrder}
                     unit={workOrder.workOrderUnitReference}
                     customer={workOrder.workOrderCustomerId}
-                    invoice={workOrder.workOrderChargers}
+                    invoice={workOrder.workOrderInvoice}
                   />
                 )}
               </GridItem>

@@ -26,7 +26,6 @@ const validationSchema = Yup.object().shape({
     .required()
     .oneOf([COMPANIES.CMP_ERE, COMPANIES.CMP_SINGER, COMPANIES.CMP_SINGER_DIR], 'Invalid type'),
   workOrderInvoiceNumber: Yup.string(),
-  workOrderIsLinked: Yup.boolean().required(),
   workOrderLinkedJobs: Yup.array(),
 });
 
@@ -253,10 +252,7 @@ const JobDetailsController = () => {
         workOrderInvoiceNumber: workOrder.workOrderInvoiceNumber
           ? workOrder.workOrderInvoiceNumber
           : '',
-        workOrderIsLinked: workOrder.workOrderLinked.isLinked,
-        workOrderLinkedJobs: workOrder.workOrderLinked.jobList
-          ? workOrder.workOrderLinked.jobList
-          : [],
+        workOrderLinkedJobs: workOrder.workOrderLinked,
       });
     } else {
       formik.resetForm();
@@ -435,10 +431,7 @@ const JobDetailsController = () => {
           workOrderScheduledDate: formik.values.workOrderScheduledDate,
           workOrderFrom: formik.values.workOrderFrom,
           workOrderInvoiceNumber: formik.values.workOrderInvoiceNumber,
-          workOrderIsLinked: formik.values.workOrderIsLinked,
-          workOrderLinkedJobs: formik.values.workOrderIsLinked
-            ? formik.values.workOrderLinkedJobs
-            : [],
+          workOrderLinkedJobs: formik.values.workOrderLinkedJobs,
         },
       })
         .then((res) => {
@@ -602,6 +595,7 @@ const JobDetailsController = () => {
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
           setWorkOrder(data.responseData);
+
           formik.setValues({
             workOrderType: data.responseData.workOrderType,
             workOrderScheduledDate: new Date(data.responseData.workOrderScheduledDate),
@@ -609,6 +603,7 @@ const JobDetailsController = () => {
               ? data.responseData.workOrderInvoice.invoiceNumber
               : '',
             workOrderFrom: data.responseData.workOrderFrom ? data.responseData.workOrderFrom : '',
+            workOrderLinkedJobs: data.responseData.workOrderLinked,
           });
 
           if (data.responseData.workOrderInvoice) {

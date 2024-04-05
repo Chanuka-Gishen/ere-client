@@ -68,54 +68,7 @@ export const JobUpdateDialog = ({
                     />
                   </Stack>
                 </Grid>
-                <Grid item xs={12} sm={4}>
-                  <Stack direction="row" spacing={1} alignItems="center" sx={{ ml: 1 }}>
-                    {values.workOrderIsLinked ? 'Set Link Off' : 'Set Link On'}
-                    <Switch
-                      checked={values.workOrderIsLinked}
-                      name="workOrderIsLinked"
-                      onChange={(e) => setFieldValue('workOrderIsLinked', e.target.checked)}
-                      inputProps={{ 'aria-label': 'controlled' }}
-                    />
-                  </Stack>
-                </Grid>
               </Grid>
-              {values.workOrderIsLinked && (
-                <>
-                  {isLoadingJobList ? (
-                    <Typography align="center">Available Jobs Loading</Typography>
-                  ) : (
-                    <>
-                      {availableJobList && availableJobList.length === 1 ? (
-                        <Typography align="center"> No Jobs available to link </Typography>
-                      ) : (
-                        <Autocomplete
-                          multiple
-                          id="tags-outlined"
-                          options={availableJobList}
-                          getOptionLabel={(option) =>
-                            `${option.workOrderCode} - ${option.workOrderType}`
-                          }
-                          value={values.workOrderLinkedJobs}
-                          defaultValue={
-                            values.workOrderLinkedJobs.length > 0
-                              ? values.workOrderLinkedJobs
-                              : availableJobList
-                          }
-                          filterSelectedOptions
-                          isOptionEqualToValue={(option, value) => option._id === value._id}
-                          onChange={(event, newValue) =>
-                            setFieldValue('workOrderLinkedJobs', newValue)
-                          }
-                          renderInput={(params) => (
-                            <TextField {...params} label="Select Jobs To Link" placeholder="Jobs" />
-                          )}
-                        />
-                      )}
-                    </>
-                  )}
-                </>
-              )}
             </>
           )}
           <FormControl>
@@ -141,6 +94,34 @@ export const JobUpdateDialog = ({
               fullWidth
               {...getFieldProps('workOrderInvoiceNumber')}
             />
+          )}
+          {isLoadingJobList ? (
+            <Typography align="center">Available Jobs Loading</Typography>
+          ) : (
+            <>
+              {availableJobList && availableJobList.length === 1 ? (
+                <Typography align="center"> No Jobs available to link </Typography>
+              ) : (
+                <Autocomplete
+                  multiple
+                  id="tags-outlined"
+                  options={availableJobList}
+                  getOptionLabel={(option) => `${option.workOrderCode} - ${option.workOrderType}`}
+                  value={values.workOrderLinkedJobs}
+                  defaultValue={
+                    values.workOrderLinkedJobs.length > 0
+                      ? values.workOrderLinkedJobs
+                      : availableJobList
+                  }
+                  filterSelectedOptions
+                  isOptionEqualToValue={(option, value) => option._id === value._id}
+                  onChange={(event, newValue) => setFieldValue('workOrderLinkedJobs', newValue)}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Select Jobs To Link" placeholder="Jobs" />
+                  )}
+                />
+              )}
+            </>
           )}
         </Stack>
       </DialogContent>
