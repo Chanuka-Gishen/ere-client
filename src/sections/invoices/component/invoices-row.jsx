@@ -41,6 +41,8 @@ export const InvoicesRow = ({ invoice }) => {
               invoice.transportCharges.amount
           )}
         </TableCell>
+        <TableCell>{`${invoice.discount.percentage} %`}</TableCell>
+        <TableCell>{formatCurrency(invoice.discount.amount)}</TableCell>
         <TableCell>{formatCurrency(invoice.grandNetTotal)}</TableCell>
         <TableCell>{formatCurrency(invoice.grandTotal)}</TableCell>
       </TableRow>
