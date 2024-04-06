@@ -48,6 +48,7 @@ import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-
 import { useLocation } from 'react-router-dom';
 
 import ListIcon from '@mui/icons-material/List';
+import Label from 'src/components/label';
 
 // -----------------------------------------------------------
 
@@ -379,6 +380,22 @@ export const JobDetailsView = ({
                             : '-'}
                         </CustomCell>
                       </TableRow>
+                      {!isLoading && workOrder.workOrderLinked.length > 0 && (
+                        <TableRow>
+                          <CustomCell>Linked Jobs</CustomCell>
+                          <CustomCell>
+                            <Stack
+                              direction={{ xs: 'column', sm: 'row' }}
+                              spacing={{ xs: 1, sm: 2, md: 4 }}
+                            >
+                              {workOrder.workOrderLinked.map((job, index) => (
+                                <Label key={index}>{job.workOrderCode}</Label>
+                              ))}
+                            </Stack>
+                          </CustomCell>
+                        </TableRow>
+                      )}
+
                       {workOrder?.workOrderStatus === WORK_STATUS.COMPLETED && (
                         <TableRow>
                           <CustomCell>Completed Date</CustomCell>

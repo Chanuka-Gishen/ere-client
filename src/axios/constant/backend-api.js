@@ -47,6 +47,7 @@ export const BACKEND_API = {
   WORK_ORDR_LINK_AV_LIST: IP_URL + '/work-order/link-jobs',
 
   INVOICE_DOWNLOAD: IP_URL + '/invoice/download-invoice/',
+  INVOICE_MAIN_DOWNLOAD: IP_URL + '/invoice/download-total-invoice/',
   INVOICE_CREAE_UDPATE: IP_URL + '/invoice/chargers',
 
   QR_CODE_AVAILABLES: IP_URL + '/qr-code/',

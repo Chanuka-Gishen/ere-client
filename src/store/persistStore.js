@@ -7,8 +7,10 @@ import { crossBrowserListener } from './config/persistListener';
 import { encryptTransform } from 'redux-persist-transform-encrypt';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { thunk } from 'redux-thunk';
+import itemReducer from './reducer/itemReducer';
 
 const allPersistReducers = combineReducers({
+  item: itemReducer,
   auth: authReducer,
   snackbar: snackbarReducer,
 });

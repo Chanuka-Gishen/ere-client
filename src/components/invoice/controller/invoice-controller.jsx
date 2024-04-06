@@ -17,8 +17,13 @@ const InvoiceController = ({ workOrder, unit, customer, invoice }) => {
 
     try {
       if (workOrder.workOrderInvoice) {
+        const apiUrl =
+          workOrder.workOrderLinked.length === 0
+            ? BACKEND_API.INVOICE_DOWNLOAD
+            : BACKEND_API.INVOICE_MAIN_DOWNLOAD;
+
         // Make a GET request to the endpoint that generates the PDF
-        const response = await fetch(BACKEND_API.INVOICE_DOWNLOAD + workOrder._id);
+        const response = await fetch(apiUrl + workOrder._id);
 
         // Check if the response is successful
         if (!response.ok) {
@@ -34,7 +39,11 @@ const InvoiceController = ({ workOrder, unit, customer, invoice }) => {
         // Create a link element
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${workOrder.workOrderInvoice.invoiceNumber}.pdf`; // Set the filename for download
+        link.download = `${
+          workOrder.workOrderLinked.length === 0
+            ? workOrder.workOrderInvoice.invoiceNumber
+            : workOrder.workOrderCode
+        }.pdf`;
         document.body.appendChild(link);
 
         // Simulate a click on the link to trigger the download
