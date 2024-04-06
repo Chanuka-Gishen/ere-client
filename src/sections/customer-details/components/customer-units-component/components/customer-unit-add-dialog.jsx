@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
+  Autocomplete,
   Button,
   Dialog,
   DialogActions,
@@ -28,8 +29,12 @@ export const CustomerUnitAddDialog = ({
   handleSubmit,
   handleDateChange,
   handleLastMaintainenceDateChange,
+  isLoadingSavedData,
+  unitBrands,
+  unitModels,
+  handlechangeBrand,
 }) => {
-  const { touched, errors, getFieldProps } = formik;
+  const { touched, errors, getFieldProps, values, setFieldValue } = formik;
 
   return (
     <Dialog open={isOpen} fullWidth sx={{ px: 2 }}>
@@ -37,19 +42,29 @@ export const CustomerUnitAddDialog = ({
       <DialogContent>
         <FormikProvider value={formik}>
           <Stack direction={'column'} spacing={2} sx={{ mt: 2 }}>
-            <TextField
-              label="Unit Brand*"
-              name={'unitBrand'}
-              {...getFieldProps('unitBrand')}
-              error={Boolean(touched.unitBrand && errors.unitBrand)}
-              helperText={touched.unitBrand && errors.unitBrand}
+            <Autocomplete
+              id="auto-complete"
+              freeSolo
+              fullWidth
+              disabled={isLoadingSavedData}
+              options={unitBrands}
+              inputValue={values.unitBrand}
+              onInputChange={(event, newInputValue) => {
+                handlechangeBrand(newInputValue);
+              }}
+              renderInput={(params) => <TextField {...params} label="Unit Brand*" />}
             />
-            <TextField
-              label="Unit Model*"
-              name={'unitModel'}
-              {...getFieldProps('unitModel')}
-              error={Boolean(touched.unitModel && errors.unitModel)}
-              helperText={touched.unitModel && errors.unitModel}
+            <Autocomplete
+              id="auto-complete"
+              freeSolo
+              fullWidth
+              disabled={isLoadingSavedData}
+              options={unitModels}
+              inputValue={values.unitModel}
+              onInputChange={(event, newInputValue) => {
+                setFieldValue('unitModel', newInputValue);
+              }}
+              renderInput={(params) => <TextField {...params} label="Unit Model*" />}
             />
             <TextField
               label="Unit Serial No"

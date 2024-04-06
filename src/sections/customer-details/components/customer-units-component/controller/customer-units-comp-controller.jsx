@@ -50,10 +50,14 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
   const [isLoadingAdd, setIsLoadingAdd] = useState(false);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
+  const [isLoadingSavedData, setIsLoadingSavedData] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState(null);
   const [units, setUnits] = useState([]);
   const [searchParam, setSearchParam] = useState('');
+  const [unitSavedData, setUnitSavedData] = useState(null);
+  const [unitBrands, setUnitBrands] = useState([]);
+  const [unitModels, setUnitModels] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -84,6 +88,12 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
     },
   });
 
+  const handlechangeBrand = (brand) => {
+    formik.setFieldValue('unitBrand', brand);
+    const foundItem = unitSavedData.find((item) => item.brand === brand);
+    setUnitModels(foundItem ? foundItem.models : []);
+  };
+
   const handleOpenMenu = (event, item) => {
     setSelectedItem(item);
     setOpen(event.currentTarget);
@@ -97,6 +107,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
   const handleOpenCloseAddDialog = () => {
     setIsOpen(!isOpen);
     if (!isOpen) {
+      handleFetchUnitDataForSelection();
       formik.resetForm();
     } else {
       setIsAdd(true);
@@ -160,6 +171,28 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
 
   const handleOpenRemoveQrDialog = () => {
     setIsOpenRemoveQr(true);
+  };
+
+  const handleFetchUnitDataForSelection = async () => {
+    setIsLoadingSavedData(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.UNIT_SAVED_DATA,
+      method: 'GET',
+      cancelToken: cancelToken.token,
+    })
+      .then((res) => {
+        if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+          setUnitSavedData(res.data.responseData);
+          setUnitBrands(res.data.responseData.map((item) => item.brand));
+        }
+      })
+      .catch(() => {
+        setIsLoadingSavedData(false);
+      })
+      .finally(() => {
+        setIsLoadingSavedData(false);
+      });
   };
 
   const handleSubmitAddUnit = async () => {
@@ -326,6 +359,10 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       isLoadingDelete={isLoadingDelete}
       isOpenDeleteUnit={isOpenDeleteUnit}
       handleOpenCloseDeleteUnitDialog={handleOpenCloseDeleteUnitDialog}
+      isLoadingSavedData={isLoadingSavedData}
+      unitBrands={unitBrands}
+      unitModels={unitModels}
+      handlechangeBrand={handlechangeBrand}
     />
   );
 };
