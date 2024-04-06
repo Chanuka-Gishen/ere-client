@@ -29,6 +29,7 @@ export const BACKEND_API = {
   CUSTOMER_UNIT_ADD_QR: IP_URL + '/unit/update-qr-code',
   CUSTOMER_UNIT_REMOVE_QR: IP_URL + '/unit/remove-qr-code/',
   CUSTOMER_UNITS_FOR_CALENDER: IP_URL + '/unit/calendar',
+  UNIT_SAVED_DATA: IP_URL + '/unit/select-model',
 
   WORK_ORDRS_BY_UNIT: IP_URL + '/work-order/byUnit/',
   WORK_ORDERS: IP_URL + '/work-order/jobs',

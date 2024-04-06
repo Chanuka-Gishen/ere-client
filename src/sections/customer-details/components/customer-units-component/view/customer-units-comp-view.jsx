@@ -78,6 +78,10 @@ export const CustomerUnitsComponentView = ({
   isLoadingDelete,
   isOpenDeleteUnit,
   handleOpenCloseDeleteUnitDialog,
+  isLoadingSavedData,
+  unitBrands,
+  unitModels,
+  handlechangeBrand,
 }) => {
   return (
     <>
@@ -243,6 +247,10 @@ export const CustomerUnitsComponentView = ({
               handleDateChange={handleInstallationDateChange}
               handleLastMaintainenceDateChange={handleLastMaintainenceDateChange}
               isLoading={isAdd ? isLoadingAdd : isLoadingUpdate}
+              isLoadingSavedData={isLoadingSavedData}
+              unitBrands={unitBrands}
+              unitModels={unitModels}
+              handlechangeBrand={handlechangeBrand}
             />
           )}
           {isOpenSelectQr && (
