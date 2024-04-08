@@ -38,17 +38,20 @@ const UsersController = () => {
 
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [empTip, setEmpTip] = useState(0);
 
   const [open, setOpen] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
+  const [openEmpInfo, setOpenEmpInfo] = useState(false);
 
   const [isLoadingRegister, setIsLoadingRegister] = useState(false);
   const [isLoadingFetch, setIsLoadingFectch] = useState(false); // change to true
   const [isLoadingUpdate, setIsLodingUpdate] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [isLoadingReset, setIsLoadingReset] = useState(false);
+  const [isLoadingEmpInfo, setIsLoadingEmpInfo] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
   const sourceToken = axios.CancelToken.source();
@@ -125,6 +128,16 @@ const UsersController = () => {
     setSelectedEmployee(null);
   };
 
+  const handleOnClickRow = (emp) => {
+    setOpenEmpInfo(true);
+    fetchEmpTips(emp);
+  };
+
+  const handleCloseEmpInfoDialog = () => {
+    setOpenEmpInfo(false);
+    setEmpTip(0);
+  };
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -132,6 +145,29 @@ const UsersController = () => {
   const handleChangeRowsPerPage = (event) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
+  };
+
+  const fetchEmpTips = async (emp) => {
+    if (emp.employeeRole != USER_ROLE.ADMIN) {
+      setIsLoadingEmpInfo(true);
+
+      await backendAuthApi({
+        url: BACKEND_API.EMPLOYEE_TIPS + emp._id,
+        method: 'GET',
+        cancelToken: sourceToken.token,
+      })
+        .then((res) => {
+          if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+            setEmpTip(res.data.responseData);
+          }
+        })
+        .catch(() => {
+          setIsLoadingEmpInfo(false);
+        })
+        .finally(() => {
+          setIsLoadingEmpInfo(false);
+        });
+    }
   };
 
   const handleSubmitAddUser = async () => {
@@ -306,6 +342,11 @@ const UsersController = () => {
       handleCloseResetConfirmation={handleCloseResetConfirmation}
       handleResetPassword={handleResetPassword}
       isLoadingReset={isLoadingReset}
+      empTip={empTip}
+      openEmpInfo={openEmpInfo}
+      isLoadingEmpInfo={isLoadingEmpInfo}
+      handleOnClickRow={handleOnClickRow}
+      handleCloseEmpInfoDialog={handleCloseEmpInfoDialog}
     />
   );
 };

@@ -15,6 +15,7 @@ export const BACKEND_API = {
   EMPLOYEE_DELETE: IP_URL + '/employee/delete/',
   EMPLOYEE_SELECT: IP_URL + '/employee/select',
   EMPLOYEE_JOBS: IP_URL + '/work-order/emp-jobs',
+  EMPLOYEE_TIPS: IP_URL + '/employee/tips/',
 
   CUSTOMERS_ALL: IP_URL + '/customer/',
   CUSTOMER_ADD: IP_URL + '/customer/register',
@@ -24,8 +25,10 @@ export const BACKEND_API = {
 
   CUSTOMER_UNIT_ADD: IP_URL + '/customer/unit',
   CUSTOMER_UNIT_UPDATE: IP_URL + '/customer/unit',
-  CUSTOMER_UNIT_DELETE: IP_URL + '/unit/',
   CUSTOMER_UNIT_DETAILS_UPDATE: IP_URL + '/customer/unit-details-update',
+
+  CUSTOMER_UNIT: IP_URL + '/unit/info/',
+  CUSTOMER_UNIT_DELETE: IP_URL + '/unit/',
   CUSTOMER_UNIT_ADD_QR: IP_URL + '/unit/update-qr-code',
   CUSTOMER_UNIT_REMOVE_QR: IP_URL + '/unit/remove-qr-code/',
   CUSTOMER_UNITS_FOR_CALENDER: IP_URL + '/unit/calendar',

@@ -46,7 +46,9 @@ const GridItem = styled(Card)(({ theme }) => ({
 
 export const CustomerDetailsView = ({
   id,
+  isLoadingUnit,
   selectedUnit,
+  selectedUnitId,
   handleSelectUnit,
   handleOnClickBreadCrumb,
 }) => {
@@ -72,6 +74,7 @@ export const CustomerDetailsView = ({
               <CustomerUnits
                 id={id}
                 handleSelectUnit={handleSelectUnit}
+                selectedUnitId={selectedUnitId}
                 selectedUnit={selectedUnit}
               />
             </GridItem>
@@ -80,36 +83,44 @@ export const CustomerDetailsView = ({
             <>
               <Grid item xs={12} md={12}>
                 <GridItem>
-                  <Stack
-                    direction={'column'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    spacing={1}
-                  >
-                    <Typography
-                      variant="h6"
-                      align="center"
-                    >{`${selectedUnit.unitBrand} - ${selectedUnit.unitModel} - ${selectedUnit.unitSerialNo}`}</Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Installed Date: {fDate(selectedUnit.unitInstalledDate)}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Last Service Date: {fDate(selectedUnit.unitLastMaintenanceDate)}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      Next Service Date: {fDate(selectedUnit.unitNextMaintenanceDate)}
-                    </Typography>
-                    <Typography
-                      variant="subtitle1"
-                      color={selectedUnit.unitStatus === 'Active' ? 'success.main' : 'error'}
+                  {isLoadingUnit ? (
+                    <Typography align="center">Loading unit info...</Typography>
+                  ) : (
+                    <Stack
+                      direction={'column'}
+                      alignItems={'center'}
+                      justifyContent={'center'}
+                      spacing={1}
                     >
-                      Status: {selectedUnit.unitStatus}
-                    </Typography>
-                  </Stack>
+                      <Typography
+                        variant="h6"
+                        align="center"
+                      >{`${selectedUnit.unitBrand} - ${selectedUnit.unitModel} - ${selectedUnit.unitSerialNo}`}</Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Installed Date: {fDate(selectedUnit.unitInstalledDate)}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Last Service Date: {fDate(selectedUnit.unitLastMaintenanceDate)}
+                      </Typography>
+                      <Typography variant="subtitle1" color="textSecondary">
+                        Next Service Date: {fDate(selectedUnit.unitNextMaintenanceDate)}
+                      </Typography>
+                      <Typography
+                        variant="subtitle1"
+                        color={selectedUnit.unitStatus === 'Active' ? 'success.main' : 'error'}
+                      >
+                        Status: {selectedUnit.unitStatus}
+                      </Typography>
+                    </Stack>
+                  )}
                 </GridItem>
               </Grid>
               <Grid item xs={12} md={12}>
-                <CustomerWorkOrders id={id} selectedUnit={selectedUnit} />
+                <CustomerWorkOrders
+                  id={id}
+                  isLoadingUnit={isLoadingUnit}
+                  selectedUnit={selectedUnit}
+                />
               </Grid>
             </>
           )}

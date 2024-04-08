@@ -26,7 +26,7 @@ const validationSchema = Yup.object().shape({
     .oneOf([COMPANIES.CMP_ERE, COMPANIES.CMP_SINGER, COMPANIES.CMP_SINGER_DIR], 'Invalid type'),
 });
 
-const CustomerWorkController = ({ id, selectedUnit, fetchUnitDetails }) => {
+const CustomerWorkController = ({ id, selectedUnit, isLoadingUnit }) => {
   const headerLabels = [
     'Word Order Id',
     'Company',
@@ -135,7 +135,7 @@ const CustomerWorkController = ({ id, selectedUnit, fetchUnitDetails }) => {
   return (
     <CustomerWorkView
       headerLabels={headerLabels}
-      selectedUnit={selectedUnit}
+      isLoadingUnit={isLoadingUnit}
       isLoading={isLoading}
       workOrders={workOrders}
       handleRowClick={handleRowClick}

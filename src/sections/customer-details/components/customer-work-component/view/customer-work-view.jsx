@@ -31,7 +31,6 @@ const CustomCell = ({ children, ...props }) => {
 
 export const CustomerWorkView = ({
   headerLabels,
-  selectedUnit,
   isLoading,
   workOrders,
   handleRowClick,
@@ -118,7 +117,6 @@ export const CustomerWorkView = ({
 
 CustomerWorkView.propTypes = {
   headerLabels: PropTypes.array.isRequired,
-  selectedUnit: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   workOrders: PropTypes.array,
   handleRowClick: PropTypes.func.isRequired,

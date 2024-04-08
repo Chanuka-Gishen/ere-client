@@ -1,4 +1,4 @@
-const { ITEM_CONSTANT_REDUX } = require('../constant/itemConstant');
+import { ITEM_CONSTANT_REDUX } from '../constant/itemConstant';
 
 const selectCustomerUnit = (payload) => {
   return {
@@ -6,3 +6,9 @@ const selectCustomerUnit = (payload) => {
     payload,
   };
 };
+
+const itemAction = {
+  selectCustomerUnit,
+};
+
+export default itemAction;

@@ -50,6 +50,7 @@ export const CustomerUnitsComponentView = ({
   handleCloseMenu,
   handleSelectUnit,
   selectedUnit,
+  selectedUnitId,
   isAdd,
   isLoading,
   units,
@@ -168,7 +169,7 @@ export const CustomerUnitsComponentView = ({
                           <Avatar
                             sx={{
                               bgcolor:
-                                item._id === selectedUnit?._id ? 'primary.main' : 'defaultColor',
+                                item._id === selectedUnitId ? 'primary.main' : 'defaultColor',
                             }}
                           >
                             <AcUnitIcon />
