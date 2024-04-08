@@ -15,6 +15,7 @@ import { USER_STATUS } from 'src/constants/common-constants';
 
 export const UsersTableRow = ({
   employee,
+  handleOnClickRow,
   handleOpenUpdateDialog,
   handleOpenDeleteDialog,
   handleOpenResetConfirmation,
@@ -77,6 +78,10 @@ export const UsersTableRow = ({
         >
           <Iconify icon="eva:refresh-fill" sx={{ mr: 2 }} />
           Reset Password
+        </MenuItem>
+        <MenuItem onClick={() => handleOnClickRow(employee)} disabled={!employee.userIsActive}>
+          <Iconify icon="eva:refresh-fill" sx={{ mr: 2 }} />
+          Emp Info
         </MenuItem>
         <MenuItem
           onClick={() => handleOpenDeleteDialog(employee)}

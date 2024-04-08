@@ -3,12 +3,11 @@ import PropTypes from 'prop-types';
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 import { CustomerUnitsComponentView } from '../view/customer-units-comp-view';
-import { addMonths } from 'date-fns';
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
-import axios from 'axios';
 import responseUtil from 'src/utils/responseUtil';
 import { UNIT_STATUS } from 'src/constants/common-constants';
 import { useSnackbar } from 'notistack';
@@ -35,7 +34,12 @@ const validationUpdateSchema = Yup.object().shape({
     .oneOf([UNIT_STATUS.ACTIVE, UNIT_STATUS.INACTIVE]),
 });
 
-const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }) => {
+const CustomerUnitsComponentController = ({
+  id,
+  handleSelectUnit,
+  selectedUnit,
+  selectedUnitId,
+}) => {
   const cancelToken = axios.CancelToken.source();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -226,7 +230,6 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
           handleOpenCloseAddDialog();
         });
     } else {
-      console.log(formik.errors);
       enqueueSnackbar(SNACKBAR_MESSAGE.FILL_REQUIRED_FIELDS, {
         variant: SNACKBAR_VARIANT.WARNING,
       });
@@ -321,6 +324,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
 
   useEffect(() => {
     handleFetchCustomerUnits();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -331,6 +335,7 @@ const CustomerUnitsComponentController = ({ id, handleSelectUnit, selectedUnit }
       handleCloseMenu={handleCloseMenu}
       handleSelectUnit={handleSelectUnit}
       selectedUnit={selectedUnit}
+      selectedUnitId={selectedUnitId}
       isAdd={isAdd}
       isLoading={isLoading}
       units={units}
