@@ -41,7 +41,7 @@ const navConfig = [
   {
     title: 'Employees',
     name: NAVBAR_ITEMS.EMPLOYEES,
-    path: NAVIGATION_ROUTES.employees,
+    path: NAVIGATION_ROUTES.employees.base,
     icon: <PeopleOutlineIcon />,
     adminOnly: true,
   },

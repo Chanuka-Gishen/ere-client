@@ -12,10 +12,11 @@ import {
 import Iconify from 'src/components/iconify';
 import { useSelector } from 'react-redux';
 import { USER_STATUS } from 'src/constants/common-constants';
+import { USER_ROLE } from 'src/constants/user-role';
 
 export const UsersTableRow = ({
   employee,
-  handleOnClickRow,
+  onClickRow,
   handleOpenUpdateDialog,
   handleOpenDeleteDialog,
   handleOpenResetConfirmation,
@@ -23,6 +24,7 @@ export const UsersTableRow = ({
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
+    event.stopPropagation();
     setOpen(event.currentTarget);
   };
 
@@ -34,7 +36,10 @@ export const UsersTableRow = ({
 
   return (
     <>
-      <TableRow hover>
+      <TableRow
+        hover
+        onClick={() => employee.userRole != USER_ROLE.ADMIN && onClickRow(employee._id)}
+      >
         <TableCell component="th">
           <Typography variant="subtitle2" noWrap>
             {employee.userFullName}
@@ -78,10 +83,6 @@ export const UsersTableRow = ({
         >
           <Iconify icon="eva:refresh-fill" sx={{ mr: 2 }} />
           Reset Password
-        </MenuItem>
-        <MenuItem onClick={() => handleOnClickRow(employee)} disabled={!employee.userIsActive}>
-          <Iconify icon="eva:refresh-fill" sx={{ mr: 2 }} />
-          Emp Info
         </MenuItem>
         <MenuItem
           onClick={() => handleOpenDeleteDialog(employee)}

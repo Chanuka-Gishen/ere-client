@@ -16,6 +16,7 @@ export const BACKEND_API = {
   EMPLOYEE_SELECT: IP_URL + '/employee/select',
   EMPLOYEE_JOBS: IP_URL + '/work-order/emp-jobs',
   EMPLOYEE_TIPS: IP_URL + '/employee/tips/',
+  EMPLOYEE_TOTAL_TIPS: IP_URL + '/employee/total-tips/',
 
   CUSTOMERS_ALL: IP_URL + '/customer/',
   CUSTOMER_ADD: IP_URL + '/customer/register',
@@ -49,6 +50,7 @@ export const BACKEND_API = {
   WORK_ORDR_ALL_INVOICES: IP_URL + '/invoice/invoices',
   WORK_ORDR_INVOICE_STATS: IP_URL + '/invoice/invoices-stats',
   WORK_ORDR_LINK_AV_LIST: IP_URL + '/work-order/link-jobs',
+  WORK_ORDR_EMP_ASSIGNED: IP_URL + '/work-order/emp-assigned-jobs/',
 
   INVOICE_DOWNLOAD: IP_URL + '/invoice/download-invoice/',
   INVOICE_MAIN_DOWNLOAD: IP_URL + '/invoice/download-total-invoice/',

@@ -21,7 +21,6 @@ import { AddEmployeeDialog } from '../component/add-employee-dialog';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import { UpdateEmployeeDialog } from '../component/update-employee-dialog';
 import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
-import { EmployeeInfoDialog } from '../component/employee-info-dialog';
 
 export const UsersView = ({
   isLoadingFetch,
@@ -31,6 +30,7 @@ export const UsersView = ({
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
+  onClickRow,
   open,
   handleOpen,
   handleClose,
@@ -53,11 +53,6 @@ export const UsersView = ({
   handleCloseResetConfirmation,
   handleResetPassword,
   isLoadingReset,
-  empTip,
-  openEmpInfo,
-  isLoadingEmpInfo,
-  handleOnClickRow,
-  handleCloseEmpInfoDialog,
 }) => {
   return (
     <Container maxWidth={'xl'}>
@@ -93,7 +88,7 @@ export const UsersView = ({
                               <UsersTableRow
                                 employee={row}
                                 key={row._id}
-                                handleOnClickRow={handleOnClickRow}
+                                onClickRow={onClickRow}
                                 handleOpenUpdateDialog={handleOpenEmployeeUpdateDialog}
                                 handleOpenDeleteDialog={handleOpenDeleteDialog}
                                 handleOpenResetConfirmation={handleOpenResetConfirmation}
@@ -134,14 +129,6 @@ export const UsersView = ({
           isLoading={isLoadingUpdate}
           open={openUpdate}
           handleSubmit={handleUpdateEmployee}
-        />
-      )}
-      {openEmpInfo && (
-        <EmployeeInfoDialog
-          open={openEmpInfo}
-          handleClose={handleCloseEmpInfoDialog}
-          data={empTip}
-          isLoading={isLoadingEmpInfo}
         />
       )}
       {openDelete && (
