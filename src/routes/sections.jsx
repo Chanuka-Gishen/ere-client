@@ -4,7 +4,6 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
 import { NAVIGATION_ROUTES } from './navigation-routes';
 import { useSelector } from 'react-redux';
-import EmployeesPage from 'src/pages/employees';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const LoginPage = lazy(() => import('src/pages/login'));
@@ -17,6 +16,8 @@ export const JobDetailsPage = lazy(() => import('src/pages/job-details'));
 export const CustomerUnitPage = lazy(() => import('src/pages/customer-unit-page'));
 export const WorkOrdersPage = lazy(() => import('src/pages/work-orders-page'));
 export const InvoicesPage = lazy(() => import('src/pages/invoices-page'));
+export const EmployeesPage = lazy(() => import('src/pages/employees'));
+export const EmployeeDetailsPage = lazy(() => import('src/pages/employeeDetails'));
 
 // ----------------------------------------------------------------------
 
@@ -56,7 +57,8 @@ const Router = () => {
         { path: '/', element: <Navigate to={NAVIGATION_ROUTES.dashboard} replace /> },
         { path: NAVIGATION_ROUTES.dashboard, element: <IndexPage /> },
         { path: NAVIGATION_ROUTES.customers, element: <CustomersPage /> },
-        { path: NAVIGATION_ROUTES.employees, element: <EmployeesPage /> },
+        { path: NAVIGATION_ROUTES.employees.base, element: <EmployeesPage /> },
+        { path: NAVIGATION_ROUTES.employees.employee.id, element: <EmployeeDetailsPage /> },
         { path: NAVIGATION_ROUTES.overview_details, element: <OverviewDetailsPage /> },
         { path: NAVIGATION_ROUTES.customer_details, element: <CustomerDetailsPage /> },
         { path: NAVIGATION_ROUTES.customer_job_details, element: <JobDetailsPage /> },

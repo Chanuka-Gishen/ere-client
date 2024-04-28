@@ -5,6 +5,7 @@ import {
   Card,
   Chip,
   Container,
+  Grid,
   Stack,
   Table,
   TableBody,
@@ -47,8 +48,10 @@ export const WorkOrdrsView = ({
   handleChangeRowsPerPage,
   searchParamName,
   searchParamJobCode,
+  searchParamQrCode,
   handleChangeSearchParamName,
   handleChangeSearchParamJobCode,
+  handleChangeSearchParamQrCode,
   filteredData,
 }) => {
   const isMobile = useResponsive('down', 'lg');
@@ -59,36 +62,29 @@ export const WorkOrdrsView = ({
       </Typography>
 
       <Card>
-        <Stack direction={isMobile ? 'column' : 'row'} spacing={isMobile ? 0 : 2}>
-          <Toolbar
-            sx={{
-              height: 96,
-              display: 'flex',
-              justifyContent: 'space-between',
-              p: (theme) => theme.spacing(0, 1, 0, 3),
-            }}
-          >
+        <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ p: 2 }}>
+          <Grid item xs={12} sm={3}>
             <SearchInput
               filterName={searchParamName}
               onFilterName={handleChangeSearchParamName}
               placeholder="Search Customer Name..."
             />
-          </Toolbar>
-          <Toolbar
-            sx={{
-              height: 96,
-              display: 'flex',
-              justifyContent: 'space-between',
-              p: (theme) => theme.spacing(0, 1, 0, 3),
-            }}
-          >
+          </Grid>
+          <Grid item xs={12} sm={3}>
             <SearchInput
               filterName={searchParamJobCode}
               onFilterName={handleChangeSearchParamJobCode}
               placeholder="Search Job Code..."
             />
-          </Toolbar>
-        </Stack>
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <SearchInput
+              filterName={searchParamQrCode}
+              onFilterName={handleChangeSearchParamQrCode}
+              placeholder="Search QR Code..."
+            />
+          </Grid>
+        </Grid>
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }}>
@@ -111,16 +107,22 @@ export const WorkOrdrsView = ({
                               <CustomCell sx={{ width: 200 }}>
                                 {item.workOrderCustomerId.customerName}
                               </CustomCell>
+                              <CustomCell>
+                                {item.workOrderUnitReference.unitQrCode
+                                  ? item.workOrderUnitReference.unitQrCode.qrCodeName
+                                  : '-'}
+                              </CustomCell>
                               <CustomCell sx={{ width: 200 }}>
                                 {item.workOrderUnitReference.unitSerialNo}
                               </CustomCell>
                               <CustomCell
                                 sx={{
-                                  color: commonUtil.calculateMonthDifference(
-                                    item.workOrderScheduledDate
-                                  )
-                                    ? 'red'
-                                    : 'black',
+                                  color:
+                                    commonUtil.calculateMonthDifference(
+                                      item.workOrderScheduledDate
+                                    ) && item.workOrderStatus === WORK_STATUS.CREATED
+                                      ? 'red'
+                                      : 'black',
                                 }}
                               >
                                 {fDate(item.workOrderScheduledDate)}

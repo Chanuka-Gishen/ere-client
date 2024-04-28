@@ -11,6 +11,8 @@ import { BACKEND_API } from 'src/axios/constant/backend-api';
 import responseUtil from 'src/utils/responseUtil';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
+import { useRouter } from 'src/routes/hooks';
+import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 
 //---------------------------------------------------------
 
@@ -33,28 +35,26 @@ const validationSchemaOnUpdate = Yup.object().shape({
 const UsersController = () => {
   const headerLables = ['Employee Name', 'User name', 'Role', 'Status'];
 
+  const router = useRouter();
+  const { enqueueSnackbar } = useSnackbar();
+  const sourceToken = axios.CancelToken.source();
+
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [empTip, setEmpTip] = useState(0);
 
   const [open, setOpen] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
-  const [openEmpInfo, setOpenEmpInfo] = useState(false);
 
   const [isLoadingRegister, setIsLoadingRegister] = useState(false);
   const [isLoadingFetch, setIsLoadingFectch] = useState(false); // change to true
   const [isLoadingUpdate, setIsLodingUpdate] = useState(false);
   const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [isLoadingReset, setIsLoadingReset] = useState(false);
-  const [isLoadingEmpInfo, setIsLoadingEmpInfo] = useState(false);
-
-  const { enqueueSnackbar } = useSnackbar();
-  const sourceToken = axios.CancelToken.source();
 
   const formik = useFormik({
     initialValues: {
@@ -128,16 +128,6 @@ const UsersController = () => {
     setSelectedEmployee(null);
   };
 
-  const handleOnClickRow = (emp) => {
-    setOpenEmpInfo(true);
-    fetchEmpTips(emp);
-  };
-
-  const handleCloseEmpInfoDialog = () => {
-    setOpenEmpInfo(false);
-    setEmpTip(0);
-  };
-
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -147,27 +137,8 @@ const UsersController = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const fetchEmpTips = async (emp) => {
-    if (emp.employeeRole != USER_ROLE.ADMIN) {
-      setIsLoadingEmpInfo(true);
-
-      await backendAuthApi({
-        url: BACKEND_API.EMPLOYEE_TIPS + emp._id,
-        method: 'GET',
-        cancelToken: sourceToken.token,
-      })
-        .then((res) => {
-          if (responseUtil.isResponseSuccess(res.data.responseCode)) {
-            setEmpTip(res.data.responseData);
-          }
-        })
-        .catch(() => {
-          setIsLoadingEmpInfo(false);
-        })
-        .finally(() => {
-          setIsLoadingEmpInfo(false);
-        });
-    }
+  const onClickRow = (id) => {
+    router.push(`${NAVIGATION_ROUTES.employees.employee.base}${id}`);
   };
 
   const handleSubmitAddUser = async () => {
@@ -320,6 +291,7 @@ const UsersController = () => {
       rowsPerPage={rowsPerPage}
       handleChangePage={handleChangePage}
       handleChangeRowsPerPage={handleChangeRowsPerPage}
+      onClickRow={onClickRow}
       open={open}
       handleOpen={handleOpen}
       handleClose={handleClose}
@@ -342,11 +314,6 @@ const UsersController = () => {
       handleCloseResetConfirmation={handleCloseResetConfirmation}
       handleResetPassword={handleResetPassword}
       isLoadingReset={isLoadingReset}
-      empTip={empTip}
-      openEmpInfo={openEmpInfo}
-      isLoadingEmpInfo={isLoadingEmpInfo}
-      handleOnClickRow={handleOnClickRow}
-      handleCloseEmpInfoDialog={handleCloseEmpInfoDialog}
     />
   );
 };

@@ -128,6 +128,9 @@ export const CustomerUnitView = ({ isLoading, data }) => {
                     justifyContent={'center'}
                     spacing={1}
                   >
+                    <Typography variant="h4" align="center">
+                      {data.unit.unitQrCode.qrCodeName}
+                    </Typography>
                     <Typography
                       variant="h6"
                       align="center"

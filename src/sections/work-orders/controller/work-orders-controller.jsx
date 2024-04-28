@@ -11,6 +11,7 @@ const WorkOrdersController = () => {
     'Job Code',
     'Company',
     'Customer',
+    'Qr Code',
     'Unit Serial No',
     'Scheduled Date',
     'Type',
@@ -27,6 +28,7 @@ const WorkOrdersController = () => {
 
   const [searchParamName, setSearchParamName] = useState('');
   const [searchParamJobCode, setSearchParamJobCode] = useState('');
+  const [searchParamQrCode, setSearchParamQrCode] = useState('');
 
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -48,19 +50,28 @@ const WorkOrdersController = () => {
     setSearchParamJobCode(event.target.value);
   };
 
+  const handleChangeSearchParamQrCode = (event) => {
+    setSearchParamQrCode(event.target.value);
+  };
+
   const filteredData = data.filter((item) => {
     const customerName = item.workOrderCustomerId.customerName;
     const jobCode = item.workOrderCode;
+    const qrCode = item.workOrderUnitReference.unitQrCode
+      ? item.workOrderUnitReference.unitQrCode.qrCodeName
+      : '';
 
     const searchParamRegexName = new RegExp(`${searchParamName}`, 'i');
     const searchParamRegexCode = new RegExp(`${searchParamJobCode}`, 'i');
+    const searchParamRegexQrCode = new RegExp(`${searchParamQrCode}`, 'i');
 
     return (
       // If both searchParamName and searchParamJobCode are empty, return true
-      (searchParamName === '' && searchParamJobCode === '') ||
+      (searchParamName === '' && searchParamJobCode === '' && searchParamQrCode === '') ||
       // Otherwise, apply the regular expression tests
       (searchParamName !== '' && searchParamRegexName.test(customerName)) ||
-      (searchParamJobCode !== '' && searchParamRegexCode.test(jobCode))
+      (searchParamJobCode !== '' && searchParamRegexCode.test(jobCode)) ||
+      (searchParamQrCode !== '' && searchParamRegexQrCode.test(qrCode))
     );
   });
 
@@ -108,8 +119,10 @@ const WorkOrdersController = () => {
       handleChangeRowsPerPage={handleChangeRowsPerPage}
       searchParamName={searchParamName}
       searchParamJobCode={searchParamJobCode}
+      searchParamQrCode={searchParamQrCode}
       handleChangeSearchParamName={handleChangeSearchParamName}
       handleChangeSearchParamJobCode={handleChangeSearchParamJobCode}
+      handleChangeSearchParamQrCode={handleChangeSearchParamQrCode}
       filteredData={filteredData}
     />
   );
