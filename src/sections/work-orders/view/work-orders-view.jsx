@@ -46,12 +46,8 @@ export const WorkOrdrsView = ({
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
-  searchParamName,
-  searchParamJobCode,
-  searchParamQrCode,
-  handleChangeSearchParamName,
-  handleChangeSearchParamJobCode,
-  handleChangeSearchParamQrCode,
+  handleChangeSearchParam,
+  searchParams,
   filteredData,
 }) => {
   const isMobile = useResponsive('down', 'lg');
@@ -65,23 +61,37 @@ export const WorkOrdrsView = ({
         <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ p: 2 }}>
           <Grid item xs={12} sm={3}>
             <SearchInput
-              filterName={searchParamName}
-              onFilterName={handleChangeSearchParamName}
+              filterName={searchParams.name}
+              onFilterName={(e) => handleChangeSearchParam('name', e)}
               placeholder="Search Customer Name..."
             />
           </Grid>
           <Grid item xs={12} sm={3}>
             <SearchInput
-              filterName={searchParamJobCode}
-              onFilterName={handleChangeSearchParamJobCode}
+              filterName={searchParams.mobile}
+              onFilterName={(e) => handleChangeSearchParam('mobile', e)}
+              placeholder="Search Mobile..."
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <SearchInput
+              filterName={searchParams.jobCode}
+              onFilterName={(e) => handleChangeSearchParam('jobCode', e)}
               placeholder="Search Job Code..."
             />
           </Grid>
           <Grid item xs={12} sm={3}>
             <SearchInput
-              filterName={searchParamQrCode}
-              onFilterName={handleChangeSearchParamQrCode}
+              filterName={searchParams.qrCode}
+              onFilterName={(e) => handleChangeSearchParam('qrCode', e)}
               placeholder="Search QR Code..."
+            />
+          </Grid>
+          <Grid item xs={12} sm={3}>
+            <SearchInput
+              filterName={searchParams.serial}
+              onFilterName={(e) => handleChangeSearchParam('serial', e)}
+              placeholder="Search Serial No..."
             />
           </Grid>
         </Grid>
@@ -106,6 +116,9 @@ export const WorkOrdrsView = ({
                               <CustomCell>{item.workOrderFrom}</CustomCell>
                               <CustomCell sx={{ width: 200 }}>
                                 {item.workOrderCustomerId.customerName}
+                              </CustomCell>
+                              <CustomCell sx={{ width: 200 }}>
+                                {item.workOrderCustomerId.customerTel.mobile}
                               </CustomCell>
                               <CustomCell>
                                 {item.workOrderUnitReference.unitQrCode

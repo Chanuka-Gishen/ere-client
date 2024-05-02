@@ -10,6 +10,7 @@ import Iconify from 'src/components/iconify';
 const SearchInput = ({ filterName, onFilterName, placeholder }) => {
   return (
     <OutlinedInput
+      fullWidth
       value={filterName}
       onChange={onFilterName}
       placeholder={placeholder ? placeholder : 'Search ...'}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { WorkOrdrsView } from '../view/work-orders-view';
 import axios from 'axios';
+
+import { WorkOrdrsView } from '../view/work-orders-view';
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
 import responseUtil from 'src/utils/responseUtil';
@@ -11,6 +12,7 @@ const WorkOrdersController = () => {
     'Job Code',
     'Company',
     'Customer',
+    'Mobile',
     'Qr Code',
     'Unit Serial No',
     'Scheduled Date',
@@ -26,9 +28,13 @@ const WorkOrdersController = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [searchParamName, setSearchParamName] = useState('');
-  const [searchParamJobCode, setSearchParamJobCode] = useState('');
-  const [searchParamQrCode, setSearchParamQrCode] = useState('');
+  const [searchParams, setSearchParams] = useState({
+    name: '',
+    jobCode: '',
+    qrCode: '',
+    serial: '',
+    mobile: '',
+  });
 
   const [isLoading, setIsLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -42,16 +48,11 @@ const WorkOrdersController = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const handleChangeSearchParamName = (event) => {
-    setSearchParamName(event.target.value);
-  };
-
-  const handleChangeSearchParamJobCode = (event) => {
-    setSearchParamJobCode(event.target.value);
-  };
-
-  const handleChangeSearchParamQrCode = (event) => {
-    setSearchParamQrCode(event.target.value);
+  const handleChangeSearchParam = (param, event) => {
+    setSearchParams({
+      ...searchParams,
+      [param]: event.target.value,
+    });
   };
 
   const filteredData = data.filter((item) => {
@@ -60,19 +61,20 @@ const WorkOrdersController = () => {
     const qrCode = item.workOrderUnitReference.unitQrCode
       ? item.workOrderUnitReference.unitQrCode.qrCodeName
       : '';
+    const serial = item.workOrderUnitReference.unitSerialNo
+      ? item.workOrderUnitReference.unitSerialNo
+      : '';
+    const mobile = item.workOrderCustomerId.customerTel.mobile;
 
-    const searchParamRegexName = new RegExp(`${searchParamName}`, 'i');
-    const searchParamRegexCode = new RegExp(`${searchParamJobCode}`, 'i');
-    const searchParamRegexQrCode = new RegExp(`${searchParamQrCode}`, 'i');
+    const searchParamRegex = Object.entries(searchParams).reduce((acc, [key, value]) => {
+      acc[key] = new RegExp(`${value}`, 'i');
+      return acc;
+    }, {});
 
-    return (
-      // If both searchParamName and searchParamJobCode are empty, return true
-      (searchParamName === '' && searchParamJobCode === '' && searchParamQrCode === '') ||
-      // Otherwise, apply the regular expression tests
-      (searchParamName !== '' && searchParamRegexName.test(customerName)) ||
-      (searchParamJobCode !== '' && searchParamRegexCode.test(jobCode)) ||
-      (searchParamQrCode !== '' && searchParamRegexQrCode.test(qrCode))
-    );
+    return Object.entries(searchParams).every(([key, value]) => {
+      const fieldValue = { name: customerName, jobCode, qrCode, serial, mobile }[key];
+      return searchParamRegex[key].test(fieldValue);
+    });
   });
 
   const handleRowClick = (id) => {
@@ -117,12 +119,8 @@ const WorkOrdersController = () => {
       rowsPerPage={rowsPerPage}
       handleChangePage={handleChangePage}
       handleChangeRowsPerPage={handleChangeRowsPerPage}
-      searchParamName={searchParamName}
-      searchParamJobCode={searchParamJobCode}
-      searchParamQrCode={searchParamQrCode}
-      handleChangeSearchParamName={handleChangeSearchParamName}
-      handleChangeSearchParamJobCode={handleChangeSearchParamJobCode}
-      handleChangeSearchParamQrCode={handleChangeSearchParamQrCode}
+      handleChangeSearchParam={handleChangeSearchParam}
+      searchParams={searchParams}
       filteredData={filteredData}
     />
   );
