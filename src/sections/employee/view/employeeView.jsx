@@ -25,6 +25,7 @@ import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { JobsRow } from '../components/jobsRow';
 import { DatePicker } from '@mui/x-date-pickers';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { fDate } from 'src/utils/format-time';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -55,12 +56,30 @@ export const EmployeeView = ({
   isLoading,
   filteredDate,
   handleChangeFilterDate,
+  currentPoints,
+  isLoadingCurrentPoints,
   page,
   rowsPerPage,
   documentCount,
   handleChangePage,
   handleChangeRowsPerPage,
 }) => {
+  // Get the start date of last month
+  const lastMonthStartDate = new Date();
+  lastMonthStartDate.setMonth(lastMonthStartDate.getMonth() - 1);
+  lastMonthStartDate.setDate(2);
+  lastMonthStartDate.setHours(0, 0, 0, 0);
+
+  // Get the end date of last month
+  const lastMonthEndDate = new Date();
+  lastMonthEndDate.setDate(2); // Set to last day of previous month
+  lastMonthEndDate.setHours(23, 59, 59, 999);
+
+  // Current month start Date
+  const startdate = new Date();
+  startdate.setDate(2);
+  startdate.setHours(0, 0, 0, 0);
+
   return (
     <Container maxWidth={'xl'}>
       <Grid container spacing={{ xs: 1, sm: 2 }}>
@@ -79,11 +98,23 @@ export const EmployeeView = ({
         </Grid>
         <Grid item xs={12} sm={3}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
-            <Stack direction="column" spacing={2}>
+            <Stack direction="column" spacing={1}>
               <Typography variant={isLoadingPoints ? 'h6' : 'h3'}>
                 {isLoadingPoints ? 'Loading...' : points}
               </Typography>
               <Typography variant="h5">Last Month Points</Typography>
+              <Typography>{`${fDate(lastMonthStartDate)} - ${fDate(lastMonthEndDate)}`}</Typography>
+            </Stack>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={3}>
+          <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
+            <Stack direction="column" spacing={1}>
+              <Typography variant={isLoadingPoints ? 'h6' : 'h3'}>
+                {isLoadingCurrentPoints ? 'Loading...' : currentPoints}
+              </Typography>
+              <Typography variant="h5">Current Month Points</Typography>
+              <Typography>{`${fDate(startdate)} - ${fDate(new Date())}`}</Typography>
             </Stack>
           </Card>
         </Grid>

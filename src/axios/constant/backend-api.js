@@ -16,6 +16,7 @@ export const BACKEND_API = {
   EMPLOYEE_SELECT: IP_URL + '/employee/select',
   EMPLOYEE_JOBS: IP_URL + '/work-order/emp-jobs',
   EMPLOYEE_TIPS: IP_URL + '/employee/tips/',
+  EMPLOYEE_CURRENT_TIPS: IP_URL + '/employee/tips-current/',
   EMPLOYEE_TOTAL_TIPS: IP_URL + '/employee/total-tips/',
 
   CUSTOMERS_ALL: IP_URL + '/customer/',

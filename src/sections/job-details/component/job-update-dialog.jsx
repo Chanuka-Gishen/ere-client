@@ -82,6 +82,8 @@ export const JobUpdateDialog = ({
               <MenuItem value={COMPANIES.CMP_ERE}>ERE</MenuItem>
               <MenuItem value={COMPANIES.CMP_SINGER}>Singer</MenuItem>
               <MenuItem value={COMPANIES.CMP_SINGER_DIR}>Singer Direct Pay</MenuItem>
+              <MenuItem value={COMPANIES.CMP_SINHAGIRI}>Singhagiri</MenuItem>
+              <MenuItem value={COMPANIES.CMP_SINHAGIRI_DIR}>Singhagiri Direct Pay</MenuItem>
             </Select>
             {Boolean(touched.workOrderFrom && errors.workOrderFrom) && (
               <FormHelperText>{touched.workOrderFrom && errors.workOrderFrom}</FormHelperText>

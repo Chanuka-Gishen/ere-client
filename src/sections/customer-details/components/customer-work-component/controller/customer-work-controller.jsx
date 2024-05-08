@@ -23,7 +23,16 @@ const validationSchema = Yup.object().shape({
   workOrderScheduledDate: Yup.string().required('Scheduled Date is required'),
   workOrderFrom: Yup.string()
     .required()
-    .oneOf([COMPANIES.CMP_ERE, COMPANIES.CMP_SINGER, COMPANIES.CMP_SINGER_DIR], 'Invalid type'),
+    .oneOf(
+      [
+        COMPANIES.CMP_ERE,
+        COMPANIES.CMP_SINGER,
+        COMPANIES.CMP_SINGER_DIR,
+        COMPANIES.CMP_SINHAGIRI,
+        COMPANIES.CMP_SINHAGIRI_DIR,
+      ],
+      'Invalid type'
+    ),
 });
 
 const CustomerWorkController = ({ id, selectedUnit, isLoadingUnit }) => {
