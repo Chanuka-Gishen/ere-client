@@ -24,4 +24,6 @@ export const COMPANIES = {
   CMP_ERE: 'ERE',
   CMP_SINGER: 'Singer',
   CMP_SINGER_DIR: 'Singer Direct Pay',
+  CMP_SINHAGIRI: 'Singhagiri',
+  CMP_SINHAGIRI_DIR: 'Singhagiri Direct Pay',
 };

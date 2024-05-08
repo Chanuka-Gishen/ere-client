@@ -28,6 +28,7 @@ const EmployeeController = () => {
 
   const [jobs, setJobs] = useState([]);
   const [points, setPoints] = useState(0);
+  const [currentPoints, setCurrentPoints] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
   const [filteredDate, setFilteredDate] = useState(null);
 
@@ -37,6 +38,7 @@ const EmployeeController = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingPoints, setIsLoadingPoints] = useState(true);
+  const [isLoadingCurrentPoints, setIsLoadingCurrentPoints] = useState(true);
   const [isLoadingTotalPoints, setIsLoadingTotalPoints] = useState(true);
 
   const handleChangePage = (event, newPage) => {
@@ -74,6 +76,27 @@ const EmployeeController = () => {
       })
       .finally(() => {
         setIsLoadingPoints(false);
+      });
+  };
+
+  const fetchCurrentPoints = async () => {
+    setIsLoadingCurrentPoints(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.EMPLOYEE_CURRENT_TIPS + id,
+      method: 'GET',
+      cancelToken: sourceToken.token,
+    })
+      .then((res) => {
+        if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+          setCurrentPoints(res.data.responseData);
+        }
+      })
+      .catch(() => {
+        setIsLoadingCurrentPoints(false);
+      })
+      .finally(() => {
+        setIsLoadingCurrentPoints(false);
       });
   };
 
@@ -128,7 +151,9 @@ const EmployeeController = () => {
   useEffect(() => {
     fetchWorkOrders();
     fetchLastMonthPoints();
+    fetchCurrentPoints();
     fetchTotalPoints();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filteredDate, page, rowsPerPage]);
 
@@ -144,6 +169,8 @@ const EmployeeController = () => {
       isLoading={isLoading}
       filteredDate={filteredDate}
       handleChangeFilterDate={handleChangeFilterDate}
+      currentPoints={currentPoints}
+      isLoadingCurrentPoints={isLoadingCurrentPoints}
       page={page}
       rowsPerPage={rowsPerPage}
       documentCount={documentCount}
