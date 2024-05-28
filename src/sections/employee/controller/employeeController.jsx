@@ -1,11 +1,39 @@
 import React, { useEffect, useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
+
+import { useParams } from 'react-router-dom';
+
 import { EmployeeView } from '../view/employeeView';
 import { useRouter } from 'src/routes/hooks';
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
-import { useParams } from 'react-router-dom';
-import axios from 'axios';
 import responseUtil from 'src/utils/responseUtil';
+import commonUtil from 'src/utils/common-util';
+
+const validationSchemaDateRange = Yup.object().shape({
+  dateFrom: Yup.date()
+    .nullable()
+    .test('date-range', 'From date must be less than To date', function (value) {
+      const { dateTo } = this.parent;
+      if (value) {
+        return value < dateTo;
+      } else {
+        return true;
+      }
+    }),
+  dateTo: Yup.date()
+    .nullable()
+    .test('date-range', 'To date must be greater than From date', function (value) {
+      const { dateFrom } = this.parent;
+      if (value) {
+        return value > dateFrom;
+      } else {
+        return true;
+      }
+    }),
+});
 
 const EmployeeController = () => {
   const headers = [
@@ -30,16 +58,46 @@ const EmployeeController = () => {
   const [points, setPoints] = useState(0);
   const [currentPoints, setCurrentPoints] = useState(0);
   const [totalPoints, setTotalPoints] = useState(0);
-  const [filteredDate, setFilteredDate] = useState(null);
+  const [filteredDate, setFilteredDate] = useState([null, null]);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [documentCount, setDocumentCount] = useState(0);
 
+  const [openFilter, setOpenFilter] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingPoints, setIsLoadingPoints] = useState(true);
   const [isLoadingCurrentPoints, setIsLoadingCurrentPoints] = useState(true);
   const [isLoadingTotalPoints, setIsLoadingTotalPoints] = useState(true);
+
+  const formikDateRange = useFormik({
+    initialValues: {
+      dateFrom: null,
+      dateTo: null,
+    },
+    validationSchema: validationSchemaDateRange,
+    onSubmit: () => {
+      null;
+    },
+  });
+
+  const handleOpenSelectDateRange = () => {
+    setOpenFilter(true);
+  };
+
+  const handleCloseSelectDateRange = () => {
+    setOpenFilter(false);
+  };
+
+  const handleSubmitFilterDate = () => {
+    commonUtil.validateFormik(formikDateRange);
+
+    if (formikDateRange.isValid) {
+      fetchWorkOrders();
+      handleCloseSelectDateRange();
+    }
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -131,7 +189,8 @@ const EmployeeController = () => {
       params: {
         page: page,
         limit: rowsPerPage,
-        filteredDate: filteredDate,
+        dateFrom: formikDateRange.values.dateFrom,
+        dateTo: formikDateRange.values.dateTo,
       },
     })
       .then((res) => {
@@ -171,6 +230,11 @@ const EmployeeController = () => {
       handleChangeFilterDate={handleChangeFilterDate}
       currentPoints={currentPoints}
       isLoadingCurrentPoints={isLoadingCurrentPoints}
+      formikDateRange={formikDateRange}
+      openFilter={openFilter}
+      handleOpenSelectDateRange={handleOpenSelectDateRange}
+      handleCloseSelectDateRange={handleCloseSelectDateRange}
+      handleSubmitFilterDate={handleSubmitFilterDate}
       page={page}
       rowsPerPage={rowsPerPage}
       documentCount={documentCount}
