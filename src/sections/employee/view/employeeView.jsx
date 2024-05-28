@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Breadcrumbs,
+  Button,
   Card,
   Chip,
   Container,
@@ -11,21 +12,24 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
+  TextField,
   Toolbar,
   Typography,
   emphasize,
   styled,
 } from '@mui/material';
+
 import HomeIcon from '@mui/icons-material/Home';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
+
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from 'src/components/custom-table/custom-table-head';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { JobsRow } from '../components/jobsRow';
-import { DatePicker } from '@mui/x-date-pickers';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { fDate } from 'src/utils/format-time';
+import { SelectDateRange } from 'src/components/selectDateRange';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -58,6 +62,11 @@ export const EmployeeView = ({
   handleChangeFilterDate,
   currentPoints,
   isLoadingCurrentPoints,
+  formikDateRange,
+  openFilter,
+  handleOpenSelectDateRange,
+  handleCloseSelectDateRange,
+  handleSubmitFilterDate,
   page,
   rowsPerPage,
   documentCount,
@@ -82,7 +91,7 @@ export const EmployeeView = ({
 
   return (
     <Container maxWidth={'xl'}>
-      <Grid container spacing={{ xs: 1, sm: 2 }}>
+      <Grid container spacing={{ xs: 1, sm: 4 }}>
         <Grid item xs={12} sm={12}>
           <Breadcrumbs aria-label="breadcrumb">
             <StyledBreadcrumb
@@ -134,18 +143,35 @@ export const EmployeeView = ({
               sx={{
                 height: 96,
                 display: 'flex',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-end',
                 p: (theme) => theme.spacing(0, 1, 0, 3),
               }}
             >
-              <Stack direction="row" spacing={2}>
-                <DatePicker
-                  onChange={(date) => handleChangeFilterDate(date)}
-                  value={filteredDate}
+              <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={{ xs: 1, sm: 2 }}
+                alignItems="center"
+              >
+                <TextField
+                  variant="outlined"
+                  name="filterDate"
+                  label="Date Range"
+                  fullWidth
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  value={`${fDate(formikDateRange.values.dateFrom)}  -  ${fDate(
+                    formikDateRange.values.dateTo
+                  )}`}
                 />
-                <IconButton onClick={() => handleChangeFilterDate(null)} size="large">
-                  <CancelIcon />
-                </IconButton>
+
+                <Button
+                  startIcon={<FilterAltIcon />}
+                  variant="contained"
+                  onClick={handleOpenSelectDateRange}
+                >
+                  Filter
+                </Button>
               </Stack>
             </Toolbar>
             <Scrollbar>
@@ -184,6 +210,15 @@ export const EmployeeView = ({
           </Card>
         </Grid>
       </Grid>
+      {openFilter && (
+        <SelectDateRange
+          open={openFilter}
+          formik={formikDateRange}
+          handleClose={handleCloseSelectDateRange}
+          handleSubmit={handleSubmitFilterDate}
+          isLoading={isLoading}
+        />
+      )}
     </Container>
   );
 };
