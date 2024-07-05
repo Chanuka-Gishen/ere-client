@@ -17,6 +17,7 @@ import { formatCurrency } from 'src/utils/format-number';
 import { DownloadOutlined } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { fDate } from 'src/utils/format-time';
+import { COMPANIES } from 'src/constants/common-constants';
 
 export const InvoiceView = ({
   workOrder,
@@ -72,12 +73,37 @@ export const InvoiceView = ({
             </Stack>
           </Stack>
           <Divider />
+          {[COMPANIES.CMP_SINHAGIRI, COMPANIES.CMP_SINHAGIRI_DIR].includes(
+            workOrder.workOrderFrom
+          ) && (
+            <Typography fontWeight={'bold'} variant={isMobile ? 'h6' : 'h4'}>
+              Singhagiri (Pvt) Ltd
+            </Typography>
+          )}
           <Stack direction="row" justifyContent="space-between">
             <Stack direction="column" spacing={isMobile ? 1 : 2}>
               <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
                 Bill To:
               </Typography>
               <Typography variant={isMobile ? 'h7' : 'body1'}>{customer.customerName}</Typography>
+              {[COMPANIES.CMP_SINHAGIRI, COMPANIES.CMP_SINHAGIRI_DIR].includes(
+                workOrder.workOrderFrom
+              ) && (
+                <>
+                  <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                    Job Site:
+                  </Typography>
+                  <Typography variant={isMobile ? 'h7' : 'body1'}>
+                    {customer.customerAddress}
+                  </Typography>
+                  <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                    Contact Number:
+                  </Typography>
+                  <Typography variant={isMobile ? 'h7' : 'body1'}>
+                    {customer.customerTel.mobile ? customer.customerTel.mobile : ' - '}
+                  </Typography>
+                </>
+              )}
               <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
                 Unit Reference:
               </Typography>
