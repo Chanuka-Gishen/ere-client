@@ -70,6 +70,21 @@ export const InvoiceView = ({
                 0112645675 {'( WORKSHOP )'} | 0773878080 | 0716092000
               </Typography>
               <Typography variant={isMobile ? 'h7' : 'h4'}>erengineersere@gmail.com</Typography>
+              {[COMPANIES.CMP_SINGER, COMPANIES.CMP_SINGER_DIR].includes(
+                workOrder.workOrderFrom
+              ) && (
+                <Stack direction="row" spacing={isMobile ? 1 : 2}>
+                  <Typography variant={isMobile ? 'h7' : 'h4'}>Authorized By</Typography>
+                  <img
+                    src="/assets/abans.jpg"
+                    alt="Logo"
+                    style={{
+                      maxWidth: isMobile ? 80 : 150, // Adjust the size as needed
+                      marginRight: 2,
+                    }}
+                  />
+                </Stack>
+              )}
             </Stack>
           </Stack>
           <Divider />
