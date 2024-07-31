@@ -42,6 +42,8 @@ const InvoiceController = ({ workOrder, unit, customer, invoice }) => {
         link.download = `${
           workOrder.workOrderLinked.length === 0
             ? workOrder.workOrderInvoice.invoiceNumber
+              ? workOrder.workOrderInvoice.invoiceNumber
+              : workOrder.workOrderCode
             : workOrder.workOrderCode
         }.pdf`;
         document.body.appendChild(link);

@@ -74,7 +74,6 @@ export const InvoiceView = ({
                 workOrder.workOrderFrom
               ) && (
                 <Stack direction="row" spacing={isMobile ? 1 : 2}>
-                  <Typography variant={isMobile ? 'h7' : 'h4'}>Authorized By</Typography>
                   <img
                     src="/assets/abans.jpg"
                     alt="Logo"
@@ -83,6 +82,7 @@ export const InvoiceView = ({
                       marginRight: 2,
                     }}
                   />
+                  <Typography variant={isMobile ? 'h7' : 'h4'}>Authorized Agent</Typography>
                 </Stack>
               )}
             </Stack>
@@ -146,32 +146,37 @@ export const InvoiceView = ({
               </Typography>
             </Stack>
           </Stack>
-          <Divider />
-          <Stack spacing={isMobile ? 1 : 2}>
-            <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
-              Bank account details
-            </Typography>
-            <Stack direction="row" spacing={isMobile ? 1 : 2}>
-              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
-                Bank name
-              </Typography>
-              <Typography variant={isMobile ? 'h7' : 'body1'}>
-                Nations Trust Bank - Moratuwa
-              </Typography>
-            </Stack>
-            <Stack direction="row" spacing={isMobile ? 1 : 2}>
-              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
-                Account holder name
-              </Typography>
-              <Typography variant={isMobile ? 'h7' : 'body1'}>ER Engineers</Typography>
-            </Stack>
-            <Stack direction="row" spacing={isMobile ? 1 : 2}>
-              <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
-                Account number
-              </Typography>
-              <Typography variant={isMobile ? 'h7' : 'body1'}>014212025778</Typography>
-            </Stack>
-          </Stack>
+          {![COMPANIES.CMP_SINHAGIRI, COMPANIES.CMP_SINGER].includes(workOrder.workOrderFrom) && (
+            <>
+              <Divider />
+              <Stack spacing={isMobile ? 1 : 2}>
+                <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                  Bank account details
+                </Typography>
+                <Stack direction="row" spacing={isMobile ? 1 : 2}>
+                  <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                    Bank name
+                  </Typography>
+                  <Typography variant={isMobile ? 'h7' : 'body1'}>
+                    Nations Trust Bank - Moratuwa
+                  </Typography>
+                </Stack>
+                <Stack direction="row" spacing={isMobile ? 1 : 2}>
+                  <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                    Account holder name
+                  </Typography>
+                  <Typography variant={isMobile ? 'h7' : 'body1'}>ER Engineers</Typography>
+                </Stack>
+                <Stack direction="row" spacing={isMobile ? 1 : 2}>
+                  <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
+                    Account number
+                  </Typography>
+                  <Typography variant={isMobile ? 'h7' : 'body1'}>014212025778</Typography>
+                </Stack>
+              </Stack>
+            </>
+          )}
+
           <Divider />
           <TableContainer>
             <Table>
