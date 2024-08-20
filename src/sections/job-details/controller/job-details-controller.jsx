@@ -116,9 +116,11 @@ const JobDetailsController = () => {
       workOrderType: '',
       workOrderFrom: '',
       workOrderInvoiceNumber: '',
+      workOrderCodeSub: '',
       workOrderScheduledDate: null,
       workOrderIsLinked: false,
       workOrderLinkedJobs: [],
+      workOrderLinkedInvoiceNo: '',
     },
     validationSchema,
     onSubmit: () => {
@@ -441,6 +443,12 @@ const JobDetailsController = () => {
           workOrderFrom: formik.values.workOrderFrom,
           workOrderInvoiceNumber: formik.values.workOrderInvoiceNumber,
           workOrderLinkedJobs: formik.values.workOrderLinkedJobs,
+          workOrderCodeSub:
+            formik.values.workOrderCodeSub === '' ? null : formik.values.workOrderCodeSub,
+          workOrderLinkedInvoiceNo:
+            formik.values.workOrderLinkedInvoiceNo === ''
+              ? null
+              : formik.values.workOrderLinkedInvoiceNo,
         },
       })
         .then((res) => {
@@ -613,6 +621,12 @@ const JobDetailsController = () => {
               : '',
             workOrderFrom: data.responseData.workOrderFrom ? data.responseData.workOrderFrom : '',
             workOrderLinkedJobs: data.responseData.workOrderLinked,
+            workOrderCodeSub: data.responseData.workOrderCodeSub
+              ? data.responseData.workOrderCodeSub
+              : '',
+            workOrderLinkedInvoiceNo: data.responseData.workOrderLinkedInvoiceNo
+              ? data.responseData.workOrderLinkedInvoiceNo
+              : '',
           });
 
           if (data.responseData.workOrderInvoice) {

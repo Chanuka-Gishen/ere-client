@@ -60,7 +60,7 @@ export const InvoiceView = ({
             />
             <Stack direction="column" spacing={isMobile ? 1 : 2}>
               <Typography fontWeight={'bold'} variant={isMobile ? 'h3' : 'h2'}>
-                E R Engineers
+                ER ENGINEERS
               </Typography>
               <Typography variant={isMobile ? 'h7' : 'h4'}>
                 NO: 70/1A,, KORALAWELLA Road, KORALAWELLA, MORATUWA.

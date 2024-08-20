@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import {
   Avatar,
@@ -16,6 +16,7 @@ import { DayCalendarSkeleton, PickersDay } from '@mui/x-date-pickers';
 
 import WorkIcon from '@mui/icons-material/Work';
 import { fDate } from 'src/utils/format-time';
+import { COMPANIES } from 'src/constants/common-constants';
 
 const ServerDay = (props) => {
   const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
@@ -95,7 +96,18 @@ export const CalendarView = ({
               {jobsForSelectedDate[0].units.map((job, index) => (
                 <ListItem key={index}>
                   <ListItemAvatar>
-                    <Avatar>
+                    <Avatar
+                      sx={{
+                        bgcolor:
+                          job.workOrderFrom === COMPANIES.CMP_ERE
+                            ? '#1645de'
+                            : [COMPANIES.CMP_SINGER, COMPANIES.CMP_SINGER_DIR].includes(
+                                  job.workOrderFrom
+                                )
+                              ? '#d63838'
+                              : '#007d41',
+                      }}
+                    >
                       <WorkIcon />
                     </Avatar>
                   </ListItemAvatar>

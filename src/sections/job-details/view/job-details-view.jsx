@@ -31,7 +31,7 @@ import { Add, CloseOutlined, DeleteForeverRounded } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { UNIT_STATUS, WORK_STATUS } from 'src/constants/common-constants';
+import { COMPANIES, UNIT_STATUS, WORK_STATUS } from 'src/constants/common-constants';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { ImageUpload } from 'src/components/upload';
 import { JobAssignDialog } from '../component/job-assign-dialog';
@@ -348,6 +348,17 @@ export const JobDetailsView = ({
                         <CustomCell>Work Order Code</CustomCell>
                         <CustomCell>{workOrder?.workOrderCode}</CustomCell>
                       </TableRow>
+                      {!isLoading &&
+                        [COMPANIES.CMP_SINGER, COMPANIES.CMP_SINHAGIRI].includes(
+                          workOrder?.workOrderFrom
+                        ) && (
+                          <TableRow>
+                            <CustomCell>Work Order Code</CustomCell>
+                            <CustomCell>
+                              {workOrder?.workOrderCodeSub ? workOrder?.workOrderCodeSub : '-'}
+                            </CustomCell>
+                          </TableRow>
+                        )}
                       <TableRow>
                         <CustomCell>Job From</CustomCell>
                         <CustomCell>{workOrder?.workOrderFrom}</CustomCell>
@@ -373,13 +384,23 @@ export const JobDetailsView = ({
                         <CustomCell>{fDate(workOrder?.workOrderScheduledDate)}</CustomCell>
                       </TableRow>
                       <TableRow>
-                        <CustomCell>Invoice Number</CustomCell>
+                        <CustomCell>Sub Invoice Number</CustomCell>
                         <CustomCell>
                           {workOrder?.workOrderInvoice && workOrder?.workOrderInvoice.invoiceNumber
                             ? workOrder?.workOrderInvoice.invoiceNumber
                             : '-'}
                         </CustomCell>
                       </TableRow>
+                      {!isLoading && workOrder.workOrderLinked.length > 0 && (
+                        <TableRow>
+                          <CustomCell>Main Invoice Number</CustomCell>
+                          <CustomCell>
+                            {workOrder?.workOrderLinkedInvoiceNo
+                              ? workOrder?.workOrderLinkedInvoiceNo
+                              : '-'}
+                          </CustomCell>
+                        </TableRow>
+                      )}
                       {!isLoading && workOrder.workOrderLinked.length > 0 && (
                         <TableRow>
                           <CustomCell>Linked Jobs</CustomCell>
