@@ -89,6 +89,14 @@ export const JobUpdateDialog = ({
               <FormHelperText>{touched.workOrderFrom && errors.workOrderFrom}</FormHelperText>
             )}
           </FormControl>
+          {[COMPANIES.CMP_SINGER, COMPANIES.CMP_SINHAGIRI].includes(values.workOrderFrom) && (
+            <TextField
+              name={`workOrderCodeSub`}
+              label={'Sub WorkOrder Code'}
+              fullWidth
+              {...getFieldProps('workOrderCodeSub')}
+            />
+          )}
           {values.workOrderFrom != COMPANIES.CMP_ERE && (
             <TextField
               name={`workOrderInvoiceNumber`}
@@ -125,6 +133,15 @@ export const JobUpdateDialog = ({
               )}
             </>
           )}
+          {values.workOrderLinkedJobs.length > 0 &&
+            [COMPANIES.CMP_SINGER, COMPANIES.CMP_SINHAGIRI].includes(values.workOrderFrom) && (
+              <TextField
+                name={`workOrderLinkedInvoiceNo`}
+                label={'Main Invoice Number'}
+                fullWidth
+                {...getFieldProps('workOrderLinkedInvoiceNo')}
+              />
+            )}
         </Stack>
       </DialogContent>
       <DialogActions>
