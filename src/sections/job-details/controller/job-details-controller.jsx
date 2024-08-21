@@ -35,6 +35,7 @@ const validationSchema = Yup.object().shape({
       'Invalid type'
     ),
   workOrderInvoiceNumber: Yup.string(),
+  workOrderCodeSub: Yup.string(),
   workOrderLinkedJobs: Yup.array(),
 });
 
@@ -116,11 +117,10 @@ const JobDetailsController = () => {
       workOrderType: '',
       workOrderFrom: '',
       workOrderInvoiceNumber: '',
-      workOrderCodeSub: '',
       workOrderScheduledDate: null,
       workOrderIsLinked: false,
       workOrderLinkedJobs: [],
-      workOrderLinkedInvoiceNo: '',
+      workOrderCodeSub: '',
     },
     validationSchema,
     onSubmit: () => {
@@ -260,10 +260,11 @@ const JobDetailsController = () => {
         workOrderFrom: workOrder.workOrderFrom,
         workOrderType: workOrder.workOrderType,
         workOrderScheduledDate: new Date(workOrder.workOrderScheduledDate),
-        workOrderInvoiceNumber: workOrder.workOrderInvoiceNumber
-          ? workOrder.workOrderInvoiceNumber
+        workOrderInvoiceNumber: workOrder.workOrderInvoice
+          ? workOrder.workOrderInvoice.invoiceNumber
           : '',
         workOrderLinkedJobs: workOrder.workOrderLinked,
+        workOrderCodeSub: workOrder.workOrderCodeSub ? workOrder.workOrderCodeSub : '',
       });
     } else {
       formik.resetForm();
@@ -445,10 +446,6 @@ const JobDetailsController = () => {
           workOrderLinkedJobs: formik.values.workOrderLinkedJobs,
           workOrderCodeSub:
             formik.values.workOrderCodeSub === '' ? null : formik.values.workOrderCodeSub,
-          workOrderLinkedInvoiceNo:
-            formik.values.workOrderLinkedInvoiceNo === ''
-              ? null
-              : formik.values.workOrderLinkedInvoiceNo,
         },
       })
         .then((res) => {
@@ -612,22 +609,6 @@ const JobDetailsController = () => {
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
           setWorkOrder(data.responseData);
-
-          formik.setValues({
-            workOrderType: data.responseData.workOrderType,
-            workOrderScheduledDate: new Date(data.responseData.workOrderScheduledDate),
-            workOrderInvoiceNumber: data.responseData.workOrderInvoice
-              ? data.responseData.workOrderInvoice.invoiceNumber
-              : '',
-            workOrderFrom: data.responseData.workOrderFrom ? data.responseData.workOrderFrom : '',
-            workOrderLinkedJobs: data.responseData.workOrderLinked,
-            workOrderCodeSub: data.responseData.workOrderCodeSub
-              ? data.responseData.workOrderCodeSub
-              : '',
-            workOrderLinkedInvoiceNo: data.responseData.workOrderLinkedInvoiceNo
-              ? data.responseData.workOrderLinkedInvoiceNo
-              : '',
-          });
 
           if (data.responseData.workOrderInvoice) {
             chargersFormik.setValues({

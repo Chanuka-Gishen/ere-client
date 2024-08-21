@@ -15,7 +15,6 @@ import {
   MenuItem,
   Select,
   Stack,
-  Switch,
   TextField,
   Typography,
 } from '@mui/material';
@@ -33,7 +32,7 @@ export const JobUpdateDialog = ({
   availableJobList,
   isLoadingJobList,
 }) => {
-  const { getFieldProps, touched, errors, values, setFieldValue, handleChange } = formik;
+  const { getFieldProps, touched, errors, values, setFieldValue } = formik;
 
   return (
     <Dialog open={isOpen} fullWidth sx={{ px: 2 }}>
@@ -133,15 +132,6 @@ export const JobUpdateDialog = ({
               )}
             </>
           )}
-          {values.workOrderLinkedJobs.length > 0 &&
-            [COMPANIES.CMP_SINGER, COMPANIES.CMP_SINHAGIRI].includes(values.workOrderFrom) && (
-              <TextField
-                name={`workOrderLinkedInvoiceNo`}
-                label={'Main Invoice Number'}
-                fullWidth
-                {...getFieldProps('workOrderLinkedInvoiceNo')}
-              />
-            )}
         </Stack>
       </DialogContent>
       <DialogActions>
