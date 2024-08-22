@@ -50,6 +50,10 @@ const CustomerWorkController = ({ id, selectedUnit, isLoadingUnit }) => {
   const { enqueueSnackbar } = useSnackbar();
   const cancelToken = axios.CancelToken.source();
 
+  const [page, setPage] = useState(0);
+  const [documentCount, setDocumentCount] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
   const [workOrders, setWorkOrders] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingAddJob, setIsLoadingAddJob] = useState(false);
@@ -67,6 +71,15 @@ const CustomerWorkController = ({ id, selectedUnit, isLoadingUnit }) => {
       null;
     },
   });
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
+  };
 
   const handleRowClick = (jobId) => {
     router.push(`customers/details/job/${jobId}`);
@@ -123,12 +136,17 @@ const CustomerWorkController = ({ id, selectedUnit, isLoadingUnit }) => {
       url: BACKEND_API.WORK_ORDRS_BY_UNIT + selectedUnit._id,
       method: 'GET',
       cancelToken: cancelToken.token,
+      params: {
+        page: page,
+        limit: rowsPerPage,
+      },
     })
       .then((res) => {
         const data = res.data;
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
-          setWorkOrders(data.responseData);
+          setWorkOrders(data.responseData.data);
+          setDocumentCount(data.responseData.count);
         }
       })
       .finally(() => {
@@ -153,6 +171,11 @@ const CustomerWorkController = ({ id, selectedUnit, isLoadingUnit }) => {
       formik={formik}
       isLoadingAddJob={isLoadingAddJob}
       handleAddJobDialog={handleAddJobDialog}
+      page={page}
+      documentCount={documentCount}
+      rowsPerPage={rowsPerPage}
+      handleChangePage={handleChangePage}
+      handleChangeRowsPerPage={handleChangeRowsPerPage}
     />
   );
 };

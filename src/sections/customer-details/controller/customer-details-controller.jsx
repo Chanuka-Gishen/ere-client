@@ -44,7 +44,6 @@ const CustomerDetailsController = () => {
   useEffect(() => {
     const fetchUnit = async () => {
       if (selectedUnitId) {
-        console.log('fetching');
         setIsLoadingUnit(true);
         await backendAuthApi({
           url: BACKEND_API.CUSTOMER_UNIT + selectedUnitId,

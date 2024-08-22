@@ -37,6 +37,7 @@ const CustomerController = () => {
   const router = useRouter();
 
   const [page, setPage] = useState(0);
+  const [documentCount, setDocumentCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [openAddCust, setOpenAddCust] = useState(false);
 
@@ -136,12 +137,18 @@ const CustomerController = () => {
       url: BACKEND_API.CUSTOMERS_ALL,
       method: 'GET',
       cancelToken: cancelToken.token,
+      params: {
+        page: page,
+        limit: rowsPerPage,
+        customerTel: searchTerm,
+      },
     })
       .then((res) => {
         const data = res.data;
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
-          setCustomers(data.responseData);
+          setCustomers(data.responseData.data);
+          setDocumentCount(data.responseData.count);
         }
       })
       .finally(() => {
@@ -152,7 +159,7 @@ const CustomerController = () => {
   useEffect(() => {
     handleFetchCustomers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [rowsPerPage, page, searchTerm]);
 
   return (
     <CustomerView
@@ -167,6 +174,7 @@ const CustomerController = () => {
       formik={formik}
       headerLabels={headerLabels}
       page={page}
+      documentCount={documentCount}
       rowsPerPage={rowsPerPage}
       handleChangePage={handleChangePage}
       handleChangeRowsPerPage={handleChangeRowsPerPage}

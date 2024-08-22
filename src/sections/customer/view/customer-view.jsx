@@ -38,6 +38,7 @@ export const CustomerView = ({
   formik,
   headerLabels,
   page,
+  documentCount,
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
@@ -76,18 +77,16 @@ export const CustomerView = ({
                     <TableEmptyRow colSpan={headerLabels.length} />
                   ) : (
                     <>
-                      {filteredData
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row) => (
-                          <CustomerTableRow
-                            customer={row}
-                            key={row._id}
-                            handleClickRow={handleClickRow}
-                          />
-                        ))}
+                      {customers.map((row) => (
+                        <CustomerTableRow
+                          customer={row}
+                          key={row._id}
+                          handleClickRow={handleClickRow}
+                        />
+                      ))}
                     </>
                   )}
-                  {filteredData.length === 0 && customers.length != 0 && (
+                  {customers.length === 0 && (
                     <TableRow>
                       <TableCell colSpan={headerLabels.length} align="center">
                         {`No results found for "${searchTerm}"`}
@@ -102,7 +101,7 @@ export const CustomerView = ({
         <TablePagination
           page={page}
           component="div"
-          count={customers.length}
+          count={documentCount}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[5, 10, 25]}

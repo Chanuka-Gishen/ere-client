@@ -32,6 +32,7 @@ export const InvoicesView = ({
   handleChangeDate,
   handleDeleteFilteredDate,
   page,
+  documentCount,
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
@@ -107,13 +108,11 @@ export const InvoicesView = ({
                     <TableLoadingRow colSpan={header.length} />
                   ) : (
                     <>
-                      {data.length > 0 ? (
+                      {documentCount > 0 ? (
                         <>
-                          {data
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((item, index) => (
-                              <InvoicesRow key={index} invoice={item} />
-                            ))}
+                          {data.map((item, index) => (
+                            <InvoicesRow key={index} invoice={item} />
+                          ))}
                         </>
                       ) : (
                         <>
@@ -129,10 +128,10 @@ export const InvoicesView = ({
           <TablePagination
             page={page}
             component="div"
-            count={data.length}
+            count={documentCount}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
-            rowsPerPageOptions={[10, 20, 30]}
+            rowsPerPageOptions={[5, 10, 30]}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </Grid>

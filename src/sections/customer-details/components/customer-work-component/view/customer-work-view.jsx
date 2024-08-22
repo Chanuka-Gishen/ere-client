@@ -8,6 +8,7 @@ import {
   TableBody,
   TableCell,
   TableContainer,
+  TablePagination,
   TableRow,
 } from '@mui/material';
 import Scrollbar from 'src/components/scrollbar';
@@ -39,6 +40,11 @@ export const CustomerWorkView = ({
   formik,
   isLoadingAddJob,
   handleAddJobDialog,
+  page,
+  documentCount,
+  rowsPerPage,
+  handleChangePage,
+  handleChangeRowsPerPage,
 }) => {
   return (
     <>
@@ -102,6 +108,18 @@ export const CustomerWorkView = ({
           </Table>
         </TableContainer>
       </Scrollbar>
+      {workOrders.length > 5 && (
+        <TablePagination
+          page={page}
+          component="div"
+          count={documentCount}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          rowsPerPageOptions={[5, 10, 25]}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
+
       {isOpenAddJobDialog && (
         <AddCustomerJobDialog
           formik={formik}

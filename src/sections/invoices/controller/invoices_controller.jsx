@@ -27,7 +27,8 @@ const InvoicesController = () => {
   const sourceToken = axios.CancelToken.source();
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [documentCount, setDocumentCount] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [filteredDate, setFilteredDate] = useState(null);
   const [data, setData] = useState([]);
@@ -82,13 +83,18 @@ const InvoicesController = () => {
       url: BACKEND_API.WORK_ORDR_ALL_INVOICES,
       method: 'POST',
       cancelToken: sourceToken.token,
+      params: {
+        page: page,
+        limit: rowsPerPage,
+      },
       data: {
         filteredDate,
       },
     })
       .then((res) => {
         if (responseUtil.isResponseSuccess(res.data.responseCode)) {
-          setData(res.data.responseData);
+          setData(res.data.responseData.data);
+          setDocumentCount(res.data.responseData.count);
         }
       })
       .catch(() => {
@@ -103,7 +109,7 @@ const InvoicesController = () => {
     fetchInvoices();
     fetchStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filteredDate]);
+  }, [filteredDate, page, rowsPerPage]);
 
   return (
     <InvoicesView
@@ -114,6 +120,7 @@ const InvoicesController = () => {
       handleChangeDate={handleChangeDate}
       handleDeleteFilteredDate={handleDeleteFilteredDate}
       page={page}
+      documentCount={documentCount}
       rowsPerPage={rowsPerPage}
       handleChangePage={handleChangePage}
       handleChangeRowsPerPage={handleChangeRowsPerPage}
