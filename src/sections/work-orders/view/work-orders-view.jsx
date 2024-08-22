@@ -43,12 +43,12 @@ export const WorkOrdrsView = ({
   data,
   handleRowClick,
   page,
+  documentCount,
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
   handleChangeSearchParam,
   searchParams,
-  filteredData,
 }) => {
   const isMobile = useResponsive('down', 'lg');
   return (
@@ -108,70 +108,64 @@ export const WorkOrdrsView = ({
                       <TableEmptyRow colSpan={headerLabels.length} />
                     ) : (
                       <>
-                        {filteredData
-                          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                          .map((item, index) => (
-                            <TableRow hover key={index} onClick={() => handleRowClick(item._id)}>
-                              <CustomCell component={'th'}>{item.workOrderCode}</CustomCell>
-                              <CustomCell>{item.workOrderFrom}</CustomCell>
-                              <CustomCell sx={{ width: 200 }}>
-                                {item.workOrderCustomerId.customerName}
-                              </CustomCell>
-                              <CustomCell sx={{ width: 200 }}>
-                                {item.workOrderCustomerId.customerTel.mobile}
-                              </CustomCell>
-                              <CustomCell>
-                                {item.workOrderUnitReference.unitQrCode
-                                  ? item.workOrderUnitReference.unitQrCode.qrCodeName
-                                  : '-'}
-                              </CustomCell>
-                              <CustomCell sx={{ width: 200 }}>
-                                {item.workOrderUnitReference.unitSerialNo}
-                              </CustomCell>
-                              <CustomCell
-                                sx={{
-                                  color:
-                                    commonUtil.calculateMonthDifference(
-                                      item.workOrderScheduledDate
-                                    ) && item.workOrderStatus === WORK_STATUS.CREATED
-                                      ? 'red'
-                                      : 'black',
-                                }}
+                        {data.map((item, index) => (
+                          <TableRow hover key={index} onClick={() => handleRowClick(item._id)}>
+                            <CustomCell component={'th'}>{item.workOrderCode}</CustomCell>
+                            <CustomCell>{item.workOrderFrom}</CustomCell>
+                            <CustomCell sx={{ width: 200 }}>
+                              {item.customer.customerName}
+                            </CustomCell>
+                            <CustomCell sx={{ width: 200 }}>
+                              {item.customer.customerTel.mobile}
+                            </CustomCell>
+                            <CustomCell>
+                              {item.unit.unitQrCode ? item.unit.unitQrCode.qrCodeName : '-'}
+                            </CustomCell>
+                            <CustomCell sx={{ width: 200 }}>{item.unit.unitSerialNo}</CustomCell>
+                            <CustomCell
+                              sx={{
+                                color:
+                                  commonUtil.calculateMonthDifference(
+                                    item.workOrderScheduledDate
+                                  ) && item.workOrderStatus === WORK_STATUS.CREATED
+                                    ? 'red'
+                                    : 'black',
+                              }}
+                            >
+                              {fDate(item.workOrderScheduledDate)}
+                            </CustomCell>
+                            <CustomCell>
+                              <Label
+                                color={
+                                  item.workOrderType === WORK_TYPE.SERVICE ? 'success' : 'warning'
+                                }
                               >
-                                {fDate(item.workOrderScheduledDate)}
-                              </CustomCell>
-                              <CustomCell>
-                                <Label
-                                  color={
-                                    item.workOrderType === WORK_TYPE.SERVICE ? 'success' : 'warning'
-                                  }
-                                >
-                                  {item.workOrderType}
-                                </Label>
-                              </CustomCell>
-                              <CustomCell>
-                                <Label
-                                  color={
-                                    item.workOrderStatus === WORK_STATUS.CREATED
-                                      ? 'default'
-                                      : item.workOrderStatus === WORK_STATUS.COMPLETED
-                                        ? 'success'
-                                        : 'warning'
-                                  }
-                                >
-                                  {item.workOrderStatus}
-                                </Label>
-                              </CustomCell>
-                              <CustomCell>
-                                {item.workOrderCompletedDate
-                                  ? fDate(item.workOrderCompletedDate)
-                                  : '--'}
-                              </CustomCell>
-                              <CustomCell>
-                                {item.workOrderInvoice ? item.workOrderInvoice.invoiceNumber : '--'}
-                              </CustomCell>
-                            </TableRow>
-                          ))}
+                                {item.workOrderType}
+                              </Label>
+                            </CustomCell>
+                            <CustomCell>
+                              <Label
+                                color={
+                                  item.workOrderStatus === WORK_STATUS.CREATED
+                                    ? 'default'
+                                    : item.workOrderStatus === WORK_STATUS.COMPLETED
+                                      ? 'success'
+                                      : 'warning'
+                                }
+                              >
+                                {item.workOrderStatus}
+                              </Label>
+                            </CustomCell>
+                            <CustomCell>
+                              {item.workOrderCompletedDate
+                                ? fDate(item.workOrderCompletedDate)
+                                : '--'}
+                            </CustomCell>
+                            <CustomCell>
+                              {item.workOrderInvoice ? item.invoice.invoiceNumber : '--'}
+                            </CustomCell>
+                          </TableRow>
+                        ))}
                       </>
                     )}
                   </>
@@ -183,7 +177,7 @@ export const WorkOrdrsView = ({
         <TablePagination
           page={page}
           component="div"
-          count={filteredData.length}
+          count={documentCount}
           rowsPerPage={rowsPerPage}
           onPageChange={handleChangePage}
           rowsPerPageOptions={[10, 20, 30]}
