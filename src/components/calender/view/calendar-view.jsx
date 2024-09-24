@@ -16,7 +16,6 @@ import { DayCalendarSkeleton, PickersDay } from '@mui/x-date-pickers';
 
 import WorkIcon from '@mui/icons-material/Work';
 import { fDate } from 'src/utils/format-time';
-import { COMPANIES } from 'src/constants/common-constants';
 
 const ServerDay = (props) => {
   const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
@@ -47,12 +46,16 @@ export const CalendarView = ({
   data,
   selectedDate,
   selectedMonth,
+  selectedDateData,
+  isLoadingSelectedData,
 }) => {
   // Filter the data for the selected month
-  const filteredData = data.filter((item) => new Date(item._id).getMonth() === selectedMonth);
+  const filteredData = data.filter(
+    (item) => new Date(item.unitNextMaintenanceDate).getMonth() === selectedMonth
+  );
 
   const jobsForSelectedDate = data.filter((unit) => {
-    const unitDate = new Date(unit._id);
+    const unitDate = new Date(unit.unitNextMaintenanceDate);
     // Check if the unit's date matches the selected date
     return (
       unitDate.getDate() === selectedDate.getDate() &&
@@ -62,7 +65,7 @@ export const CalendarView = ({
   });
 
   const highlightedDays = filteredData.map((item) => {
-    const day = new Date(item._id).getDate(); // Extract the day (DD) part
+    const day = new Date(item.unitNextMaintenanceDate).getDate(); // Extract the day (DD) part
     return day;
   });
 
@@ -89,30 +92,29 @@ export const CalendarView = ({
       <Grid item xs={12} sm={6}>
         <Card sx={{ p: 2 }}>
           <Typography textAlign="center" fontWeight="bold">
-            Scheduled Jobs for {fDate(selectedDate)}
+            Units Due for Maintenance on {fDate(selectedDate)}
           </Typography>
-          {jobsForSelectedDate.length > 0 ? (
+          {isLoadingSelectedData && <Typography textAlign="center">Loading Data...</Typography>}
+          {selectedDateData.length > 0 ? (
             <List sx={{ maxHeight: 308, overflow: 'auto' }}>
-              {jobsForSelectedDate[0].units.map((job, index) => (
+              {selectedDateData.map((item, index) => (
                 <ListItem key={index}>
                   <ListItemAvatar>
                     <Avatar
                       sx={{
-                        bgcolor:
-                          job.workOrderFrom === COMPANIES.CMP_ERE
-                            ? '#1645de'
-                            : [COMPANIES.CMP_SINGER, COMPANIES.CMP_SINGER_DIR].includes(
-                                  job.workOrderFrom
-                                )
-                              ? '#d63838'
-                              : '#007d41',
+                        bgcolor: '#007d41',
                       }}
                     >
                       <WorkIcon />
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={job.customer.customerName}
+                    primary={
+                      <Stack direction={'row'} justifyContent={'space-between'}>
+                        <Typography>{item.unitCustomerId.customerName}</Typography>
+                        <Typography>{item.unitCustomerId.customerTel.mobile}</Typography>
+                      </Stack>
+                    }
                     secondary={
                       <Stack direction="column">
                         <Typography
@@ -121,10 +123,10 @@ export const CalendarView = ({
                           variant="body2"
                           color="text.primary"
                         >
-                          {`${job.unitBrand} - ${job.unitModel} - ${job.unitSerialNo}`}
+                          {`${item.unitBrand} - ${item.unitModel} - ${item.unitSerialNo}`}
                         </Typography>
                         <Typography variant="body2" color="text.primary">
-                          {job.qrCode ? `${job.qrCode.qrCodeName}` : 'QR not assigned'}
+                          {item.unitQrCode ? `${item.unitQrCode.qrCodeName}` : 'QR not assigned'}
                         </Typography>
                       </Stack>
                     }
@@ -134,7 +136,7 @@ export const CalendarView = ({
             </List>
           ) : (
             <Typography textAlign="center" variant="body2">
-              No jobs available
+              No units available
             </Typography>
           )}
         </Card>

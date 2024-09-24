@@ -12,17 +12,43 @@ const CalendarController = () => {
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
   const [data, setData] = useState([]);
+  const [selectedDateData, setSelectedDateData] = useState([]);
+
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingSelectedData, setIsLoadingSelectedData] = useState(false);
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setSelectedDate(new Date(date));
   };
 
   const handleMonthChange = (date) => {
     setSelectedMonth(new Date(date).getMonth());
   };
 
-  const fetchUnits = async () => {
+  const fetchUnitsDetails = async () => {
+    setIsLoadingSelectedData(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.SELECTED_CALENDER_DATE_JOBS + selectedDate,
+      method: 'GET',
+      cancelToken: cancelToken.token,
+    })
+      .then((res) => {
+        const data = res.data.responseData;
+
+        if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+          setSelectedDateData(data);
+        }
+      })
+      .catch(() => {
+        setIsLoadingSelectedData(false);
+      })
+      .finally(() => {
+        setIsLoadingSelectedData(false);
+      });
+  };
+
+  const fetchNextMaintenanceDates = async () => {
     setIsLoading(true);
 
     await backendAuthApi({
@@ -46,7 +72,12 @@ const CalendarController = () => {
   };
 
   useEffect(() => {
-    fetchUnits();
+    fetchUnitsDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedDate]);
+
+  useEffect(() => {
+    fetchNextMaintenanceDates();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -59,6 +90,8 @@ const CalendarController = () => {
       data={data}
       selectedDate={selectedDate}
       selectedMonth={selectedMonth}
+      selectedDateData={selectedDateData}
+      isLoadingSelectedData={isLoadingSelectedData}
     />
   );
 };
