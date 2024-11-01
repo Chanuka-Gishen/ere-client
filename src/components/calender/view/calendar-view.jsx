@@ -24,7 +24,7 @@ const ServerDay = (props) => {
   const isSelected =
     !props.outsideCurrentMonth &&
     day instanceof Date &&
-    highlightedDays.indexOf(day.getDate()) >= 0;
+    highlightedDays.some((highlightedDay) => highlightedDay.toDateString() === day.toDateString());
 
   return (
     <Badge
@@ -50,24 +50,12 @@ export const CalendarView = ({
   isLoadingSelectedData,
 }) => {
   // Filter the data for the selected month
-  const filteredData = data.filter(
-    (item) => new Date(item.unitNextMaintenanceDate).getMonth() === selectedMonth
-  );
-
-  const jobsForSelectedDate = data.filter((unit) => {
-    const unitDate = new Date(unit.unitNextMaintenanceDate);
-    // Check if the unit's date matches the selected date
-    return (
-      unitDate.getDate() === selectedDate.getDate() &&
-      unitDate.getMonth() === selectedDate.getMonth() &&
-      unitDate.getFullYear() === selectedDate.getFullYear()
-    );
+  const filteredData = data.filter((item) => {
+    const date = new Date(item.unitNextMaintenanceDate);
+    return date.getMonth() === selectedMonth && date.getFullYear() === selectedDate.getFullYear();
   });
 
-  const highlightedDays = filteredData.map((item) => {
-    const day = new Date(item.unitNextMaintenanceDate).getDate(); // Extract the day (DD) part
-    return day;
-  });
+  const highlightedDays = filteredData.map((item) => new Date(item.unitNextMaintenanceDate));
 
   return (
     <Grid container spacing={2} alignItems="start" justifyContent="center">
