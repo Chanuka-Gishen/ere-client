@@ -6,6 +6,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import PeopleOutlineIcon from '@mui/icons-material/PeopleOutline';
 import ListIcon from '@mui/icons-material/List';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
+import AcUnitIcon from '@mui/icons-material/AcUnit';
 
 // ----------------------------------------------------------------------
 
@@ -29,6 +30,13 @@ const navConfig = [
     name: NAVBAR_ITEMS.WORKORDERS,
     path: NAVIGATION_ROUTES.work_orders,
     icon: <ListIcon />,
+    adminOnly: true,
+  },
+  {
+    title: 'Units',
+    name: NAVBAR_ITEMS.UNITS,
+    path: NAVIGATION_ROUTES.units.base,
+    icon: <AcUnitIcon />,
     adminOnly: true,
   },
   {
