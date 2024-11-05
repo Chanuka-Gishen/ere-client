@@ -29,6 +29,7 @@ export const BACKEND_API = {
   CUSTOMER_UNIT_UPDATE: IP_URL + '/customer/unit',
   CUSTOMER_UNIT_DETAILS_UPDATE: IP_URL + '/customer/unit-details-update',
 
+  UNITS: IP_URL + '/unit/',
   CUSTOMER_UNIT: IP_URL + '/unit/info/',
   CUSTOMER_UNIT_DELETE: IP_URL + '/unit/',
   CUSTOMER_UNIT_ADD_QR: IP_URL + '/unit/update-qr-code',

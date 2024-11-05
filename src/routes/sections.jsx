@@ -4,6 +4,7 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
 import { NAVIGATION_ROUTES } from './navigation-routes';
 import { useSelector } from 'react-redux';
+import UnitsPage from 'src/pages/units';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const LoginPage = lazy(() => import('src/pages/login'));
@@ -65,6 +66,7 @@ const Router = () => {
         { path: NAVIGATION_ROUTES.work_orders, element: <WorkOrdersPage /> },
         { path: NAVIGATION_ROUTES.work_order_details, element: <JobDetailsPage /> },
         { path: NAVIGATION_ROUTES.invoices, element: <InvoicesPage /> },
+        { path: NAVIGATION_ROUTES.units.base, element: <UnitsPage /> },
       ],
     },
     ...PublicRoutes,
