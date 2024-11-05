@@ -28,8 +28,12 @@ const CalendarController = () => {
   const fetchUnitsDetails = async () => {
     setIsLoadingSelectedData(true);
 
+    const date = new Date(selectedDate);
+    const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const isoDate = utcDate.toISOString().split('T')[0];
+
     await backendAuthApi({
-      url: BACKEND_API.SELECTED_CALENDER_DATE_JOBS + selectedDate.toISOString(),
+      url: BACKEND_API.SELECTED_CALENDER_DATE_JOBS + isoDate,
       method: 'GET',
       cancelToken: cancelToken.token,
     })
