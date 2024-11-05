@@ -29,7 +29,7 @@ const CalendarController = () => {
     setIsLoadingSelectedData(true);
 
     await backendAuthApi({
-      url: BACKEND_API.SELECTED_CALENDER_DATE_JOBS + selectedDate,
+      url: BACKEND_API.SELECTED_CALENDER_DATE_JOBS + selectedDate.toISOString(),
       method: 'GET',
       cancelToken: cancelToken.token,
     })
