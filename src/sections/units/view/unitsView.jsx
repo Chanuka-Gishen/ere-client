@@ -159,7 +159,7 @@ export const UnitsView = ({
                                   <CustomCell>
                                     {`${item.unitBrand} - ${item.unitModel} - ${item.unitSerialNo}`}
                                   </CustomCell>
-                                  <CustomCell>{fDate(item.unitNextMaintenanceDate)}</CustomCell>
+                                  <CustomCell>{fDate(item.unitLastMaintenanceDate)}</CustomCell>
                                   <CustomCell
                                     sx={{
                                       color:
