@@ -51,6 +51,8 @@ const StyledBreadcrumb = styled(Chip)(({ theme }) => {
 
 export const EmployeeView = ({
   handleOnClickBreadCrumb,
+  isLoadingEmp,
+  emp,
   headers,
   points,
   totalPoints,
@@ -99,7 +101,12 @@ export const EmployeeView = ({
               label="Employees"
               icon={<HomeIcon fontSize="small" />}
             />
-            <StyledBreadcrumb component="a" href="#" disabled label="Name" />
+            <StyledBreadcrumb
+              component="a"
+              href="#"
+              disabled
+              label={isLoadingEmp ? 'Loading...' : emp.userFullName}
+            />
           </Breadcrumbs>
         </Grid>
         <Grid item xs={12} sm={12}>
