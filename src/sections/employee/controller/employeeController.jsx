@@ -54,6 +54,7 @@ const EmployeeController = () => {
 
   const sourceToken = axios.CancelToken.source();
 
+  const [emp, setEmp] = useState(null);
   const [jobs, setJobs] = useState([]);
   const [points, setPoints] = useState(0);
   const [currentPoints, setCurrentPoints] = useState(0);
@@ -67,6 +68,7 @@ const EmployeeController = () => {
   const [openFilter, setOpenFilter] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingEmp, setIsLoadingEmp] = useState(true);
   const [isLoadingPoints, setIsLoadingPoints] = useState(true);
   const [isLoadingCurrentPoints, setIsLoadingCurrentPoints] = useState(true);
   const [isLoadingTotalPoints, setIsLoadingTotalPoints] = useState(true);
@@ -207,7 +209,29 @@ const EmployeeController = () => {
       });
   };
 
+  const fetchEmpData = async () => {
+    setIsLoadingEmp(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.EMP_INFO + id,
+      method: 'GET',
+      cancelToken: sourceToken.token,
+    })
+      .then((res) => {
+        if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+          setEmp(res.data.responseData);
+        }
+      })
+      .catch(() => {
+        setIsLoadingEmp(false);
+      })
+      .finally(() => {
+        setIsLoadingEmp(false);
+      });
+  };
+
   useEffect(() => {
+    fetchEmpData();
     fetchWorkOrders();
     fetchLastMonthPoints();
     fetchCurrentPoints();
@@ -219,6 +243,8 @@ const EmployeeController = () => {
   return (
     <EmployeeView
       handleOnClickBreadCrumb={handleOnClickBreadCrumb}
+      isLoadingEmp={isLoadingEmp}
+      emp={emp}
       headers={headers}
       points={points}
       totalPoints={totalPoints}

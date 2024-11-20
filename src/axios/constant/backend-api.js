@@ -9,6 +9,7 @@ export const BACKEND_API = {
   SET_PASSWORD: IP_URL + '/employee/set-pwd',
   LOGOUT: IP_URL + '/employee/logout',
 
+  EMP_INFO: IP_URL + '/employee/details/',
   EMPLOYEES_RESET_PWD: IP_URL + '/employee/reset-pwd/',
   EMPLOYEES_ALL: IP_URL + '/employee/',
   EMPLOYEE_UPDATE: IP_URL + '/employee/update',
