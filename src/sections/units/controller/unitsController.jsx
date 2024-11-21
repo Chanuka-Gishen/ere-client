@@ -34,6 +34,8 @@ const UnitsController = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingExcel, setIsLoadingExcel] = useState(false);
+
   const [data, setData] = useState([]);
 
   const handleChangePage = (event, newPage) => {
@@ -73,6 +75,33 @@ const UnitsController = () => {
         [key]: '',
       }));
     }
+  };
+
+  const downloadExcelSheet = async () => {
+    setIsLoadingExcel(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.CUSTOMER_DUE_UNITS,
+      method: 'GET',
+      cancelToken: cancelToken.token,
+      responseType: 'blob',
+    })
+      .then((res) => {
+        // Create a link element and trigger download
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `DateSheet-${new Date().toLocaleDateString('en-US')}.xlsx`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      })
+      .catch(() => {
+        setIsLoadingExcel(false);
+      })
+      .finally(() => {
+        setIsLoadingExcel(false);
+      });
   };
 
   const fetchUnits = async () => {
@@ -124,6 +153,8 @@ const UnitsController = () => {
       handleFilterByLink={handleFilterByLink}
       handleDeleteFilterItems={handleDeleteFilterItems}
       data={data}
+      downloadExcelSheet={downloadExcelSheet}
+      isLoadingExcel={isLoadingExcel}
       page={page}
       documentCount={documentCount}
       rowsPerPage={rowsPerPage}
