@@ -38,6 +38,7 @@ export const BACKEND_API = {
   CUSTOMER_UNITS_FOR_CALENDER: IP_URL + '/unit/calendar',
   SELECTED_CALENDER_DATE_JOBS: IP_URL + '/unit/calender-selected/',
   UNIT_SAVED_DATA: IP_URL + '/unit/select-model',
+  CUSTOMER_DUE_UNITS: IP_URL + '/unit/download-due-units',
 
   WORK_ORDRS_BY_UNIT: IP_URL + '/work-order/byUnit/',
   WORK_ORDERS: IP_URL + '/work-order/jobs',

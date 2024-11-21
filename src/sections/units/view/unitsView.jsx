@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
   Box,
+  Button,
   Card,
   Chip,
   Container,
@@ -24,6 +25,7 @@ import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import commonUtil from 'src/utils/common-util';
 import { fDate, fDateYearMonthFormat } from 'src/utils/format-time';
 import { FilterDialog } from '../components/filterDialog';
+import { DownloadRounded } from '@mui/icons-material';
 
 const CustomCell = ({ children, ...props }) => {
   return (
@@ -42,6 +44,8 @@ export const UnitsView = ({
   handleFilterByLink,
   handleDeleteFilterItems,
   data,
+  downloadExcelSheet,
+  isLoadingExcel,
   page,
   documentCount,
   rowsPerPage,
@@ -73,6 +77,14 @@ export const UnitsView = ({
               setFilters={setFilters}
               handleSelect={handleChangeFilters}
             />
+            <Button
+              variant="outlined"
+              onClick={downloadExcelSheet}
+              disabled={isLoading}
+              endIcon={<DownloadRounded />}
+            >
+              Excel
+            </Button>
           </Box>
         </Grid>
         <Grid item xs={12} md={12}>
