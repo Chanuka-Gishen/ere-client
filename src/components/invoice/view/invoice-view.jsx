@@ -136,7 +136,9 @@ export const InvoiceView = ({
                 Invoice#
               </Typography>
               <Typography variant={isMobile ? 'h7' : 'body1'}>
-                {workOrder.workOrderInvoice.invoiceNumber}
+                {workOrder.workOrderLinkedInvoiceNo
+                  ? workOrder.workOrderLinkedInvoiceNo
+                  : workOrder.workOrderInvoice.invoiceNumber}
               </Typography>
               <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
                 Completed Date#
