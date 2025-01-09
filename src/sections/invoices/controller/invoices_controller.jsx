@@ -8,7 +8,8 @@ import responseUtil from 'src/utils/responseUtil';
 const InvoicesController = () => {
   const header = [
     'Job Id',
-    'Invoice Id',
+    'Invoice No',
+    'Linked Invoice No',
     'Company',
     'Customer',
     'Date',

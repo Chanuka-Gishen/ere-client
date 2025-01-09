@@ -5,7 +5,6 @@ import {
   Card,
   Container,
   Grid,
-  IconButton,
   Stack,
   Table,
   TableBody,
@@ -20,7 +19,6 @@ import Scrollbar from 'src/components/scrollbar';
 import { InvoicesRow } from '../component/invoices-row';
 import { DatePicker } from '@mui/x-date-pickers';
 
-import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { formatCurrency } from 'src/utils/format-number';
 
