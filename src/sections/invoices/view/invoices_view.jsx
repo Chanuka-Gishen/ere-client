@@ -3,6 +3,7 @@ import React from 'react';
 import {
   Button,
   Card,
+  Chip,
   Container,
   Grid,
   Stack,
@@ -10,6 +11,7 @@ import {
   TableBody,
   TableContainer,
   TablePagination,
+  TextField,
   Typography,
 } from '@mui/material';
 
@@ -21,14 +23,17 @@ import { DatePicker } from '@mui/x-date-pickers';
 
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { formatCurrency } from 'src/utils/format-number';
+import { fDateYearMonthFormat } from 'src/utils/format-time';
 
 export const InvoicesView = ({
   isLoading,
   data,
   header,
-  filteredDate,
+  filters,
   handleChangeDate,
-  handleDeleteFilteredDate,
+  handleChangeFilter,
+  handleDeleteFilter,
+  handleDeleteFilterTxt,
   page,
   documentCount,
   rowsPerPage,
@@ -86,14 +91,51 @@ export const InvoicesView = ({
               INVOICES
             </Typography>
             <Stack direction="row" spacing={2}>
+              <TextField
+                name="filteredMainInvoice"
+                label="Main Invoice No"
+                type="number"
+                variant="outlined"
+                value={filters.filteredMainInvoice}
+                onChange={handleChangeFilter}
+              />
+              <TextField
+                name="filteredLinkedInvoice"
+                label="Linked Invoice No"
+                type="number"
+                variant="outlined"
+                value={filters.filteredLinkedInvoice}
+                onChange={handleChangeFilter}
+              />
               <DatePicker
                 label="Filter Month"
                 views={['month', 'year']}
-                value={filteredDate}
+                value={filters.filteredDate}
                 onChange={(date) => handleChangeDate(date)}
               />
-              <Button onClick={handleDeleteFilteredDate}>Reset</Button>
             </Stack>
+          </Stack>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <Stack direction="row" spacing={2}>
+            {filters.filteredDate && (
+              <Chip
+                label={`Date - ${fDateYearMonthFormat(filters.filteredDate)}`}
+                onDelete={() => handleDeleteFilter('filteredDate')}
+              />
+            )}
+            {filters.filteredMainInvoice && (
+              <Chip
+                label={`Main Invoice - ${filters.filteredMainInvoice}`}
+                onDelete={() => handleDeleteFilterTxt('filteredMainInvoice')}
+              />
+            )}
+            {filters.filteredLinkedInvoice && (
+              <Chip
+                label={`Linked Invoice - ${filters.filteredLinkedInvoice}`}
+                onDelete={() => handleDeleteFilterTxt('filteredLinkedInvoice')}
+              />
+            )}
           </Stack>
         </Grid>
         <Grid item xs={12} sm={12}>

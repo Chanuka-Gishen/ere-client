@@ -31,7 +31,12 @@ const InvoicesController = () => {
   const [documentCount, setDocumentCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [filteredDate, setFilteredDate] = useState(null);
+  const [filters, setFilters] = useState({
+    filteredDate: null,
+    filteredLinkedInvoice: '',
+    filteredMainInvoice: '',
+  });
+
   const [data, setData] = useState([]);
   const [stats, setStats] = useState(null);
 
@@ -48,11 +53,24 @@ const InvoicesController = () => {
   };
 
   const handleChangeDate = (date) => {
-    setFilteredDate(date);
+    setFilters((pre) => ({ ...pre, filteredDate: date }));
   };
 
-  const handleDeleteFilteredDate = () => {
-    setFilteredDate(null);
+  const handleDeleteFilter = (filter) => {
+    setFilters((pre) => ({ ...pre, [filter]: null }));
+  };
+
+  const handleDeleteFilterTxt = (filter) => {
+    setFilters((pre) => ({ ...pre, [filter]: '' }));
+  };
+
+  const handleChangeFilter = (e) => {
+    const { name, value } = e.target;
+
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value,
+    }));
   };
 
   const fetchStats = async () => {
@@ -62,7 +80,7 @@ const InvoicesController = () => {
       url: BACKEND_API.WORK_ORDR_INVOICE_STATS,
       method: 'POST',
       cancelToken: sourceToken.token,
-      data: { filteredDate },
+      data: filters,
     })
       .then((res) => {
         if (responseUtil.isResponseSuccess(res.data.responseCode)) {
@@ -88,9 +106,7 @@ const InvoicesController = () => {
         page: page,
         limit: rowsPerPage,
       },
-      data: {
-        filteredDate,
-      },
+      data: filters,
     })
       .then((res) => {
         if (responseUtil.isResponseSuccess(res.data.responseCode)) {
@@ -110,16 +126,18 @@ const InvoicesController = () => {
     fetchInvoices();
     fetchStats();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filteredDate, page, rowsPerPage]);
+  }, [filters, page, rowsPerPage]);
 
   return (
     <InvoicesView
       isLoading={isLoading}
       data={data}
       header={header}
-      filteredDate={filteredDate}
+      filters={filters}
       handleChangeDate={handleChangeDate}
-      handleDeleteFilteredDate={handleDeleteFilteredDate}
+      handleChangeFilter={handleChangeFilter}
+      handleDeleteFilter={handleDeleteFilter}
+      handleDeleteFilterTxt={handleDeleteFilterTxt}
       page={page}
       documentCount={documentCount}
       rowsPerPage={rowsPerPage}
