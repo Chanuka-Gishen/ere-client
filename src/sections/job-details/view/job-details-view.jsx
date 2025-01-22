@@ -383,20 +383,23 @@ export const JobDetailsView = ({
                         <CustomCell>Sheduled Date</CustomCell>
                         <CustomCell>{fDate(workOrder?.workOrderScheduledDate)}</CustomCell>
                       </TableRow>
-                      <TableRow>
-                        <CustomCell>Sub Invoice Number</CustomCell>
-                        <CustomCell>
-                          {workOrder?.workOrderInvoice && workOrder?.workOrderInvoice.invoiceNumber
-                            ? workOrder?.workOrderInvoice.invoiceNumber
-                            : '-'}
-                        </CustomCell>
-                      </TableRow>
-                      {!isLoading && workOrder.workOrderLinked.length > 0 && (
+
+                      {!isLoading && workOrder.workOrderLinked.length > 0 ? (
                         <TableRow>
-                          <CustomCell>Main Invoice Number</CustomCell>
+                          <CustomCell>Invoice Number</CustomCell>
                           <CustomCell>
                             {workOrder?.workOrderLinkedInvoiceNo
                               ? workOrder?.workOrderLinkedInvoiceNo
+                              : '-'}
+                          </CustomCell>
+                        </TableRow>
+                      ) : (
+                        <TableRow>
+                          <CustomCell>Invoice Number</CustomCell>
+                          <CustomCell>
+                            {workOrder?.workOrderInvoice &&
+                            workOrder?.workOrderInvoice.invoiceNumber
+                              ? workOrder?.workOrderInvoice.invoiceNumber
                               : '-'}
                           </CustomCell>
                         </TableRow>
