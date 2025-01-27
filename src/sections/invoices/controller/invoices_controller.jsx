@@ -9,7 +9,6 @@ const InvoicesController = () => {
   const header = [
     'Job Id',
     'Invoice No',
-    'Linked Invoice No',
     'Company',
     'Customer',
     'Date',
