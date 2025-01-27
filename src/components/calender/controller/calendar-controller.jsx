@@ -9,7 +9,7 @@ const CalendarController = () => {
   const cancelToken = axios.CancelToken.source();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
+  const [selectedMonth, setSelectedMonth] = useState(new Date());
 
   const [data, setData] = useState([]);
   const [selectedDateData, setSelectedDateData] = useState([]);
@@ -22,7 +22,7 @@ const CalendarController = () => {
   };
 
   const handleMonthChange = (date) => {
-    setSelectedMonth(new Date(date).getMonth());
+    setSelectedMonth(new Date(date));
   };
 
   const fetchUnitsDetails = async () => {
@@ -55,10 +55,17 @@ const CalendarController = () => {
   const fetchNextMaintenanceDates = async () => {
     setIsLoading(true);
 
+    const date = new Date(selectedMonth);
+    const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+    const isoDate = utcDate.toISOString().split('T')[0];
+
     await backendAuthApi({
       url: BACKEND_API.CUSTOMER_UNITS_FOR_CALENDER,
       method: 'GET',
       cancelToken: cancelToken.token,
+      params: {
+        filteredMonth: isoDate,
+      },
     })
       .then((res) => {
         if (responseUtil.isResponseSuccess(res.data.responseCode)) {
@@ -84,7 +91,7 @@ const CalendarController = () => {
     fetchNextMaintenanceDates();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedMonth]);
 
   return (
     <CalendarView

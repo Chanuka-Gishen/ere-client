@@ -4,7 +4,7 @@ import { createRef } from 'react';
 import 'src/global.css';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 
 import { SnackbarProvider } from 'notistack';
 import { IconButton } from '@mui/material';
