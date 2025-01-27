@@ -52,7 +52,10 @@ export const CalendarView = ({
   // Filter the data for the selected month
   const filteredData = data.filter((item) => {
     const date = new Date(item.unitNextMaintenanceDate);
-    return date.getMonth() === selectedMonth && date.getFullYear() === selectedDate.getFullYear();
+    return (
+      date.getMonth() === selectedMonth.getMonth() &&
+      date.getFullYear() === selectedMonth.getFullYear()
+    );
   });
 
   const highlightedDays = filteredData.map((item) => new Date(item.unitNextMaintenanceDate));
@@ -63,7 +66,7 @@ export const CalendarView = ({
         <Card>
           <DateCalendar
             loading={isLoading}
-            onMonthChange={handleMonthChange}
+            onMonthChange={(value) => handleMonthChange(value)}
             onChange={(newValue) => handleDateChange(newValue)}
             renderLoading={() => <DayCalendarSkeleton />}
             slots={{
