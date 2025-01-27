@@ -15,12 +15,11 @@ export const InvoicesRow = ({ invoice }) => {
         </TableCell>
         <TableCell>
           <Typography variant="subtitle2" fontWeight="bold">
-            {invoice.workOrderInvoiceNumber ? invoice.workOrderInvoiceNumber : ' - '}
-          </Typography>
-        </TableCell>
-        <TableCell>
-          <Typography variant="subtitle2" fontWeight="bold">
-            {invoice.workOrderMainInvoice ? invoice.workOrderMainInvoice : ' - '}
+            {invoice.workOrderInvoiceNumber
+              ? invoice.workOrderInvoiceNumber
+              : invoice.workOrderMainInvoice
+                ? invoice.workOrderMainInvoice
+                : ' - '}
           </Typography>
         </TableCell>
         <TableCell variant="subtitle2" fontWeight="bold">
