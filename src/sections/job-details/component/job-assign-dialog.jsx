@@ -7,6 +7,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  InputAdornment,
   Stack,
   TextField,
 } from '@mui/material';
@@ -17,21 +18,35 @@ export const JobAssignDialog = ({
   handleClose,
   isLoading,
   handleSubmit,
-  defaultEmployees,
+  selectedEmployees,
   employees,
   handleSelect,
+  value,
+  handleChange,
 }) => {
   return (
     <Dialog open={isOpen} fullWidth sx={{ px: 2 }}>
       <DialogTitle>Assign Employees</DialogTitle>
       <DialogContent>
         <Stack direction={'column'} spacing={2} sx={{ mt: 2 }}>
+          <TextField
+            fullWidth
+            label="Tip"
+            name={'employeeTip'}
+            type="number"
+            value={value}
+            InputProps={{
+              startAdornment: <InputAdornment position="start">Rs. </InputAdornment>,
+            }}
+            onChange={(e) => handleChange(e.target.value)}
+            disabled={isLoading}
+          />
           <Autocomplete
             multiple
             id="tags-outlined"
             options={employees}
             getOptionLabel={(option) => `${option.userFullName} - ${option.userRole}`}
-            defaultValue={defaultEmployees ? defaultEmployees : null}
+            defaultValue={selectedEmployees}
             filterSelectedOptions
             isOptionEqualToValue={(option, value) => option._id === value._id}
             onChange={(e, value) => {
