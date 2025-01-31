@@ -78,17 +78,17 @@ export const EmployeeView = ({
   // Get the start date of last month
   const lastMonthStartDate = new Date();
   lastMonthStartDate.setMonth(lastMonthStartDate.getMonth() - 1);
-  lastMonthStartDate.setDate(11);
+  lastMonthStartDate.setDate(20);
   lastMonthStartDate.setHours(0, 0, 0, 0);
 
   // Get the end date of last month
   const lastMonthEndDate = new Date();
-  lastMonthEndDate.setDate(10); // Set to last day of previous month
+  lastMonthEndDate.setDate(19); // Set to last day of previous month
   lastMonthEndDate.setHours(23, 59, 59, 999);
 
   // Current month start Date
   const startdate = new Date();
-  startdate.setDate(11);
+  startdate.setDate(20);
   startdate.setHours(0, 0, 0, 0);
 
   return (
@@ -197,7 +197,7 @@ export const EmployeeView = ({
                             ))}
                           </>
                         ) : (
-                          <TableEmptyRow colSpan={headers} />
+                          <TableEmptyRow colSpan={headers.length} />
                         )}
                       </>
                     )}

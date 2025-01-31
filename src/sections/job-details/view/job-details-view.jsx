@@ -26,7 +26,6 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
-import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import { Add, CloseOutlined, DeleteForeverRounded } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
@@ -39,7 +38,6 @@ import commonUtil from 'src/utils/common-util';
 import { JobUpdateDialog } from '../component/job-update-dialog';
 import { JobCompleteDialog } from '../component/job-complete-dialog';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
-import { AddTipDialog } from '../component/add-tip-dialog';
 import { LoadingButton } from '@mui/lab';
 import { ChargersView } from '../component/chargers-view';
 import { Invoice } from 'src/components/invoice';
@@ -47,7 +45,6 @@ import { fDate } from 'src/utils/format-time';
 import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
 import { useLocation } from 'react-router-dom';
 
-import ListIcon from '@mui/icons-material/List';
 import Label from 'src/components/label';
 
 // -----------------------------------------------------------
@@ -149,6 +146,7 @@ export const JobDetailsView = ({
   handleUploadImages,
   openAssignDialog,
   employees,
+  selectedEmployees,
   defaultEmployees,
   handleOpenCloseAssignDialog,
   handleSelectEmployee,
@@ -163,12 +161,8 @@ export const JobDetailsView = ({
   handleOpenCloseCompleteDialog,
   handleFinishJob,
   isLoadingComplete,
-  openAddTipDialog,
-  handleOpenCloseAddTipDialog,
   totalTip,
-  isLoadingAddTip,
   handleChangeTotalTip,
-  handleUpdateEmployeeTip,
   isLoadingDeleteFiles,
   handleDeleteFiles,
   chargersFormik,
@@ -185,6 +179,8 @@ export const JobDetailsView = ({
   handleDeleteJob,
   availableJobList,
   isLoadingJobList,
+  completedDate,
+  handleChangeCompletedDate,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -441,18 +437,14 @@ export const JobDetailsView = ({
                   <Table>
                     <TableBody>
                       <TableRow>
-                        <TableCell
-                          colSpan={workOrder.workOrderStatus === WORK_STATUS.COMPLETED ? 3 : 2}
-                          component={'th'}
-                          sx={{ backgroundColor: '#f0f0f0' }}
-                        >
+                        <TableCell colSpan={3} component={'th'} sx={{ backgroundColor: '#f0f0f0' }}>
                           <Stack
                             direction={'row'}
                             alignItems={'center'}
                             justifyContent={'space-between'}
                           >
                             <Typography variant="subtitle1">Assigned Employees</Typography>
-                            {workOrder.workOrderStatus !== WORK_STATUS.COMPLETED && (
+                            {workOrder.workOrderStatus === WORK_STATUS.COMPLETED && (
                               <Button
                                 variant="contained"
                                 startIcon={<Add />}
@@ -461,15 +453,6 @@ export const JobDetailsView = ({
                                 {workOrder.workOrderAssignedEmployees.length === 0
                                   ? 'Add'
                                   : 'Update'}
-                              </Button>
-                            )}
-                            {workOrder.workOrderStatus === WORK_STATUS.COMPLETED && (
-                              <Button
-                                variant="contained"
-                                startIcon={<CurrencyExchangeIcon />}
-                                onClick={handleOpenCloseAddTipDialog}
-                              >
-                                Add Points
                               </Button>
                             )}
                           </Stack>
@@ -495,9 +478,7 @@ export const JobDetailsView = ({
                                   sx={{ width: 100 }}
                                 />
                               </CustomCell>
-                              {workOrder.workOrderStatus === WORK_STATUS.COMPLETED && (
-                                <CustomCell>{`Rs. ${record.tip.amount}`}</CustomCell>
-                              )}
+                              <CustomCell>{`Rs. ${record.tip.amount}`}</CustomCell>
                             </TableRow>
                           ))}
                         </>
@@ -632,11 +613,13 @@ export const JobDetailsView = ({
         <JobAssignDialog
           isOpen={openAssignDialog}
           employees={employees}
-          defaultEmployees={defaultEmployees}
+          selectedEmployees={selectedEmployees}
           handleClose={handleOpenCloseAssignDialog}
           isLoading={isLoadingAssign}
           handleSubmit={handleAssignEmployees}
           handleSelect={handleSelectEmployee}
+          value={totalTip}
+          handleChange={handleChangeTotalTip}
         />
       )}
       {openUpdateDialog && (
@@ -657,16 +640,8 @@ export const JobDetailsView = ({
           handleClose={handleOpenCloseCompleteDialog}
           handleSubmit={handleFinishJob}
           isLoading={isLoadingComplete}
-        />
-      )}
-      {openAddTipDialog && (
-        <AddTipDialog
-          value={totalTip}
-          isOpen={openAddTipDialog}
-          handleChange={handleChangeTotalTip}
-          handleClose={handleOpenCloseAddTipDialog}
-          isLoading={isLoadingAddTip}
-          handleSubmit={handleUpdateEmployeeTip}
+          completedDate={completedDate}
+          handleChangeCompletedDate={handleChangeCompletedDate}
         />
       )}
       {openDeleteJobDialog && (

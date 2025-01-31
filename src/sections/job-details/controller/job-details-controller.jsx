@@ -93,20 +93,19 @@ const JobDetailsController = () => {
   const [files, setFiles] = useState([]);
   const [deletedFiles, setDeletedFiles] = useState([]);
   const [totalTip, setTotalTip] = useState(0);
+  const [completedDate, setCompletedDate] = useState(new Date());
   const [availableJobList, setAvailableJobList] = useState([]);
 
   const [openUploadDialog, setOpenUploadDialog] = useState(false);
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
   const [openCompleteDialog, setOpenCompleteDialog] = useState(false);
   const [openAssignDialog, setOpenAssignDialog] = useState(false);
-  const [openAddTipDialog, setOpenAddTipDialog] = useState(false);
   const [openDeleteJobDialog, setOpenDeleteJobDialog] = useState(false);
 
   const [isLoadingAssign, setIsLoadingAssign] = useState(false);
   const [isLoadingPhotoAdd, setIsLoadingPhotoAdd] = useState(false);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
-  const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
   const [isLoadingDeleteFiles, setIsLoadingDeleteFiles] = useState(false);
   const [isLoadingChargers, setIsLoadingChargers] = useState(false);
   const [isLoadingDeleteJob, setIsLoadingDeleteJob] = useState(false);
@@ -246,7 +245,11 @@ const JobDetailsController = () => {
     setOpenAssignDialog(!openAssignDialog);
 
     if (!openAssignDialog) {
-      setSelectedEmployees([]);
+      const employees = workOrder.workOrderAssignedEmployees.map(
+        (assignedEmployee) => assignedEmployee.employee
+      );
+      setSelectedEmployees(workOrder.workOrderAssignedEmployees ? employees : []);
+      setTotalTip(workOrder.workOrderEmployeeTip);
     }
   };
 
@@ -272,15 +275,10 @@ const JobDetailsController = () => {
   };
 
   const handleOpenCloseCompleteDialog = () => {
-    setOpenCompleteDialog(!openCompleteDialog);
-  };
-
-  const handleOpenCloseAddTipDialog = () => {
-    setOpenAddTipDialog(!openAddTipDialog);
-
-    if (!openAddTipDialog) {
-      setTotalTip(workOrder.workOrderEmployeeTip);
+    if (openCompleteDialog) {
+      setCompletedDate(new Date());
     }
+    setOpenCompleteDialog(!openCompleteDialog);
   };
 
   const handleOpenCloseJobDeleteDialog = () => {
@@ -295,34 +293,8 @@ const JobDetailsController = () => {
     setTotalTip(amount);
   };
 
-  const handleUpdateEmployeeTip = async () => {
-    if (totalTip > 0) {
-      setIsLoadingAddTip(true);
-
-      await backendAuthApi({
-        url: BACKEND_API.WORK_ORDR_TIP,
-        method: 'PUT',
-        cancelToken: cancelToken.token,
-        data: {
-          id: workOrder._id,
-          amount: totalTip,
-        },
-      })
-        .then((res) => {
-          const data = res.data;
-
-          if (responseUtil.isResponseSuccess(data.responseCode)) {
-            handleFetchWorkOrderDetails();
-            handleOpenCloseAddTipDialog();
-          }
-        })
-        .catch(() => {
-          setIsLoadingAddTip(false);
-        })
-        .finally(() => {
-          setIsLoadingAddTip(false);
-        });
-    }
+  const handleChangeCompletedDate = (date) => {
+    setCompletedDate(date);
   };
 
   const handleUploadImages = async () => {
@@ -404,6 +376,8 @@ const JobDetailsController = () => {
     if (selectedEmployees.length != 0) {
       setIsLoadingAssign(true);
 
+      //console.log(selectedEmployees);
+
       await backendAuthApi({
         url: BACKEND_API.WORK_ORDR_ASSIGN,
         method: 'POST',
@@ -411,6 +385,7 @@ const JobDetailsController = () => {
         data: {
           id: jobId,
           workOrderAssignedEmployees: selectedEmployees,
+          totalTip: totalTip ? totalTip : 0,
         },
       })
         .then((res) => {
@@ -473,6 +448,9 @@ const JobDetailsController = () => {
       url: BACKEND_API.WORK_ORDR_FINISH + workOrder._id,
       method: 'PUT',
       cancelToken: cancelToken.token,
+      data: {
+        date: completedDate,
+      },
     })
       .then((res) => {
         const data = res.data;
@@ -520,9 +498,6 @@ const JobDetailsController = () => {
         .finally(() => {
           setIsLoadingChargers(false);
         });
-    } else {
-      console.log(chargersFormik.errors);
-      ///enqueueSnackbar(chargersFormik.errors, { variant: SNACKBAR_VARIANT.WARNING });
     }
   };
 
@@ -620,7 +595,7 @@ const JobDetailsController = () => {
             (assignedEmployee) => assignedEmployee.employee
           );
 
-          setDefaultEmployees(employees);
+          setSelectedEmployees(employees);
         }
       })
       .finally(() => {
@@ -650,6 +625,7 @@ const JobDetailsController = () => {
       handleUploadImages={handleUploadImages}
       openAssignDialog={openAssignDialog}
       employees={employees}
+      selectedEmployees={selectedEmployees}
       defaultEmployees={defaultEmployees}
       handleOpenCloseAssignDialog={handleOpenCloseAssignDialog}
       handleSelectEmployee={handleSelectEmployee}
@@ -664,12 +640,8 @@ const JobDetailsController = () => {
       handleOpenCloseCompleteDialog={handleOpenCloseCompleteDialog}
       handleFinishJob={handleFinishJob}
       isLoadingComplete={isLoadingComplete}
-      openAddTipDialog={openAddTipDialog}
-      handleOpenCloseAddTipDialog={handleOpenCloseAddTipDialog}
       totalTip={totalTip}
-      isLoadingAddTip={isLoadingAddTip}
       handleChangeTotalTip={handleChangeTotalTip}
-      handleUpdateEmployeeTip={handleUpdateEmployeeTip}
       isLoadingDeleteFiles={isLoadingDeleteFiles}
       handleDeleteFiles={handleDeleteFiles}
       chargersFormik={chargersFormik}
@@ -686,6 +658,8 @@ const JobDetailsController = () => {
       handleDeleteJob={handleDeleteJob}
       availableJobList={availableJobList}
       isLoadingJobList={isLoadingJobList}
+      completedDate={completedDate}
+      handleChangeCompletedDate={handleChangeCompletedDate}
     />
   );
 };
