@@ -1,21 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
   Card,
-  Chip,
   Container,
-  Grid,
-  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TablePagination,
   TableRow,
-  Toolbar,
   Typography,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from 'src/components/custom-table/custom-table-head';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
@@ -59,35 +55,35 @@ export const WorkOrdrsView = ({
 
       <Card>
         <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ p: 2 }}>
-          <Grid item xs={12} sm={3}>
+          <Grid item size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.name}
               onFilterName={(e) => handleChangeSearchParam('name', e)}
               placeholder="Search Customer Name..."
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.mobile}
               onFilterName={(e) => handleChangeSearchParam('mobile', e)}
               placeholder="Search Mobile..."
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.jobCode}
               onFilterName={(e) => handleChangeSearchParam('jobCode', e)}
               placeholder="Search Job Code..."
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.qrCode}
               onFilterName={(e) => handleChangeSearchParam('qrCode', e)}
               placeholder="Search QR Code..."
             />
           </Grid>
-          <Grid item xs={12} sm={3}>
+          <Grid item size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.serial}
               onFilterName={(e) => handleChangeSearchParam('serial', e)}

@@ -9,7 +9,6 @@ import {
   Chip,
   CircularProgress,
   Container,
-  Grid,
   ImageList,
   ImageListItem,
   ImageListItemBar,
@@ -23,6 +22,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import HomeIcon from '@mui/icons-material/Home';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
@@ -129,7 +129,7 @@ export const OverviewDetailsView = ({
           />
         </Breadcrumbs>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6} style={{ mt: '10px' }}>
+          <Grid item size={{ xs: 12, md: 6 }} style={{ mt: '10px' }}>
             {isLoading ? (
               <LoadingComponent />
             ) : (
@@ -193,7 +193,7 @@ export const OverviewDetailsView = ({
               </GridItem>
             )}
           </Grid>
-          <Grid item xs={12} md={6} style={{ mt: '10px' }}>
+          <Grid item size={{ xs: 12, md: 6 }} style={{ mt: '10px' }}>
             {isLoading ? (
               <LoadingComponent />
             ) : (
@@ -269,7 +269,7 @@ export const OverviewDetailsView = ({
               </GridItem>
             )}
           </Grid>
-          <Grid item xs={12} md={6} style={{ mt: '10px' }}>
+          <Grid item size={{ xs: 12, md: 6 }} style={{ mt: '10px' }}>
             {isLoading ? (
               <LoadingComponent />
             ) : (
@@ -310,7 +310,7 @@ export const OverviewDetailsView = ({
             )}
           </Grid>
           {!isLoading && workOrder.workOrderImages.length > 0 && (
-            <Grid item xs={12} md={12}>
+            <Grid item size={{ xs: 12, md: 12 }}>
               <GridItem>
                 <ImageList cols={isMobile ? 4 : 8} gap={2}>
                   {workOrder.workOrderImages.map((image, index) => (

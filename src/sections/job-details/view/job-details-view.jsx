@@ -8,7 +8,6 @@ import {
   Chip,
   CircularProgress,
   Container,
-  Grid,
   IconButton,
   ImageList,
   ImageListItem,
@@ -25,6 +24,7 @@ import {
   styled,
   useMediaQuery,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import HomeIcon from '@mui/icons-material/Home';
 import { Add, CloseOutlined, DeleteForeverRounded } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -233,7 +233,7 @@ export const JobDetailsView = ({
         )}
 
         <Grid container spacing={2} sx={{ margin: '10px' }}>
-          <Grid item xs={12} md={12}>
+          <Grid item size={{ xs: 12, sm: 12 }}>
             {isLoading ? (
               <GridItem>
                 <LoadingComponent />
@@ -275,7 +275,7 @@ export const JobDetailsView = ({
               </GridItem>
             )}
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item size={{ xs: 12, sm: 6 }}>
             <GridItem>
               {isLoading ? (
                 <LoadingComponent />
@@ -428,7 +428,7 @@ export const JobDetailsView = ({
               )}
             </GridItem>
           </Grid>
-          <Grid item xs={12} md={5}>
+          <Grid item size={{ xs: 12, sm: 5 }}>
             <GridItem>
               {isLoading ? (
                 <LoadingComponent />
@@ -444,17 +444,13 @@ export const JobDetailsView = ({
                             justifyContent={'space-between'}
                           >
                             <Typography variant="subtitle1">Assigned Employees</Typography>
-                            {workOrder.workOrderStatus === WORK_STATUS.COMPLETED && (
-                              <Button
-                                variant="contained"
-                                startIcon={<Add />}
-                                onClick={handleOpenCloseAssignDialog}
-                              >
-                                {workOrder.workOrderAssignedEmployees.length === 0
-                                  ? 'Add'
-                                  : 'Update'}
-                              </Button>
-                            )}
+                            <Button
+                              variant="contained"
+                              startIcon={<Add />}
+                              onClick={handleOpenCloseAssignDialog}
+                            >
+                              {workOrder.workOrderAssignedEmployees.length === 0 ? 'Add' : 'Update'}
+                            </Button>
                           </Stack>
                         </TableCell>
                       </TableRow>
@@ -491,7 +487,7 @@ export const JobDetailsView = ({
           </Grid>
 
           {!isLoading && workOrder.workOrderImages.length > 0 && (
-            <Grid item xs={12} md={12}>
+            <Grid item size={{ xs: 12, sm: 12 }}>
               <GridItem>
                 <Stack direction={'column'} spacing={2}>
                   <ImageList cols={isMobile ? 4 : 6} gap={2}>
@@ -567,7 +563,7 @@ export const JobDetailsView = ({
             </Grid>
           )}
           {!isLoading && (
-            <Grid item xs={12} md={12}>
+            <Grid item size={{ xs: 12, sm: 12 }}>
               <GridItem>
                 <Stack direction={'row'} spacing={2} alignItems={'center'}>
                   <CustomSwitch

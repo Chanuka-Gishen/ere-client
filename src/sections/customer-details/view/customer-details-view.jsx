@@ -6,12 +6,12 @@ import {
   Card,
   Chip,
   Container,
-  Grid,
   Stack,
   Typography,
   emphasize,
   styled,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import HomeIcon from '@mui/icons-material/Home';
 import { CustomerUnits } from '../components/customer-units-component';
 import { CustomerDetailsComponent } from '../components/customer-details-component';
@@ -64,12 +64,12 @@ export const CustomerDetailsView = ({
           <StyledBreadcrumb component="a" href="#" label="Customer-Details" disabled />
         </Breadcrumbs>
         <Grid container spacing={2} alignItems={'start'} justifyContent={'space-between'}>
-          <Grid item xs={12} md={6}>
+          <Grid item size={{ xs: 12, md: 6 }}>
             <GridItem>
               <CustomerDetailsComponent id={id} />
             </GridItem>
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item size={{ xs: 12, md: 6 }}>
             <GridItem>
               <CustomerUnits
                 id={id}
@@ -81,7 +81,7 @@ export const CustomerDetailsView = ({
           </Grid>
           {selectedUnit && (
             <>
-              <Grid item xs={12} md={12}>
+              <Grid item size={{ xs: 12, md: 12 }}>
                 <GridItem>
                   {isLoadingUnit ? (
                     <Typography align="center">Loading unit info...</Typography>
@@ -115,7 +115,7 @@ export const CustomerDetailsView = ({
                   )}
                 </GridItem>
               </Grid>
-              <Grid item xs={12} md={12}>
+              <Grid item size={{ xs: 12, md: 12 }}>
                 <CustomerWorkOrders
                   id={id}
                   isLoadingUnit={isLoadingUnit}

@@ -1,17 +1,7 @@
 import React from 'react';
 import { EmptyQrView } from '../component/empty-qr-view';
-import {
-  AppBar,
-  Box,
-  Card,
-  Container,
-  Grid,
-  Stack,
-  Tab,
-  Tabs,
-  Typography,
-  styled,
-} from '@mui/material';
+import { AppBar, Box, Card, Container, Stack, Tab, Tabs, Typography, styled } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import { useTheme } from '@mui/material/styles';
 import { QrViewLoading } from '../component/qr-view-loading';
 import commonUtil from 'src/utils/common-util';
@@ -120,7 +110,7 @@ export const CustomerUnitView = ({ isLoading, data }) => {
             <EmptyQrView />
           ) : (
             <Grid container spacing={2} sx={{ p: 1 }}>
-              <Grid item xs={12} md={12}>
+              <Grid item size={{ xs: 12, md: 12 }}>
                 <GridItem>
                   <Stack
                     direction={'column'}
@@ -155,7 +145,7 @@ export const CustomerUnitView = ({ isLoading, data }) => {
                   </Stack>
                 </GridItem>
               </Grid>
-              <Grid item xs={12} md={12}>
+              <Grid item size={{ xs: 12, md: 12 }}>
                 <Box sx={{ width: '100%' }}>
                   <AppBar position="static">
                     <StyledTabs value={value} onChange={handleChange} variant="fullWidth">

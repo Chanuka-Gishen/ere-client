@@ -6,7 +6,6 @@ import {
   Card,
   Chip,
   Container,
-  Grid,
   Stack,
   Table,
   TableBody,
@@ -17,6 +16,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import { OrderByComponent } from '../components/orderByComponent';
 import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from 'src/components/custom-table/custom-table-head';
@@ -56,7 +56,7 @@ export const UnitsView = ({
   return (
     <Container maxWidth="xl">
       <Grid container spacing={2} sx={{ mt: '10px' }}>
-        <Grid item xs={12} md={12}>
+        <Grid item size={{ xs: 12, md: 12 }}>
           <Box
             sx={{
               display: 'flex',
@@ -87,10 +87,10 @@ export const UnitsView = ({
             </Button>
           </Box>
         </Grid>
-        <Grid item xs={12} md={12}>
+        <Grid item size={{ xs: 12, md: 12 }}>
           <Typography variant="h6">Registered Units</Typography>
         </Grid>
-        <Grid item xs={12} md={12}>
+        <Grid item size={{ xs: 12, md: 12 }}>
           <Stack direction="row" spacing={2}>
             {filters.customerName && (
               <Chip
@@ -142,7 +142,7 @@ export const UnitsView = ({
             )}
           </Stack>
         </Grid>
-        <Grid item xs={12} md={12}>
+        <Grid item size={{ xs: 12, md: 12 }}>
           <Box display="flex" flexDirection="column" rowGap={2}>
             <Scrollbar>
               <Card>
