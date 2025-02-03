@@ -10,7 +10,6 @@ import {
   DialogTitle,
   FormControl,
   FormHelperText,
-  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -18,6 +17,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
 import { COMPANIES, WORK_STATUS, WORK_TYPE } from 'src/constants/common-constants';
@@ -58,7 +58,7 @@ export const JobUpdateDialog = ({
                 )}
               </FormControl>
               <Grid container alignItems="center">
-                <Grid item xs={12} sm={8}>
+                <Grid item size={{ xs: 12, sm: 8 }}>
                   <Stack>
                     <DatePicker
                       label="Scheduled Date*"

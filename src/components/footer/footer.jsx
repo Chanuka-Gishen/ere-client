@@ -1,5 +1,6 @@
 import React from 'react';
-import { Container, Grid, Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 
 export const Footer = () => {
   const mobileNumbers = [

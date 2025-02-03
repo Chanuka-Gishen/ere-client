@@ -5,8 +5,6 @@ import {
   Card,
   Chip,
   Container,
-  Grid,
-  IconButton,
   Stack,
   Table,
   TableBody,
@@ -18,6 +16,7 @@ import {
   emphasize,
   styled,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
 
 import HomeIcon from '@mui/icons-material/Home';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -94,7 +93,7 @@ export const EmployeeView = ({
   return (
     <Container maxWidth={'xl'}>
       <Grid container spacing={{ xs: 1, sm: 4 }}>
-        <Grid item xs={12} sm={12}>
+        <Grid item size={{ xs: 12, sm: 12 }}>
           <Breadcrumbs aria-label="breadcrumb">
             <StyledBreadcrumb
               onClick={() => handleOnClickBreadCrumb(NAVIGATION_ROUTES.employees.base)}
@@ -109,10 +108,10 @@ export const EmployeeView = ({
             />
           </Breadcrumbs>
         </Grid>
-        <Grid item xs={12} sm={12}>
+        <Grid item size={{ xs: 12, sm: 12 }}>
           <Typography variant="h4">Employee Details</Typography>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item size={{ xs: 12, sm: 3 }}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
             <Stack direction="column" spacing={1}>
               <Typography variant={isLoadingPoints ? 'h6' : 'h3'}>
@@ -123,7 +122,7 @@ export const EmployeeView = ({
             </Stack>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item size={{ xs: 12, sm: 3 }}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
             <Stack direction="column" spacing={1}>
               <Typography variant={isLoadingPoints ? 'h6' : 'h3'}>
@@ -134,7 +133,7 @@ export const EmployeeView = ({
             </Stack>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={3}>
+        <Grid item size={{ xs: 12, sm: 3 }}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
             <Stack direction="column" spacing={2}>
               <Typography variant={isLoadingTotalPoints ? 'h6' : 'h3'}>
@@ -144,7 +143,7 @@ export const EmployeeView = ({
             </Stack>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={12}>
+        <Grid item size={{ xs: 12, sm: 12 }}>
           <Card>
             <Toolbar
               sx={{
