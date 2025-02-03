@@ -87,6 +87,7 @@ export const EmployeeView = ({
 
   // Current month start Date
   const startdate = new Date();
+  startdate.setMonth(startdate.getMonth() - 1);
   startdate.setDate(20);
   startdate.setHours(0, 0, 0, 0);
 
