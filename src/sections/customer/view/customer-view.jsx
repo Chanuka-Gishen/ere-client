@@ -13,101 +13,166 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
-  TextField,
   Typography,
 } from '@mui/material';
+import Grid from '@mui/material/Grid2';
+
 import Iconify from 'src/components/iconify';
 import { CustomerDrawer } from '../component/customer-drawer';
 import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from 'src/components/custom-table/custom-table-head';
-import { USERS } from 'src/_mock/users';
 import { CustomerTableRow } from '../component/customer-table-row';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import CustomerSearchBar from '../component/customer-search-bar';
+import { fDate, getDaysDifference } from 'src/utils/format-time';
+import { LogsTableRow } from '../component/logs-table-row';
 
 export const CustomerView = ({
   searchTerm,
   handleSearchInputChange,
-  filteredData,
+  headerLabels,
+  headerLabelsLogs,
   isLoading,
+  isLoadingLogs,
   customers,
+  logs,
   openAddCust,
   handleOpenAddCustomer,
   handleCloseAddCustomer,
   formik,
-  headerLabels,
   page,
   documentCount,
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
+  logsPage,
+  logsCount,
+  logsRowsPerPage,
+  handleChangePageLogs,
+  handleChangeRowsPerPageLogs,
   isLoadingAddCustomer,
   handleSubmitNewCust,
   handleClickRow,
 }) => {
   return (
     <Container maxWidth="xl">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-        <Typography variant="h4">Manage Customers</Typography>
+      <Grid container rowGap={3} spacing={3}>
+        <Grid size={12}>
+          <Typography variant="h4">Manage Customers</Typography>
+        </Grid>
+        <Grid size={{ xl: 8, md: 12 }}>
+          <Card>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ mb: 5, pr: '10px' }}
+            >
+              <CustomerSearchBar filterName={searchTerm} onFilterName={handleSearchInputChange} />
 
-        <Button
-          variant="contained"
-          color="inherit"
-          startIcon={<Iconify icon="eva:plus-fill" />}
-          onClick={handleOpenAddCustomer}
-        >
-          New Customer
-        </Button>
-      </Stack>
+              <Button
+                variant="contained"
+                color="inherit"
+                startIcon={<Iconify icon="eva:plus-fill" />}
+                onClick={handleOpenAddCustomer}
+              >
+                New Customer
+              </Button>
+            </Stack>
 
-      <Card>
-        <CustomerSearchBar filterName={searchTerm} onFilterName={handleSearchInputChange} />
-        <Scrollbar>
-          <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 800 }}>
-              <CustomTableHead headLabel={headerLabels} enableAction={false} />
-              {isLoading ? (
-                <TableBody>
-                  <TableLoadingRow colSpan={headerLabels.length} />
-                </TableBody>
-              ) : (
-                <TableBody>
-                  {customers.length === 0 ? (
-                    <TableEmptyRow colSpan={headerLabels.length} />
+            <Scrollbar>
+              <TableContainer sx={{ overflow: 'unset' }}>
+                <Table sx={{ minWidth: 800 }}>
+                  <CustomTableHead headLabel={headerLabels} enableAction={false} />
+                  {isLoading ? (
+                    <TableBody>
+                      <TableLoadingRow colSpan={headerLabels.length} />
+                    </TableBody>
                   ) : (
-                    <>
-                      {customers.map((row) => (
-                        <CustomerTableRow
-                          customer={row}
-                          key={row._id}
-                          handleClickRow={handleClickRow}
-                        />
-                      ))}
-                    </>
+                    <TableBody>
+                      {customers.length === 0 ? (
+                        <TableEmptyRow colSpan={headerLabels.length} />
+                      ) : (
+                        <>
+                          {customers.map((row) => (
+                            <CustomerTableRow
+                              customer={row}
+                              key={row._id}
+                              handleClickRow={handleClickRow}
+                            />
+                          ))}
+                        </>
+                      )}
+                      {customers.length === 0 && (
+                        <TableRow>
+                          <TableCell colSpan={headerLabels.length} align="center">
+                            {`No results found for "${searchTerm}"`}
+                          </TableCell>
+                        </TableRow>
+                      )}
+                    </TableBody>
                   )}
-                  {customers.length === 0 && (
-                    <TableRow>
-                      <TableCell colSpan={headerLabels.length} align="center">
-                        {`No results found for "${searchTerm}"`}
-                      </TableCell>
-                    </TableRow>
+                </Table>
+              </TableContainer>
+            </Scrollbar>
+            <TablePagination
+              page={page}
+              component="div"
+              count={documentCount}
+              rowsPerPage={rowsPerPage}
+              onPageChange={handleChangePage}
+              rowsPerPageOptions={[5, 10, 25]}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          </Card>
+        </Grid>
+        <Grid size={{ xl: 4, md: 12 }}>
+          <Card>
+            <Container sx={{ display: 'flex', flexDirection: 'column', gap: 2, p: '10px' }}>
+              <Typography variant="h6">Reminders</Typography>
+
+              <Typography variant="caption">
+                Last Checked On : {logs.length > 0 ? fDate(new Date()) : ' - '}
+                {`${logs.length > 0 ? getDaysDifference(new Date()) : ' - '} Days ago`}
+              </Typography>
+            </Container>
+            <Scrollbar>
+              <TableContainer sx={{ overflow: 'unset' }}>
+                <Table>
+                  <CustomTableHead headLabel={headerLabelsLogs} enableAction={false} />
+                  {isLoadingLogs ? (
+                    <TableBody>
+                      <TableLoadingRow colSpan={headerLabelsLogs.length} />
+                    </TableBody>
+                  ) : (
+                    <TableBody>
+                      {logs.length === 0 ? (
+                        <TableEmptyRow colSpan={headerLabelsLogs.length} />
+                      ) : (
+                        <>
+                          {logs.map((row, index) => (
+                            <LogsTableRow log={row} key={index} />
+                          ))}
+                        </>
+                      )}
+                    </TableBody>
                   )}
-                </TableBody>
-              )}
-            </Table>
-          </TableContainer>
-        </Scrollbar>
-        <TablePagination
-          page={page}
-          component="div"
-          count={documentCount}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Card>
+                </Table>
+              </TableContainer>
+            </Scrollbar>
+            <TablePagination
+              page={logsPage}
+              component="div"
+              count={logsCount}
+              rowsPerPage={logsRowsPerPage}
+              onPageChange={handleChangePageLogs}
+              rowsPerPageOptions={[10, 20, 30]}
+              onRowsPerPageChange={handleChangeRowsPerPageLogs}
+            />
+          </Card>
+        </Grid>
+      </Grid>
 
       <CustomerDrawer
         isOpen={openAddCust}

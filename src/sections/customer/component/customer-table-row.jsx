@@ -32,14 +32,14 @@ export const CustomerTableRow = ({ customer, handleClickRow }) => {
 
         <TableCell>{customer.customerTel.mobile}</TableCell>
 
-        <TableCell>
+        {/* <TableCell>
           {commonUtil.isUndefinedOrNull(customer.customerTel.landline)
             ? '-'
             : customer.customerTel.landline}
         </TableCell>
         <TableCell>
           {commonUtil.isUndefinedOrNull(customer.customerEmail) ? '-' : customer.customerEmail}
-        </TableCell>
+        </TableCell> */}
       </TableRow>
     </>
   );

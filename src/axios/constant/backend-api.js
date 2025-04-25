@@ -19,12 +19,15 @@ export const BACKEND_API = {
   EMPLOYEE_TIPS: IP_URL + '/employee/tips/',
   EMPLOYEE_CURRENT_TIPS: IP_URL + '/employee/tips-current/',
   EMPLOYEE_TOTAL_TIPS: IP_URL + '/employee/total-tips/',
+  
 
   CUSTOMERS_ALL: IP_URL + '/customer/',
   CUSTOMER_ADD: IP_URL + '/customer/register',
   CUSTOMER_INFO: IP_URL + '/customer/customer-details/',
   CUSTOMER_INFO_UPDATE: IP_URL + '/customer/',
   CUSTOMER_UNITS: IP_URL + '/customer/unit/',
+  CUSTOMER_MAINTAINENCE_UPCOMING: IP_URL + '/customer/recent-maintainence',
+  LOGS_RECENT: IP_URL + '/customer/recent-logs',
 
   CUSTOMER_UNIT_ADD: IP_URL + '/customer/unit',
   CUSTOMER_UNIT_UPDATE: IP_URL + '/customer/unit',
@@ -60,9 +63,12 @@ export const BACKEND_API = {
   INVOICE_DOWNLOAD: IP_URL + '/invoice/download-invoice/',
   INVOICE_MAIN_DOWNLOAD: IP_URL + '/invoice/download-total-invoice/',
   INVOICE_CREAE_UDPATE: IP_URL + '/invoice/chargers',
+  INVOICE_UPDATE_STATUS: IP_URL + '/invoice/update-status',
 
   QR_CODE_AVAILABLES: IP_URL + '/qr-code/',
   QR_CODE_UNIT_HISTORY: IP_URL + '/unit/unit-by-qr/',
   QR_CODE_GENERATE: IP_URL + '/qr-code/generate',
   QR_CODE_COUNT: IP_URL + '/qr-code/count',
+
+  
 };

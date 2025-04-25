@@ -30,6 +30,7 @@ import { Add, CloseOutlined, DeleteForeverRounded } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import { COMPANIES, UNIT_STATUS, WORK_STATUS } from 'src/constants/common-constants';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { ImageUpload } from 'src/components/upload';
@@ -46,6 +47,7 @@ import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-
 import { useLocation } from 'react-router-dom';
 
 import Label from 'src/components/label';
+import { INV_CREATED } from 'src/constants/inovice-status';
 
 // -----------------------------------------------------------
 
@@ -181,6 +183,10 @@ export const JobDetailsView = ({
   isLoadingJobList,
   completedDate,
   handleChangeCompletedDate,
+  openInvCloseDialog,
+  isLoadingCloseInvoice,
+  handleToggleInvoiceCloseDialog,
+  handleClsoeInvoice,
 }) => {
   const isMobile = useMediaQuery('(max-width:600px)');
 
@@ -325,6 +331,16 @@ export const JobDetailsView = ({
                                 Finish Job
                               </Button>
                             )}
+                            {workOrder &&
+                              workOrder.workOrderInvoice.invoiceStatus === INV_CREATED && (
+                                <Button
+                                  variant="contained"
+                                  startIcon={<ReceiptIcon />}
+                                  onClick={handleToggleInvoiceCloseDialog}
+                                >
+                                  Close Invoice
+                                </Button>
+                              )}
                           </Stack>
                         </CustomCell>
                       </TableRow>
@@ -386,7 +402,7 @@ export const JobDetailsView = ({
                           <CustomCell>
                             {workOrder?.workOrderLinkedInvoiceNo
                               ? workOrder?.workOrderLinkedInvoiceNo
-                              : '-'}
+                              : workOrder?.workOrderInvoice.invoiceNumber}
                           </CustomCell>
                         </TableRow>
                       ) : (
@@ -647,6 +663,17 @@ export const JobDetailsView = ({
           contentText="Are you sure that you want to delete this job ? This cannot be undone."
           handleSubmit={handleDeleteJob}
           isLoading={isLoadingDeleteJob}
+        />
+      )}
+      {openInvCloseDialog && (
+        <ConfirmationDialog
+          open={openInvCloseDialog}
+          handleClose={handleToggleInvoiceCloseDialog}
+          contentText={
+            'Are you sure that you want to close this invoice? This will generate an invoice number for this invoice.'
+          }
+          handleSubmit={handleClsoeInvoice}
+          isLoading={isLoadingCloseInvoice}
         />
       )}
     </Container>

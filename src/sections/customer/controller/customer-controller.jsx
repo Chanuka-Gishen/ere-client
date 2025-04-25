@@ -25,27 +25,29 @@ const validationSchemaAddCust = Yup.object().shape({
 });
 
 const CustomerController = () => {
-  const headerLabels = [
-    'Customer name',
-    'Next job date',
-    'Address',
-    'Mobile No',
-    'Landline No',
-    'Email',
-  ];
+  const headerLabels = ['Customer name', 'Next job date', 'Address', 'Mobile No'];
+  const headerLabelsLogs = ['Customer', 'Type', 'Date'];
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
 
   const [page, setPage] = useState(0);
   const [documentCount, setDocumentCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [logsPage, setLogsPage] = useState(0);
+  const [logsCount, setLogsCount] = useState(0);
+  const [logsRowsPerPage, setLogsRowsPerPage] = useState(10);
+
   const [openAddCust, setOpenAddCust] = useState(false);
 
   const [isLoading, setIsLoading] = useState(true);
   const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
 
+  const [logs, setLogs] = useState([]);
+
   const [isLoadingAddCustomer, setIsLoadingAddCustomer] = useState(false);
+  const [isLoadingLogs, setIsLoadingLogs] = useState(true);
 
   const cancelToken = axios.CancelToken.source();
 
@@ -78,6 +80,15 @@ const CustomerController = () => {
   const handleChangeRowsPerPage = (event) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
+  };
+
+  const handleChangePageLogs = (event, newPage) => {
+    setLogsPage(newPage);
+  };
+
+  const handleChangeRowsPerPageLogs = (event) => {
+    setLogsPage(0);
+    setLogsRowsPerPage(parseInt(event.target.value, 10));
   };
 
   const handleClickRow = (id) => {
@@ -130,6 +141,31 @@ const CustomerController = () => {
     }
   };
 
+  const handleFetchLogs = async () => {
+    setIsLoadingLogs(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.LOGS_RECENT,
+      method: 'GET',
+      cancelToken: cancelToken.token,
+      params: {
+        page: logsPage,
+        limit: logsRowsPerPage,
+      },
+    })
+      .then((res) => {
+        const data = res.data;
+
+        if (responseUtil.isResponseSuccess(data.responseCode)) {
+          setLogs(data.responseData.data);
+          setLogsCount(data.responseData.count);
+        }
+      })
+      .finally(() => {
+        setIsLoadingLogs(false);
+      });
+  };
+
   const handleFetchCustomers = async () => {
     setIsLoading(true);
 
@@ -158,6 +194,8 @@ const CustomerController = () => {
 
   useEffect(() => {
     handleFetchCustomers();
+    handleFetchLogs()
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rowsPerPage, page, searchTerm]);
 
@@ -166,18 +204,26 @@ const CustomerController = () => {
       searchTerm={searchTerm}
       handleSearchInputChange={handleSearchInputChange}
       filteredData={filteredData}
+      headerLabels={headerLabels}
+      headerLabelsLogs={headerLabelsLogs}
       isLoading={isLoading}
+      isLoadingLogs={isLoadingLogs}
       customers={customers}
+      logs={logs}
       openAddCust={openAddCust}
       handleOpenAddCustomer={handleOpenAddCustomer}
       handleCloseAddCustomer={handleCloseAddCustomer}
       formik={formik}
-      headerLabels={headerLabels}
       page={page}
       documentCount={documentCount}
       rowsPerPage={rowsPerPage}
       handleChangePage={handleChangePage}
       handleChangeRowsPerPage={handleChangeRowsPerPage}
+      logsPage={logsPage}
+      logsCount={logsCount}
+      logsRowsPerPage={logsRowsPerPage}
+      handleChangePageLogs={handleChangePageLogs}
+      handleChangeRowsPerPageLogs={handleChangeRowsPerPageLogs}
       isLoadingAddCustomer={isLoadingAddCustomer}
       handleSubmitNewCust={handleSubmitNewCust}
       handleClickRow={handleClickRow}

@@ -34,9 +34,9 @@ const validationSchema = Yup.object().shape({
       ],
       'Invalid type'
     ),
-  workOrderInvoiceNumber: Yup.string(),
-  workOrderCodeSub: Yup.string(),
-  workOrderLinkedJobs: Yup.array(),
+  workOrderInvoiceNumber: Yup.string().notRequired(),
+  workOrderCodeSub: Yup.string().notRequired(),
+  workOrderLinkedJobs: Yup.array().notRequired(),
 });
 
 const validationSchemaChargers = Yup.object().shape({
@@ -101,6 +101,7 @@ const JobDetailsController = () => {
   const [openCompleteDialog, setOpenCompleteDialog] = useState(false);
   const [openAssignDialog, setOpenAssignDialog] = useState(false);
   const [openDeleteJobDialog, setOpenDeleteJobDialog] = useState(false);
+  const [openInvCloseDialog, setOpenInvCloseDialog] = useState(false);
 
   const [isLoadingAssign, setIsLoadingAssign] = useState(false);
   const [isLoadingPhotoAdd, setIsLoadingPhotoAdd] = useState(false);
@@ -110,6 +111,7 @@ const JobDetailsController = () => {
   const [isLoadingChargers, setIsLoadingChargers] = useState(false);
   const [isLoadingDeleteJob, setIsLoadingDeleteJob] = useState(false);
   const [isLoadingJobList, setIsLoadingJobList] = useState(true);
+  const [isLoadingCloseInvoice, setIsLoadingCloseInvoice] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -253,6 +255,10 @@ const JobDetailsController = () => {
     }
   };
 
+  const handleToggleInvoiceCloseDialog = () => {
+    setOpenInvCloseDialog(!openInvCloseDialog);
+  };
+
   const handleOpenCloseUpdateDialog = () => {
     setOpenUpdateDialog(!openUpdateDialog);
 
@@ -372,6 +378,31 @@ const JobDetailsController = () => {
     }
   };
 
+  const handleClsoeInvoice = async () => {
+    setIsLoadingCloseInvoice(true);
+
+    await backendAuthApi({
+      url: BACKEND_API.INVOICE_UPDATE_STATUS,
+      method: 'POST',
+      cancelToken: cancelToken.token,
+      params:{
+        id: workOrder._id
+      }
+    })
+      .then((res) => {
+        if (responseUtil.isResponseSuccess(res.data.responseCode)) {
+          handleToggleInvoiceCloseDialog();
+          handleFetchWorkOrderDetails();
+        }
+      })
+      .catch(() => {
+        setIsLoadingCloseInvoice(false);
+      })
+      .finally(() => {
+        setIsLoadingCloseInvoice(false);
+      });
+  };
+
   const handleAssignEmployees = async () => {
     if (selectedEmployees.length != 0) {
       setIsLoadingAssign(true);
@@ -435,6 +466,8 @@ const JobDetailsController = () => {
           handleOpenCloseUpdateDialog();
         });
     } else {
+      console.log(formik.errors);
+
       enqueueSnackbar(SNACKBAR_MESSAGE.FILL_REQUIRED_FIELDS, {
         variant: SNACKBAR_VARIANT.WARNING,
       });
@@ -660,6 +693,10 @@ const JobDetailsController = () => {
       isLoadingJobList={isLoadingJobList}
       completedDate={completedDate}
       handleChangeCompletedDate={handleChangeCompletedDate}
+      openInvCloseDialog={openInvCloseDialog}
+      isLoadingCloseInvoice={isLoadingCloseInvoice}
+      handleToggleInvoiceCloseDialog={handleToggleInvoiceCloseDialog}
+      handleClsoeInvoice={handleClsoeInvoice}
     />
   );
 };
