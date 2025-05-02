@@ -9,7 +9,7 @@ import { Stack, Typography } from '@mui/material';
 export default function TableLoadingRow({ colSpan }) {
   return (
     <TableRow>
-      <TableCell colSpan={colSpan} align="center">
+      <TableCell colSpan={colSpan} align='center'>
         <Typography variant="subtitle2"> Loading...</Typography>
       </TableCell>
     </TableRow>

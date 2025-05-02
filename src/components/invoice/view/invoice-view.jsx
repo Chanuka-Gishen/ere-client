@@ -18,6 +18,7 @@ import { DownloadOutlined } from '@mui/icons-material';
 import { LoadingButton } from '@mui/lab';
 import { fDate } from 'src/utils/format-time';
 import { COMPANIES } from 'src/constants/common-constants';
+import { INV_CLOSED } from 'src/constants/inovice-status';
 
 export const InvoiceView = ({
   workOrder,
@@ -33,17 +34,19 @@ export const InvoiceView = ({
     <>
       {invoice ? (
         <Stack direction="column" spacing={2}>
-          <Stack direction="row" justifyContent="flex-end" alignItems="center">
-            <LoadingButton
-              loading={isDownloading}
-              startIcon={<DownloadOutlined />}
-              variant="contained"
-              onClick={handleDownloadPdf}
-              disabled={isDownloading || !workOrder.workOrderInvoice}
-            >
-              PDF
-            </LoadingButton>
-          </Stack>
+          {workOrder.workOrderInvoice.invoiceStatus === INV_CLOSED && (
+            <Stack direction="row" justifyContent="flex-end" alignItems="center">
+              <LoadingButton
+                loading={isDownloading}
+                startIcon={<DownloadOutlined />}
+                variant="contained"
+                onClick={handleDownloadPdf}
+                disabled={isDownloading || !workOrder.workOrderInvoice}
+              >
+                PDF
+              </LoadingButton>
+            </Stack>
+          )}
           <Stack
             direction="row"
             spacing={2}
