@@ -85,9 +85,9 @@ export const WorkOrdrsView = ({
           </Grid>
           <Grid item size={{ xs: 12, sm: 3 }}>
             <SearchInput
-              filterName={searchParams.serial}
-              onFilterName={(e) => handleChangeSearchParam('serial', e)}
-              placeholder="Search Serial No..."
+              filterName={searchParams.invoiceNumber}
+              onFilterName={(e) => handleChangeSearchParam('invoiceNumber', e)}
+              placeholder="Search Invoice No..."
             />
           </Grid>
         </Grid>

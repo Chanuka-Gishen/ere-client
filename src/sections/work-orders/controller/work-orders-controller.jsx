@@ -33,7 +33,7 @@ const WorkOrdersController = () => {
     name: '',
     jobCode: '',
     qrCode: '',
-    serial: '',
+    invoiceNumber: '',
     mobile: '',
   });
 
@@ -74,7 +74,7 @@ const WorkOrdersController = () => {
         customerMobile: searchParams.mobile,
         jobCode: searchParams.jobCode,
         qrCode: searchParams.qrCode,
-        unitSerial: searchParams.serial,
+        invoiceNumber: searchParams.invoiceNumber,
       },
     })
       .then((res) => {
