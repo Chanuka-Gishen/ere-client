@@ -83,6 +83,8 @@ const JobDetailsController = () => {
   const { enqueueSnackbar } = useSnackbar();
   const cancelToken = axios.CancelToken.source();
 
+  const [selectedJobId, setSelectedJobId] = useState(jobId);
+
   const [isLoading, setIsLoading] = useState(true);
   const [workOrder, setWorkOrder] = useState(null);
   const [checked, setChecked] = useState(true);
@@ -232,6 +234,10 @@ const JobDetailsController = () => {
     } else {
       setDeletedFiles([]);
     }
+  };
+
+  const handleSelectJob = (id) => {
+    setSelectedJobId(id);
   };
 
   const handleSwitch = (event) => {
@@ -385,9 +391,9 @@ const JobDetailsController = () => {
       url: BACKEND_API.INVOICE_UPDATE_STATUS,
       method: 'POST',
       cancelToken: cancelToken.token,
-      params:{
-        id: workOrder._id
-      }
+      params: {
+        id: workOrder._id,
+      },
     })
       .then((res) => {
         if (responseUtil.isResponseSuccess(res.data.responseCode)) {
@@ -414,7 +420,7 @@ const JobDetailsController = () => {
         method: 'POST',
         cancelToken: cancelToken.token,
         data: {
-          id: jobId,
+          id: workOrder._id,
           workOrderAssignedEmployees: selectedEmployees,
           totalTip: totalTip ? totalTip : 0,
         },
@@ -608,7 +614,7 @@ const JobDetailsController = () => {
   const handleFetchWorkOrderDetails = async () => {
     setIsLoading(true);
     await backendAuthApi({
-      url: BACKEND_API.WORK_ORDR + jobId,
+      url: BACKEND_API.WORK_ORDR + selectedJobId,
       method: 'GET',
       cancelToken: cancelToken.token,
     })
@@ -640,11 +646,11 @@ const JobDetailsController = () => {
     handleFetchWorkOrderDetails();
     handleFetchEmployeeList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedJobId]);
 
   return (
     <JobDetailsView
-      jobId={jobId}
+      jobId={selectedJobId}
       isLoading={isLoading}
       isLoadingPhotoAdd={isLoadingPhotoAdd}
       workOrder={workOrder}
@@ -654,6 +660,7 @@ const JobDetailsController = () => {
       handleSelectDeleteFile={handleSelectDeleteFile}
       handleOnClickBreadCrumb={handleOnClickBreadCrumb}
       openUploadDialog={openUploadDialog}
+      handleSelectJob={handleSelectJob}
       handleOpenCloseUploadDialog={handleOpenCloseUploadDialog}
       handleUploadImages={handleUploadImages}
       openAssignDialog={openAssignDialog}
