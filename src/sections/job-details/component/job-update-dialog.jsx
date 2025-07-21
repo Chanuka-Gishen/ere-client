@@ -108,27 +108,40 @@ export const JobUpdateDialog = ({
             <Typography align="center">Available Jobs Loading</Typography>
           ) : (
             <>
-              {availableJobList && availableJobList.length === 1 ? (
-                <Typography align="center"> No Jobs available to link </Typography>
-              ) : (
-                <Autocomplete
-                  multiple
-                  id="tags-outlined"
-                  options={availableJobList}
-                  getOptionLabel={(option) => `${option.workOrderCode} - ${option.workOrderType}`}
-                  value={values.workOrderLinkedJobs}
-                  defaultValue={
-                    values.workOrderLinkedJobs.length > 0
-                      ? values.workOrderLinkedJobs
-                      : availableJobList
-                  }
-                  filterSelectedOptions
-                  isOptionEqualToValue={(option, value) => option._id === value._id}
-                  onChange={(event, newValue) => setFieldValue('workOrderLinkedJobs', newValue)}
-                  renderInput={(params) => (
-                    <TextField {...params} label="Select Jobs To Link" placeholder="Jobs" />
+              {workOrder.workOrderStatus != WORK_STATUS.COMPLETED && (
+                <>
+                  {availableJobList && availableJobList.length === 1 ? (
+                    <Typography align="center"> No Jobs available to link </Typography>
+                  ) : (
+                    <Autocomplete
+                      multiple
+                      id="tags-outlined"
+                      options={availableJobList}
+                      getOptionLabel={(option) =>
+                        `${option.workOrderCode} - ${option.workOrderType}`
+                      }
+                      value={values.workOrderLinkedJobs}
+                      defaultValue={
+                        values.workOrderLinkedJobs.length > 0
+                          ? values.workOrderLinkedJobs
+                          : availableJobList
+                      }
+                      filterSelectedOptions
+                      isOptionEqualToValue={(option, value) => option._id === value._id}
+                      onChange={(event, newValue) => setFieldValue('workOrderLinkedJobs', newValue)}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Select Jobs To Link" placeholder="Jobs" />
+                      )}
+                    />
                   )}
-                />
+                  {values.workOrderLinkedJobs.length > 0 && (
+                    <Typography variant="body1" textAlign="justify" fontWeight="bold">
+                      Make sure to link all workorders before closing one invoice which will
+                      generate the invoice number for all, Once you proceed cannot link workorders
+                      again.
+                    </Typography>
+                  )}
+                </>
               )}
             </>
           )}

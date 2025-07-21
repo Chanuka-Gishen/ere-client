@@ -146,6 +146,7 @@ export const JobDetailsView = ({
   openUploadDialog,
   handleOpenCloseUploadDialog,
   handleUploadImages,
+  handleSelectJob,
   openAssignDialog,
   employees,
   selectedEmployees,
@@ -298,13 +299,16 @@ export const JobDetailsView = ({
                             useFlexGap
                             flexWrap="wrap"
                           >
-                            <Button
-                              variant="contained"
-                              startIcon={<SettingsIcon />}
-                              onClick={handleOpenCloseUpdateDialog}
-                            >
-                              Update
-                            </Button>
+                            {workOrder && workOrder.workOrderStatus === WORK_STATUS.CREATED && (
+                              <Button
+                                variant="contained"
+                                startIcon={<SettingsIcon />}
+                                onClick={handleOpenCloseUpdateDialog}
+                              >
+                                Update
+                              </Button>
+                            )}
+
                             {workOrder && workOrder.workOrderStatus === WORK_STATUS.CREATED && (
                               <Button
                                 variant="contained"
@@ -425,7 +429,12 @@ export const JobDetailsView = ({
                               spacing={{ xs: 1, sm: 2, md: 4 }}
                             >
                               {workOrder.workOrderLinked.map((job, index) => (
-                                <Label key={index}>{job.workOrderCode}</Label>
+                                <Chip
+                                  key={index}
+                                  label={job.workOrderCode}
+                                  onClick={() => handleSelectJob(job._id)}
+                                  sx={{ cursor: 'pointer' }}
+                                />
                               ))}
                             </Stack>
                           </CustomCell>
@@ -670,7 +679,7 @@ export const JobDetailsView = ({
           open={openInvCloseDialog}
           handleClose={handleToggleInvoiceCloseDialog}
           contentText={
-            'Are you sure that you want to close this invoice? This will generate an invoice number for this invoice.'
+            'Are you sure that you want to close this invoice? This will generate an invoice number for this invoice or all the linked workorder invoices.'
           }
           handleSubmit={handleClsoeInvoice}
           isLoading={isLoadingCloseInvoice}
