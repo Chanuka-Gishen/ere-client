@@ -39,13 +39,7 @@ const InvoiceController = ({ workOrder, unit, customer, invoice }) => {
         // Create a link element
         const link = document.createElement('a');
         link.href = url;
-        link.download = `${
-          workOrder.workOrderLinked.length === 0
-            ? workOrder.workOrderInvoice.invoiceNumber
-              ? workOrder.workOrderInvoice.invoiceNumber
-              : workOrder.workOrderCode
-            : workOrder.workOrderCode
-        }.pdf`;
+        link.download = `${workOrder.workOrderInvoice.invoiceNumber}.pdf`;
         document.body.appendChild(link);
 
         // Simulate a click on the link to trigger the download
