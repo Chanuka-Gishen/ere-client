@@ -35,6 +35,8 @@ const WorkOrdersController = () => {
     qrCode: '',
     invoiceNumber: '',
     mobile: '',
+    company: '',
+    type: '',
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -75,14 +77,14 @@ const WorkOrdersController = () => {
         jobCode: searchParams.jobCode,
         qrCode: searchParams.qrCode,
         invoiceNumber: searchParams.invoiceNumber,
+        company: searchParams.company,
+        type: searchParams.type,
       },
     })
       .then((res) => {
         if (responseUtil.isResponseSuccess(res.data.responseCode)) {
-          if (res.data.responseData.data.length > 0) {
-            setData(res.data.responseData.data);
-            setDocumentCount(res.data.responseData.count);
-          }
+          setData(res.data.responseData.data);
+          setDocumentCount(res.data.responseData.count);
         }
       })
       .catch(() => {
