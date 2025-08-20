@@ -74,23 +74,34 @@ export const EmployeeView = ({
   handleChangePage,
   handleChangeRowsPerPage,
 }) => {
+  const today = new Date();
+
   // Get the start date of last month
   const lastMonthStartDate = new Date();
-  lastMonthStartDate.setMonth(lastMonthStartDate.getMonth() - 2);
   lastMonthStartDate.setDate(20);
   lastMonthStartDate.setHours(0, 0, 0, 0);
 
   // Get the end date of last month
   const lastMonthEndDate = new Date();
-  lastMonthEndDate.setMonth(lastMonthEndDate.getMonth() - 1);
   lastMonthEndDate.setDate(19); // Set to last day of previous month
   lastMonthEndDate.setHours(23, 59, 59, 999);
 
   // Current month start Date
   const startdate = new Date();
-  startdate.setMonth(startdate.getMonth() - 1);
   startdate.setDate(20);
   startdate.setHours(0, 0, 0, 0);
+
+  const currentEndDate = new Date();
+
+  currentEndDate.setHours(23, 59, 59, 999);
+
+  if (today.getDate() <= 19) {
+    lastMonthStartDate.setMonth(lastMonthStartDate.getMonth() - 2);
+    lastMonthEndDate.setMonth(lastMonthEndDate.getMonth() - 1);
+    startdate.setMonth(startdate.getMonth() - 1);
+  } else {
+    lastMonthStartDate.setMonth(lastMonthStartDate.getMonth() - 1);
+  }
 
   return (
     <Container maxWidth={'xl'}>
@@ -131,7 +142,7 @@ export const EmployeeView = ({
                 {isLoadingCurrentPoints ? 'Loading...' : currentPoints}
               </Typography>
               <Typography variant="h5">Current Month Points</Typography>
-              <Typography>{`${fDate(startdate)} - ${fDate(new Date())}`}</Typography>
+              <Typography>{`${fDate(startdate)} - ${fDate(currentEndDate)}`}</Typography>
             </Stack>
           </Card>
         </Grid>

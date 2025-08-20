@@ -70,7 +70,7 @@ export const InvoiceView = ({
               </Typography>
 
               <Typography variant={isMobile ? 'h7' : 'h4'}>
-                0112645675 {'( WORKSHOP )'} | 0773878080 | 0716092000
+                0777102528 {'( WORKSHOP )'} | 0773878080
               </Typography>
               <Typography variant={isMobile ? 'h7' : 'h4'}>erengineersere@gmail.com</Typography>
               {[COMPANIES.CMP_SINGER, COMPANIES.CMP_SINGER_DIR].includes(
