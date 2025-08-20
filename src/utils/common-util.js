@@ -66,6 +66,17 @@ const validateFormik = (formik) => {
   });
 };
 
+// Function to create date with specific time (00:00:00 or 23:59:59.999)
+const createDate = (year, month, day, isEndOfDay = false) => {
+  const result = new Date(year, month, day);
+  if (isEndOfDay) {
+    result.setHours(23, 59, 59, 999);
+  } else {
+    result.setHours(0, 0, 0, 0);
+  }
+  return result;
+};
+
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   isUndefinedOrNull,
@@ -74,4 +85,5 @@ export default {
   getDirectImageLink,
   calculateMonthDifference,
   validateFormik,
+  createDate,
 };
