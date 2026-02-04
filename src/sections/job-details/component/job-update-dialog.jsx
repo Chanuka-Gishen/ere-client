@@ -10,6 +10,7 @@ import {
   DialogTitle,
   FormControl,
   FormHelperText,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -17,8 +18,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
-import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
 import { COMPANIES, WORK_STATUS, WORK_TYPE } from 'src/constants/common-constants';
 
@@ -58,7 +57,7 @@ export const JobUpdateDialog = ({
                 )}
               </FormControl>
               <Grid container alignItems="center">
-                <Grid item size={{ xs: 12, sm: 8 }}>
+                <Grid size={{ xs: 12, sm: 8 }}>
                   <Stack>
                     <DatePicker
                       label="Scheduled Date*"
@@ -149,7 +148,7 @@ export const JobUpdateDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading}
@@ -157,7 +156,7 @@ export const JobUpdateDialog = ({
           onClick={handleSubmit}
         >
           Submit
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

@@ -5,6 +5,7 @@ import {
   Card,
   Chip,
   Container,
+  Grid,
   Stack,
   Table,
   TableBody,
@@ -16,7 +17,6 @@ import {
   emphasize,
   styled,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 
 import HomeIcon from '@mui/icons-material/Home';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -78,24 +78,24 @@ export const EmployeeView = ({
 
   // Get the start date of last month
   const lastMonthStartDate = new Date();
-  lastMonthStartDate.setDate(20);
+  lastMonthStartDate.setDate(1);
   lastMonthStartDate.setHours(0, 0, 0, 0);
 
   // Get the end date of last month
   const lastMonthEndDate = new Date();
-  lastMonthEndDate.setDate(19); // Set to last day of previous month
+  lastMonthEndDate.setDate(0); // Set to last day of previous month
   lastMonthEndDate.setHours(23, 59, 59, 999);
 
   // Current month start Date
   const startdate = new Date();
-  startdate.setDate(20);
+  startdate.setDate(1);
   startdate.setHours(0, 0, 0, 0);
 
   const currentEndDate = new Date();
 
   currentEndDate.setHours(23, 59, 59, 999);
 
-  if (today.getDate() <= 19) {
+  if (today.getDate() <= 0) {
     lastMonthStartDate.setMonth(lastMonthStartDate.getMonth() - 2);
     lastMonthEndDate.setMonth(lastMonthEndDate.getMonth() - 1);
     startdate.setMonth(startdate.getMonth() - 1);
@@ -106,7 +106,7 @@ export const EmployeeView = ({
   return (
     <Container maxWidth={'xl'}>
       <Grid container spacing={{ xs: 1, sm: 4 }}>
-        <Grid item size={{ xs: 12, sm: 12 }}>
+        <Grid size={{ xs: 12, sm: 12 }}>
           <Breadcrumbs aria-label="breadcrumb">
             <StyledBreadcrumb
               onClick={() => handleOnClickBreadCrumb(NAVIGATION_ROUTES.employees.base)}
@@ -121,10 +121,10 @@ export const EmployeeView = ({
             />
           </Breadcrumbs>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 12 }}>
+        <Grid size={{ xs: 12, sm: 12 }}>
           <Typography variant="h4">Employee Details</Typography>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
             <Stack direction="column" spacing={1}>
               <Typography variant={isLoadingPoints ? 'h6' : 'h3'}>
@@ -135,7 +135,7 @@ export const EmployeeView = ({
             </Stack>
           </Card>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
             <Stack direction="column" spacing={1}>
               <Typography variant={isLoadingPoints ? 'h6' : 'h3'}>
@@ -146,7 +146,7 @@ export const EmployeeView = ({
             </Stack>
           </Card>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
             <Stack direction="column" spacing={2}>
               <Typography variant={isLoadingTotalPoints ? 'h6' : 'h3'}>
@@ -156,7 +156,7 @@ export const EmployeeView = ({
             </Stack>
           </Card>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 12 }}>
+        <Grid size={{ xs: 12, sm: 12 }}>
           <Card>
             <Toolbar
               sx={{

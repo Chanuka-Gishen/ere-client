@@ -1,9 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Card, Fade, IconButton, Menu, MenuItem, Stack, Tooltip, Typography } from '@mui/material';
+import {
+  Card,
+  Fade,
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import Grid from '@mui/material/Grid2';
 
 import { grey } from '@mui/material/colors';
 import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
@@ -24,7 +33,7 @@ export const StatsComponentView = ({
 }) => {
   return (
     <Grid container spacing={2}>
-      <Grid item size={{ xs: 12, md: 3 }}>
+      <Grid size={{ xs: 12, md: 3 }}>
         <Card elevation={2} sx={{ p: 2, height: 150 }}>
           <Stack direction="column" spacing={2}>
             <Stack direction={'row'} justifyContent={'space-between'} alignItems={'center'}>
@@ -56,7 +65,7 @@ export const StatsComponentView = ({
           </Stack>
         </Card>
       </Grid>
-      <Grid item size={{ xs: 12, md: 3 }}>
+      <Grid size={{ xs: 12, md: 3 }}>
         <Card elevation={2} sx={{ p: 2, pt: 3, height: 150 }}>
           <Stack direction="column" spacing={2}>
             <Typography variant="title" color={grey[700]}>

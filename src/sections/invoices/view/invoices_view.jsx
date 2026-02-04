@@ -4,6 +4,7 @@ import {
   Card,
   Chip,
   Container,
+  Grid,
   Stack,
   Table,
   TableBody,
@@ -12,7 +13,6 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 
 import { CustomTableHead } from 'src/components/custom-table/custom-table-head';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
@@ -44,7 +44,7 @@ export const InvoicesView = ({
   return (
     <Container maxWidth="xl">
       <Grid container spacing={2}>
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
             <Stack direction="column" spacing={2}>
               <Typography variant="h5" align="center">
@@ -56,7 +56,7 @@ export const InvoicesView = ({
             </Stack>
           </Card>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#090530', color: 'white' }}>
             <Stack direction="column" spacing={2}>
               <Typography variant="h5" align="center">
@@ -68,7 +68,7 @@ export const InvoicesView = ({
             </Stack>
           </Card>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 3 }}>
+        <Grid size={{ xs: 12, sm: 3 }}>
           <Card elevation={2} sx={{ p: 2, backgroundColor: '#006307', color: 'white' }}>
             <Stack direction="column" spacing={2}>
               <Typography variant="h5" align="center">
@@ -84,7 +84,7 @@ export const InvoicesView = ({
             </Stack>
           </Card>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 12 }}>
+        <Grid size={{ xs: 12, sm: 12 }}>
           <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
             <Typography variant="h4" fontWeight="bold">
               INVOICES
@@ -115,7 +115,7 @@ export const InvoicesView = ({
             </Stack>
           </Stack>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 12 }}>
+        <Grid size={{ xs: 12, sm: 12 }}>
           <Stack direction="row" spacing={2}>
             {filters.filteredDate && (
               <Chip
@@ -137,7 +137,7 @@ export const InvoicesView = ({
             )}
           </Stack>
         </Grid>
-        <Grid item size={{ xs: 12, sm: 12 }}>
+        <Grid size={{ xs: 12, sm: 12 }}>
           <Scrollbar>
             <TableContainer>
               <Table>

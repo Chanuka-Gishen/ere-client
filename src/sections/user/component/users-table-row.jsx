@@ -10,9 +10,9 @@ import {
   Typography,
 } from '@mui/material';
 import Iconify from 'src/components/iconify';
-import { useSelector } from 'react-redux';
 import { USER_STATUS } from 'src/constants/common-constants';
 import { USER_ROLE } from 'src/constants/user-role';
+import useAuthStore from 'src/store/auth-store';
 
 export const UsersTableRow = ({
   employee,
@@ -21,6 +21,8 @@ export const UsersTableRow = ({
   handleOpenDeleteDialog,
   handleOpenResetConfirmation,
 }) => {
+  const { auth } = useAuthStore.getState();
+
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event) => {
@@ -32,7 +34,7 @@ export const UsersTableRow = ({
     setOpen(null);
   };
 
-  const user = useSelector((state) => state.auth.user);
+  const user = auth.user;
 
   return (
     <>

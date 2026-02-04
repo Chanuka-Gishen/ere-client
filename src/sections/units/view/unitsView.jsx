@@ -6,6 +6,7 @@ import {
   Card,
   Chip,
   Container,
+  Grid,
   Stack,
   Table,
   TableBody,
@@ -14,9 +15,7 @@ import {
   TablePagination,
   TableRow,
   Typography,
-  useMediaQuery,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 import { OrderByComponent } from '../components/orderByComponent';
 import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from 'src/components/custom-table/custom-table-head';
@@ -26,6 +25,7 @@ import commonUtil from 'src/utils/common-util';
 import { fDate, fDateYearMonthFormat } from 'src/utils/format-time';
 import { FilterDialog } from '../components/filterDialog';
 import { DownloadRounded } from '@mui/icons-material';
+import DownloadUnitsExcelDialog from '../components/downloadDialog';
 
 const CustomCell = ({ children, ...props }) => {
   return (
@@ -46,17 +46,18 @@ export const UnitsView = ({
   data,
   downloadExcelSheet,
   isLoadingExcel,
+  isOpenDownload,
+  handleToggleDownload,
   page,
   documentCount,
   rowsPerPage,
   handleChangePage,
   handleChangeRowsPerPage,
 }) => {
-  const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   return (
     <Container maxWidth="xl">
       <Grid container spacing={2} sx={{ mt: '10px' }}>
-        <Grid item size={{ xs: 12, md: 12 }}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <Box
             sx={{
               display: 'flex',
@@ -77,20 +78,15 @@ export const UnitsView = ({
               setFilters={setFilters}
               handleSelect={handleChangeFilters}
             />
-            <Button
-              variant="outlined"
-              onClick={downloadExcelSheet}
-              disabled={isLoading}
-              endIcon={<DownloadRounded />}
-            >
+            <Button variant="outlined" onClick={handleToggleDownload} endIcon={<DownloadRounded />}>
               Excel
             </Button>
           </Box>
         </Grid>
-        <Grid item size={{ xs: 12, md: 12 }}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <Typography variant="h6">Registered Units</Typography>
         </Grid>
-        <Grid item size={{ xs: 12, md: 12 }}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <Stack direction="row" spacing={2}>
             {filters.customerName && (
               <Chip
@@ -142,7 +138,7 @@ export const UnitsView = ({
             )}
           </Stack>
         </Grid>
-        <Grid item size={{ xs: 12, md: 12 }}>
+        <Grid size={{ xs: 12, md: 12 }}>
           <Box display="flex" flexDirection="column" rowGap={2}>
             <Scrollbar>
               <Card>
@@ -210,6 +206,14 @@ export const UnitsView = ({
           </Box>
         </Grid>
       </Grid>
+      {isOpenDownload && (
+        <DownloadUnitsExcelDialog
+          open={isOpenDownload}
+          onClose={handleToggleDownload}
+          isLoading={isLoadingExcel}
+          handleDownload={downloadExcelSheet}
+        />
+      )}
     </Container>
   );
 };

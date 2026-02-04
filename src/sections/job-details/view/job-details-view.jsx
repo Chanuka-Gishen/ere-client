@@ -8,6 +8,7 @@ import {
   Chip,
   CircularProgress,
   Container,
+  Grid,
   IconButton,
   ImageList,
   ImageListItem,
@@ -24,7 +25,6 @@ import {
   styled,
   useMediaQuery,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 import HomeIcon from '@mui/icons-material/Home';
 import { Add, CloseOutlined, DeleteForeverRounded } from '@mui/icons-material';
 import SettingsIcon from '@mui/icons-material/Settings';
@@ -39,14 +39,13 @@ import commonUtil from 'src/utils/common-util';
 import { JobUpdateDialog } from '../component/job-update-dialog';
 import { JobCompleteDialog } from '../component/job-complete-dialog';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
-import { LoadingButton } from '@mui/lab';
+
 import { ChargersView } from '../component/chargers-view';
 import { Invoice } from 'src/components/invoice';
 import { fDate } from 'src/utils/format-time';
 import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
 import { useLocation } from 'react-router-dom';
 
-import Label from 'src/components/label';
 import { INV_CREATED } from 'src/constants/inovice-status';
 
 // -----------------------------------------------------------
@@ -240,7 +239,7 @@ export const JobDetailsView = ({
         )}
 
         <Grid container spacing={2} sx={{ margin: '10px' }}>
-          <Grid item size={{ xs: 12, sm: 12 }}>
+          <Grid size={{ xs: 12, sm: 12 }}>
             {isLoading ? (
               <GridItem>
                 <LoadingComponent />
@@ -282,7 +281,7 @@ export const JobDetailsView = ({
               </GridItem>
             )}
           </Grid>
-          <Grid item size={{ xs: 12, sm: 6 }}>
+          <Grid size={{ xs: 12, sm: 6 }}>
             <GridItem>
               {isLoading ? (
                 <LoadingComponent />
@@ -453,7 +452,7 @@ export const JobDetailsView = ({
               )}
             </GridItem>
           </Grid>
-          <Grid item size={{ xs: 12, sm: 5 }}>
+          <Grid size={{ xs: 12, sm: 5 }}>
             <GridItem>
               {isLoading ? (
                 <LoadingComponent />
@@ -512,7 +511,7 @@ export const JobDetailsView = ({
           </Grid>
 
           {!isLoading && workOrder.workOrderImages.length > 0 && (
-            <Grid item size={{ xs: 12, sm: 12 }}>
+            <Grid size={{ xs: 12, sm: 12 }}>
               <GridItem>
                 <Stack direction={'column'} spacing={2}>
                   <ImageList cols={isMobile ? 4 : 6} gap={2}>
@@ -561,7 +560,7 @@ export const JobDetailsView = ({
                     ))}
                   </ImageList>
                   {deletedFiles.length > 0 && (
-                    <Grid item xs={12} md={12}>
+                    <Grid xs={12} md={12}>
                       <Box
                         sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}
                       >
@@ -572,13 +571,13 @@ export const JobDetailsView = ({
                           >
                             Cancel
                           </Button>
-                          <LoadingButton
+                          <Button
                             onClick={handleDeleteFiles}
                             loading={isLoadingDeleteFiles}
                             disabled={isLoadingDeleteFiles}
                           >
                             Save
-                          </LoadingButton>
+                          </Button>
                         </Stack>
                       </Box>
                     </Grid>
@@ -588,7 +587,7 @@ export const JobDetailsView = ({
             </Grid>
           )}
           {!isLoading && (
-            <Grid item size={{ xs: 12, sm: 12 }}>
+            <Grid size={{ xs: 12, sm: 12 }}>
               <GridItem>
                 <Stack direction={'row'} spacing={2} alignItems={'center'}>
                   <CustomSwitch

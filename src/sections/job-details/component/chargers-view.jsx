@@ -17,7 +17,7 @@ import {
 import Scrollbar from 'src/components/scrollbar';
 import { CurrencyInput } from 'src/components/currency-input/currency-input';
 import { DeleteOutlineSharp } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
+
 import { formatCurrency } from 'src/utils/format-number';
 import { UNIT_ITEMS } from 'src/constants/unit-item-constants';
 
@@ -122,11 +122,11 @@ export const ChargersView = ({
                     onBlur={handleBlur(`items[${index}].itemDescription`)}
                     error={Boolean(
                       touched.items &&
-                        touched.items[index] &&
-                        touched.items[index].itemDescription &&
-                        errors.items &&
-                        errors.items[index] &&
-                        errors.items[index].itemDescription
+                      touched.items[index] &&
+                      touched.items[index].itemDescription &&
+                      errors.items &&
+                      errors.items[index] &&
+                      errors.items[index].itemDescription
                     )}
                     helperText={
                       (touched.items &&
@@ -153,11 +153,11 @@ export const ChargersView = ({
                     onBlur={handleBlur(`items[${index}].itemQty`)}
                     error={Boolean(
                       touched.items &&
-                        touched.items[index] &&
-                        touched.items[index].itemQty &&
-                        errors.items &&
-                        errors.items[index] &&
-                        errors.items[index].itemQty
+                      touched.items[index] &&
+                      touched.items[index].itemQty &&
+                      errors.items &&
+                      errors.items[index] &&
+                      errors.items[index].itemQty
                     )}
                     helperText={
                       (touched.items &&
@@ -183,11 +183,11 @@ export const ChargersView = ({
                     onBlur={handleBlur(`items[${index}].itemNetPrice`)}
                     error={Boolean(
                       touched.items &&
-                        touched.items[index] &&
-                        touched.items[index].itemNetPrice &&
-                        errors.items &&
-                        errors.items[index] &&
-                        errors.items[index].itemNetPrice
+                      touched.items[index] &&
+                      touched.items[index].itemNetPrice &&
+                      errors.items &&
+                      errors.items[index] &&
+                      errors.items[index].itemNetPrice
                     )}
                     helperText={
                       (touched.items &&
@@ -216,11 +216,11 @@ export const ChargersView = ({
                     onBlur={handleBlur(`items[${index}].itemGrossPrice`)}
                     error={Boolean(
                       touched.items &&
-                        touched.items[index] &&
-                        touched.items[index].itemGrossPrice &&
-                        errors.items &&
-                        errors.items[index] &&
-                        errors.items[index].itemGrossPrice
+                      touched.items[index] &&
+                      touched.items[index].itemGrossPrice &&
+                      errors.items &&
+                      errors.items[index] &&
+                      errors.items[index].itemGrossPrice
                     )}
                     helperText={
                       (touched.items &&
@@ -255,9 +255,9 @@ export const ChargersView = ({
                   {...getFieldProps('serviceCharges.description')} // Using getFieldProps to bind the input
                   error={Boolean(
                     touched.serviceCharges &&
-                      touched.serviceCharges.description &&
-                      errors.serviceCharges &&
-                      errors.serviceCharges.description
+                    touched.serviceCharges.description &&
+                    errors.serviceCharges &&
+                    errors.serviceCharges.description
                   )}
                   helperText={
                     (touched.serviceCharges &&
@@ -280,9 +280,9 @@ export const ChargersView = ({
                   {...getFieldProps('serviceCharges.netAmount')}
                   error={Boolean(
                     touched.serviceCharges &&
-                      touched.serviceCharges.netAmount &&
-                      errors.serviceCharges &&
-                      errors.serviceCharges.netAmount
+                    touched.serviceCharges.netAmount &&
+                    errors.serviceCharges &&
+                    errors.serviceCharges.netAmount
                   )}
                   helperText={
                     (touched.serviceCharges &&
@@ -308,9 +308,9 @@ export const ChargersView = ({
                   {...getFieldProps('serviceCharges.amount')}
                   error={Boolean(
                     touched.serviceCharges &&
-                      touched.serviceCharges.amount &&
-                      errors.serviceCharges &&
-                      errors.serviceCharges.amount
+                    touched.serviceCharges.amount &&
+                    errors.serviceCharges &&
+                    errors.serviceCharges.amount
                   )}
                   helperText={
                     (touched.serviceCharges &&
@@ -335,9 +335,9 @@ export const ChargersView = ({
                   {...getFieldProps('labourCharges.description')} // Using getFieldProps to bind the input
                   error={Boolean(
                     touched.labourCharges &&
-                      touched.labourCharges.description &&
-                      errors.labourCharges &&
-                      errors.labourCharges.description
+                    touched.labourCharges.description &&
+                    errors.labourCharges &&
+                    errors.labourCharges.description
                   )}
                   helperText={
                     (touched.labourCharges &&
@@ -360,9 +360,9 @@ export const ChargersView = ({
                   {...getFieldProps('labourCharges.netAmount')}
                   error={Boolean(
                     touched.labourCharges &&
-                      touched.labourCharges.netAmount &&
-                      errors.labourCharges &&
-                      errors.labourCharges.netAmount
+                    touched.labourCharges.netAmount &&
+                    errors.labourCharges &&
+                    errors.labourCharges.netAmount
                   )}
                   helperText={
                     (touched.labourCharges &&
@@ -388,9 +388,9 @@ export const ChargersView = ({
                   {...getFieldProps('labourCharges.amount')}
                   error={Boolean(
                     touched.labourCharges &&
-                      touched.labourCharges.amount &&
-                      errors.labourCharges &&
-                      errors.labourCharges.amount
+                    touched.labourCharges.amount &&
+                    errors.labourCharges &&
+                    errors.labourCharges.amount
                   )}
                   helperText={
                     (touched.labourCharges &&
@@ -415,9 +415,9 @@ export const ChargersView = ({
                   {...getFieldProps('transportCharges.description')}
                   error={Boolean(
                     touched.transportCharges &&
-                      touched.transportCharges.description &&
-                      errors.transportCharges &&
-                      errors.transportCharges.description
+                    touched.transportCharges.description &&
+                    errors.transportCharges &&
+                    errors.transportCharges.description
                   )}
                   helperText={
                     (touched.transportCharges &&
@@ -440,9 +440,9 @@ export const ChargersView = ({
                   {...getFieldProps('transportCharges.netAmount')}
                   error={Boolean(
                     touched.transportCharges &&
-                      touched.transportCharges.netAmount &&
-                      errors.transportCharges &&
-                      errors.transportCharges.netAmount
+                    touched.transportCharges.netAmount &&
+                    errors.transportCharges &&
+                    errors.transportCharges.netAmount
                   )}
                   helperText={
                     (touched.transportCharges &&
@@ -468,9 +468,9 @@ export const ChargersView = ({
                   {...getFieldProps('transportCharges.amount')}
                   error={Boolean(
                     touched.transportCharges &&
-                      touched.transportCharges.amount &&
-                      errors.transportCharges &&
-                      errors.transportCharges.amount
+                    touched.transportCharges.amount &&
+                    errors.transportCharges &&
+                    errors.transportCharges.amount
                   )}
                   helperText={
                     (touched.transportCharges &&
@@ -495,9 +495,9 @@ export const ChargersView = ({
                   {...getFieldProps('otherCharges.description')}
                   error={Boolean(
                     touched.otherCharges &&
-                      touched.otherCharges.description &&
-                      errors.otherCharges &&
-                      errors.otherCharges.description
+                    touched.otherCharges.description &&
+                    errors.otherCharges &&
+                    errors.otherCharges.description
                   )}
                   helperText={
                     (touched.otherCharges &&
@@ -520,9 +520,9 @@ export const ChargersView = ({
                   {...getFieldProps('otherCharges.netAmount')}
                   error={Boolean(
                     touched.otherCharges &&
-                      touched.otherCharges.netAmount &&
-                      errors.otherCharges &&
-                      errors.otherCharges.netAmount
+                    touched.otherCharges.netAmount &&
+                    errors.otherCharges &&
+                    errors.otherCharges.netAmount
                   )}
                   helperText={
                     (touched.otherCharges &&
@@ -548,9 +548,9 @@ export const ChargersView = ({
                   {...getFieldProps('otherCharges.amount')}
                   error={Boolean(
                     touched.otherCharges &&
-                      touched.otherCharges.amount &&
-                      errors.otherCharges &&
-                      errors.otherCharges.amount
+                    touched.otherCharges.amount &&
+                    errors.otherCharges &&
+                    errors.otherCharges.amount
                   )}
                   helperText={
                     (touched.otherCharges &&
@@ -582,9 +582,9 @@ export const ChargersView = ({
                   {...getFieldProps('discount.percentage')}
                   error={Boolean(
                     touched.discount &&
-                      touched.discount.percentage &&
-                      errors.discount &&
-                      errors.discount.percentage
+                    touched.discount.percentage &&
+                    errors.discount &&
+                    errors.discount.percentage
                   )}
                   helperText={
                     (touched.discount &&
@@ -651,9 +651,9 @@ export const ChargersView = ({
                   <Button variant="outlined" onClick={handleResetChargers}>
                     Cancel
                   </Button>
-                  <LoadingButton loading={isLoading} onClick={handleSubmit} variant="contained">
+                  <Button loading={isLoading} onClick={handleSubmit} variant="contained">
                     Submit
-                  </LoadingButton>
+                  </Button>
                 </Stack>
               </CustomCell>
             </TableRow>

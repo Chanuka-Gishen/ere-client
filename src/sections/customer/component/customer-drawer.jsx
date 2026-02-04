@@ -13,7 +13,7 @@ import {
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import { FormikProvider } from 'formik';
-import { LoadingButton } from '@mui/lab';
+
 import { MobileNumberInput } from 'src/components/mobile-number-input/mobile-number-input';
 
 export const CustomerDrawer = ({ isOpen, handleClose, formik, isLoading, handleSubmit }) => {
@@ -100,7 +100,7 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik, isLoading, handleS
           <Button variant="contained" fullWidth color="inherit" onClick={handleClose}>
             Cancel
           </Button>
-          <LoadingButton
+          <Button
             loading={isLoading}
             disabled={isLoading}
             onClick={handleSubmit}
@@ -109,7 +109,7 @@ export const CustomerDrawer = ({ isOpen, handleClose, formik, isLoading, handleS
             color="primary"
           >
             Submit
-          </LoadingButton>
+          </Button>
         </Stack>
       </Card>
       {/* <Box sx={{ p: 3 }}>

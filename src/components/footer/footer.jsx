@@ -1,6 +1,5 @@
 import React from 'react';
-import { Container, Typography } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import { Container, Grid, Typography } from '@mui/material';
 
 export const Footer = () => {
   const mobileNumbers = [
@@ -26,7 +25,7 @@ export const Footer = () => {
     >
       <Container>
         <Grid container alignItems="center" justifyContent="space-between">
-          <Grid item>
+          <Grid>
             {/* Replace 'logo.jpg' with the path to your logo image */}
             <img
               src="/assets/ere-logo.jpg"
@@ -37,7 +36,7 @@ export const Footer = () => {
               }}
             />
           </Grid>
-          <Grid item>
+          <Grid>
             <Typography variant="body2" component="div">
               {/* Display mobile numbers */}
               <ul style={{ listStyle: 'none', padding: 0 }}>

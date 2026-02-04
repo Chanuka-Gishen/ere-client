@@ -10,21 +10,18 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { account } from 'src/_mock/account';
-import { useDispatch, useSelector } from 'react-redux';
-import authAction from 'src/store/action/authAction';
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
 import responseUtil from 'src/utils/responseUtil';
-
-// ----------------------------------------------------------------------
+import useAuthStore from 'src/store/auth-store';
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
   const [isLoading, setIsloading] = useState(false);
 
-  const dispatch = useDispatch();
+  const { auth, logoutUser } = useAuthStore.getState();
 
-  const user = useSelector((state) => state.auth.user);
+  const user = auth.user;
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -45,7 +42,7 @@ export default function AccountPopover() {
         const data = res.data;
 
         if (responseUtil.isResponseSuccess(data.responseCode)) {
-          dispatch(authAction.logoutUser());
+          logoutUser();
         }
       })
       .finally(() => {
@@ -110,6 +107,7 @@ export default function AccountPopover() {
           disableRipple
           disableTouchRipple
           onClick={handleLogout}
+          disabled={isLoading}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout

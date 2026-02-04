@@ -1,13 +1,11 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import { removeSnackbar } from 'src/store/action/snackbarAction';
+import useSnackbarStore from 'src/store/notification-store';
 
 let displayed = [];
 
 const SnackbarNotifier = () => {
-  const dispatch = useDispatch();
-  const notifications = useSelector((store) => store.snackbar.notifications || []);
+  const { notifications, removeSnackbar } = useSnackbarStore.getState();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const storeDisplayed = (id) => {
@@ -40,7 +38,7 @@ const SnackbarNotifier = () => {
         },
         onExited: (event, myKey) => {
           // remove this snackbar from redux store
-          dispatch(removeSnackbar(myKey));
+          removeSnackbar(myKey);
           removeDisplayed(myKey);
         },
       });
@@ -48,7 +46,7 @@ const SnackbarNotifier = () => {
       // keep track of snackbars that we've displayed
       storeDisplayed(key);
     });
-  }, [notifications, closeSnackbar, enqueueSnackbar, dispatch]);
+  }, [notifications, closeSnackbar, enqueueSnackbar]);
 
   return null;
 };

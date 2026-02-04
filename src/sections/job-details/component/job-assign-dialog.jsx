@@ -11,7 +11,6 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
 
 export const JobAssignDialog = ({
   isOpen,
@@ -60,7 +59,7 @@ export const JobAssignDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading}
@@ -68,7 +67,7 @@ export const JobAssignDialog = ({
           onClick={handleSubmit}
         >
           Submit
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

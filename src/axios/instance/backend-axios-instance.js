@@ -1,18 +1,12 @@
-import React from 'react';
-
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
 import { v1 as uuid } from 'uuid';
 
 import common_util from 'src/utils/common-util';
-import { enqueueSnackbar as enqueueSnackbarAction } from 'src/store/action/snackbarAction';
 
-import { reduxPersistStore } from 'src/store/persistStore';
 import { SNACKBAR_MESSAGE } from 'src/constants/snackbar-constants';
-import authAction from 'src/store/action/authAction';
 import responseUtil from 'src/utils/responseUtil';
-
-const enqueueSnackbar = (...args) => reduxPersistStore.dispatch(enqueueSnackbarAction(...args));
+import useAuthStore from 'src/store/auth-store';
+import useSnackbarStore from 'src/store/notification-store';
 
 export const backendAuthApi = axios.create({
   // one minute timeout
@@ -20,7 +14,10 @@ export const backendAuthApi = axios.create({
 });
 
 backendAuthApi.interceptors.request.use((request) => {
-  const bearerToken = reduxPersistStore.getState().auth.user.token;
+  const { auth } = useAuthStore.getState();
+
+  const bearerToken = auth ? auth.user.token : null;
+
   if (bearerToken) {
     request.headers.Authorization = `Bearer ${bearerToken}`;
   }
@@ -32,6 +29,9 @@ backendAuthApi.interceptors.response.use(
     return response;
   },
   (error) => {
+    const { logoutUser } = useAuthStore.getState();
+    const { enqueueSnackbar } = useSnackbarStore.getState();
+
     if (error && !axios.isCancel(error)) {
       let errorMessage = SNACKBAR_MESSAGE.SOMETHING_WENT_WRONG.MESSAGE;
       let errorCode = null;
@@ -51,10 +51,11 @@ backendAuthApi.interceptors.response.use(
          */
 
         if (errorResponse.responseCode === 'AUTH-004') {
-          const dispath = useDispatch();
+          logoutUser();
 
-          dispath(authAction.logoutUser());
-          return;
+          if (!window.location.pathname.includes(NAVIGATION_ROUTES.login)) {
+            window.location.href = NAVIGATION_ROUTES.login;
+          }
         }
       }
 

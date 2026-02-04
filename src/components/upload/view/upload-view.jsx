@@ -21,7 +21,6 @@ import {
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import CloseIcon from '@mui/icons-material/Close';
 import { CloseRounded } from '@mui/icons-material';
-import { LoadingButton } from '@mui/lab';
 
 //------------------------------------------------------
 
@@ -58,7 +57,7 @@ export const UploadView = ({
           <Typography sx={{ ml: 2, flex: 1 }} variant="h6">
             Close
           </Typography>
-          <LoadingButton
+          <Button
             autoFocus
             color="inherit"
             variant="h6"
@@ -69,7 +68,7 @@ export const UploadView = ({
             <Typography variant="h6">
               Save {selectedFiles.length > 0 && `${selectedFiles.length} images`}
             </Typography>
-          </LoadingButton>
+          </Button>
         </Toolbar>
       </AppBar>
       <Container maxWidth={'xl'} sx={{ mt: 4 }}>

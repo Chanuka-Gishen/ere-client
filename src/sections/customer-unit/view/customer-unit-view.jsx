@@ -1,17 +1,24 @@
 import React from 'react';
 import { EmptyQrView } from '../component/empty-qr-view';
-import { AppBar, Box, Card, Container, Stack, Tab, Tabs, Typography, styled } from '@mui/material';
-import Grid from '@mui/material/Grid2';
+import {
+  AppBar,
+  Box,
+  Card,
+  Container,
+  Grid,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+  styled,
+} from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { QrViewLoading } from '../component/qr-view-loading';
 import commonUtil from 'src/utils/common-util';
-import SwipeableViews from 'react-swipeable-views';
 import { UnitCreatedWork } from '../component/unit-created-work';
 import { UnitCompletedWork } from '../component/unit-completed';
 import { WORK_STATUS } from 'src/constants/common-constants';
 import { Footer } from 'src/components/footer/footer';
-
-// ----------------------------------------------------------------------
 
 const GridItem = styled(Card)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -73,10 +80,6 @@ export const CustomerUnitView = ({ isLoading, data }) => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
-
   const a11yProps = (index) => {
     return {
       id: `full-width-tab-${index}`,
@@ -110,7 +113,7 @@ export const CustomerUnitView = ({ isLoading, data }) => {
             <EmptyQrView />
           ) : (
             <Grid container spacing={2} sx={{ p: 1 }}>
-              <Grid item size={{ xs: 12, md: 12 }}>
+              <Grid size={{ xs: 12, md: 12 }}>
                 <GridItem>
                   <Stack
                     direction={'column'}
@@ -145,7 +148,7 @@ export const CustomerUnitView = ({ isLoading, data }) => {
                   </Stack>
                 </GridItem>
               </Grid>
-              <Grid item size={{ xs: 12, md: 12 }}>
+              <Grid size={{ xs: 12, md: 12 }}>
                 <Box sx={{ width: '100%' }}>
                   <AppBar position="static">
                     <StyledTabs value={value} onChange={handleChange} variant="fullWidth">
@@ -153,18 +156,12 @@ export const CustomerUnitView = ({ isLoading, data }) => {
                       <StyledTab label="Completed" {...a11yProps(1)} />
                     </StyledTabs>
                   </AppBar>
-                  <SwipeableViews
-                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                    index={value}
-                    onChangeIndex={handleChangeIndex}
-                  >
-                    <TabPanel value={value} index={0} dir={theme.direction}>
-                      <UnitCreatedWork data={workOrdersCreated} />
-                    </TabPanel>
-                    <TabPanel value={value} index={1} dir={theme.direction}>
-                      <UnitCompletedWork data={workOrdersCompleted} unit={data.unit} />
-                    </TabPanel>
-                  </SwipeableViews>
+                  <TabPanel value={value} index={0} dir={theme.direction}>
+                    <UnitCreatedWork data={workOrdersCreated} />
+                  </TabPanel>
+                  <TabPanel value={value} index={1} dir={theme.direction}>
+                    <UnitCompletedWork data={workOrdersCompleted} unit={data.unit} />
+                  </TabPanel>
                 </Box>
               </Grid>
             </Grid>

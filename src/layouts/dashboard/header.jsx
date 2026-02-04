@@ -14,9 +14,6 @@ import Iconify from 'src/components/iconify';
 
 import { NAV, HEADER } from './config-layout';
 import AccountPopover from './common/account-popover';
-
-// ----------------------------------------------------------------------
-
 export default function Header({ onOpenNav }) {
   const theme = useTheme();
 
