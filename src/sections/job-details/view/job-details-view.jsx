@@ -46,7 +46,6 @@ import { fDate } from 'src/utils/format-time';
 import ConfirmationDialog from 'src/components/confirmation-dialog/confirmation-dialog';
 import { useLocation } from 'react-router-dom';
 
-import Label from 'src/components/label';
 import { INV_CREATED } from 'src/constants/inovice-status';
 
 // -----------------------------------------------------------
