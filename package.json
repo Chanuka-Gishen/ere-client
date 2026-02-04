@@ -3,6 +3,7 @@
   "author": "@Chanuka",
   "version": "1.9.1",
   "private": true,
+  "type": "module",
   "homepage": ".",
   "scripts": {
     "dev": "vite",
