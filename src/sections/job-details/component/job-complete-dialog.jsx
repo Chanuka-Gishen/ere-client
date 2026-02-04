@@ -10,7 +10,7 @@ import {
   DialogTitle,
   FormControl,
 } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+
 import { DatePicker } from '@mui/x-date-pickers';
 
 export const JobCompleteDialog = ({
@@ -41,9 +41,9 @@ export const JobCompleteDialog = ({
         <Button onClick={handleClose} disabled={isLoading}>
           Cancel
         </Button>
-        <LoadingButton loading={isLoading} disabled={isLoading} onClick={handleSubmit} autoFocus>
+        <Button loading={isLoading} disabled={isLoading} onClick={handleSubmit} autoFocus>
           Confirm
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

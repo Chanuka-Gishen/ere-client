@@ -2,7 +2,7 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import { FormikProvider } from 'formik';
-import { LoadingButton } from '@mui/lab';
+
 import { Stack } from '@mui/material';
 
 import { PasswordField } from 'src/components/password-field/password-field';
@@ -34,7 +34,7 @@ export const SetPasswordForm = ({ formik, isLoading, handleSubmit }) => {
         </Link>
       </Stack> */}
 
-      <LoadingButton
+      <Button
         fullWidth
         size="large"
         type="submit"
@@ -45,7 +45,7 @@ export const SetPasswordForm = ({ formik, isLoading, handleSubmit }) => {
         disabled={isLoading}
       >
         Login
-      </LoadingButton>
+      </Button>
     </FormikProvider>
   );
 };

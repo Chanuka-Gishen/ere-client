@@ -5,16 +5,12 @@ import * as Yup from 'yup';
 import { SetPasswordView } from '../view/set-password-view';
 import axios from 'axios';
 import { useRouter } from 'src/routes/hooks';
-import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
 import responseUtil from 'src/utils/responseUtil';
-import authAction from 'src/store/action/authAction';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
-
-//-------------------------------------------------------
 
 const validationSchema = Yup.object().shape({
   userPassword: Yup.string().required('Password is required'),
@@ -25,7 +21,6 @@ const validationSchema = Yup.object().shape({
 
 const SetPasswordController = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
 
   const canceltToken = axios.CancelToken.source();
@@ -57,7 +52,6 @@ const SetPasswordController = () => {
           const data = res.data;
 
           if (responseUtil.isResponseSuccess(data.responseCode)) {
-            dispatch(authAction.updateLoginStatus());
             router.push(NAVIGATION_ROUTES.dashboard);
           } else {
             enqueueSnackbar(data.responseMessage, {

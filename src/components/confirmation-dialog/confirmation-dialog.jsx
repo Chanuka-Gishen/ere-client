@@ -7,7 +7,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { LoadingButton } from '@mui/lab';
 
 export default function ConfirmationDialog({
   contentText,
@@ -31,9 +30,9 @@ export default function ConfirmationDialog({
         <Button onClick={handleClose} disabled={isLoading}>
           Cancel
         </Button>
-        <LoadingButton disabled={isLoading} loading={isLoading} onClick={handleSubmit} autoFocus>
+        <Button disabled={isLoading} loading={isLoading} onClick={handleSubmit} autoFocus>
           Confirm
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

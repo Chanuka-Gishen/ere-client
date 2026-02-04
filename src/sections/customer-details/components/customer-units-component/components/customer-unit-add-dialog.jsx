@@ -16,7 +16,6 @@ import {
   TextField,
 } from '@mui/material';
 import { FormikProvider } from 'formik';
-import { LoadingButton } from '@mui/lab';
 import { DatePicker } from '@mui/x-date-pickers';
 import { UNIT_STATUS } from 'src/constants/common-constants';
 
@@ -115,7 +114,7 @@ export const CustomerUnitAddDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading}
@@ -123,7 +122,7 @@ export const CustomerUnitAddDialog = ({
           onClick={handleSubmit}
         >
           {isAdd ? 'Submit' : 'Update'}
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

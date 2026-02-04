@@ -17,7 +17,6 @@ import {
 } from '@mui/material';
 import { FormikProvider } from 'formik';
 import { USER_ROLE } from 'src/constants/user-role';
-import { LoadingButton } from '@mui/lab';
 
 export const AddEmployeeDialog = ({
   open,
@@ -73,7 +72,7 @@ export const AddEmployeeDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading}
@@ -81,7 +80,7 @@ export const AddEmployeeDialog = ({
           onClick={handleSubmitAddUser}
         >
           Submit
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

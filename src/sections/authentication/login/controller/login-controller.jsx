@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
 import * as Yup from 'yup';
 
 import { LoginView } from '../view/login-view';
-import authAction from 'src/store/action/authAction';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 import { useRouter } from 'src/routes/hooks';
 
@@ -15,6 +13,7 @@ import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
 import responseUtil from 'src/utils/responseUtil';
 import { SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
+import useAuthStore from 'src/store/auth-store';
 
 //-------------------------------------------------------
 
@@ -25,7 +24,7 @@ const validationSchema = Yup.object().shape({
 
 const LoginController = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
+  const { loginUser } = useAuthStore();
   const { enqueueSnackbar } = useSnackbar();
 
   let cancelToken = axios.CancelToken.source();
@@ -56,12 +55,11 @@ const LoginController = () => {
         .then((res) => {
           const data = res.data;
           if (responseUtil.isResponseSuccess(data.responseCode)) {
-            dispatch(authAction.loginUser(data.responseData));
+            loginUser(data.responseData);
 
             if (data.responseData.userNewPwd) {
               router.push(NAVIGATION_ROUTES.set_password);
             } else {
-              dispatch(authAction.updateLoginStatus());
               router.push(NAVIGATION_ROUTES.dashboard);
             }
           } else {
@@ -69,6 +67,9 @@ const LoginController = () => {
               variant: SNACKBAR_VARIANT.ERROR,
             });
           }
+        })
+        .catch((err) => {
+          console.log(err);
         })
         .finally(() => {
           setIsLoading(false);

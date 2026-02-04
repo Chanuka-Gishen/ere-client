@@ -10,7 +10,6 @@ import {
   TextField,
 } from '@mui/material';
 import { FormikProvider } from 'formik';
-import { LoadingButton } from '@mui/lab';
 
 export const CustomerDetailsUpdateDialog = ({
   isOpen,
@@ -76,7 +75,7 @@ export const CustomerDetailsUpdateDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading}
@@ -84,7 +83,7 @@ export const CustomerDetailsUpdateDialog = ({
           onClick={handleSubmit}
         >
           Update
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

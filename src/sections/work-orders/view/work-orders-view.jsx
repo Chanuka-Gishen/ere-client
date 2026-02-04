@@ -4,6 +4,7 @@ import {
   Card,
   Container,
   FormControl,
+  Grid,
   InputLabel,
   MenuItem,
   Select,
@@ -15,7 +16,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from 'src/components/custom-table/custom-table-head';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
@@ -59,42 +59,42 @@ export const WorkOrdrsView = ({
 
       <Card>
         <Grid container spacing={{ xs: 1, sm: 2 }} sx={{ p: 2 }}>
-          <Grid item size={{ xs: 12, sm: 3 }}>
+          <Grid size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.name}
               onFilterName={(e) => handleChangeSearchParam('name', e)}
               placeholder="Search Customer Name..."
             />
           </Grid>
-          <Grid item size={{ xs: 12, sm: 3 }}>
+          <Grid size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.mobile}
               onFilterName={(e) => handleChangeSearchParam('mobile', e)}
               placeholder="Search Mobile..."
             />
           </Grid>
-          <Grid item size={{ xs: 12, sm: 3 }}>
+          <Grid size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.jobCode}
               onFilterName={(e) => handleChangeSearchParam('jobCode', e)}
               placeholder="Search Job Code..."
             />
           </Grid>
-          <Grid item size={{ xs: 12, sm: 3 }}>
+          <Grid size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.qrCode}
               onFilterName={(e) => handleChangeSearchParam('qrCode', e)}
               placeholder="Search QR Code..."
             />
           </Grid>
-          <Grid item size={{ xs: 12, sm: 3 }}>
+          <Grid size={{ xs: 12, sm: 3 }}>
             <SearchInput
               filterName={searchParams.invoiceNumber}
               onFilterName={(e) => handleChangeSearchParam('invoiceNumber', e)}
               placeholder="Search Invoice No..."
             />
           </Grid>
-          <Grid item size={{ xs: 12, sm: 3 }}>
+          <Grid size={{ xs: 12, sm: 3 }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-company">Company</InputLabel>
               <Select
@@ -118,7 +118,7 @@ export const WorkOrdrsView = ({
               </Select>
             </FormControl>
           </Grid>
-          <Grid item size={{ xs: 12, sm: 3 }}>
+          <Grid size={{ xs: 12, sm: 3 }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-type">Type</InputLabel>
               <Select

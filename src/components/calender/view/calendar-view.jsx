@@ -4,6 +4,7 @@ import {
   Avatar,
   Badge,
   Card,
+  Grid,
   List,
   ListItem,
   ListItemAvatar,
@@ -11,7 +12,6 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 import { DayCalendarSkeleton, PickersDay } from '@mui/x-date-pickers';
 
 import WorkIcon from '@mui/icons-material/Work';
@@ -62,7 +62,7 @@ export const CalendarView = ({
 
   return (
     <Grid container spacing={2} alignItems="start" justifyContent="center">
-      <Grid item size={{ xs: 12, sm: 6 }}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Card>
           <DateCalendar
             loading={isLoading}
@@ -80,7 +80,7 @@ export const CalendarView = ({
           />
         </Card>
       </Grid>
-      <Grid item size={{ xs: 12, sm: 6 }}>
+      <Grid size={{ xs: 12, sm: 6 }}>
         <Card sx={{ p: 2 }}>
           <Typography textAlign="center" fontWeight="bold">
             Units Due for Maintenance on {fDate(selectedDate)}

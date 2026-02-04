@@ -11,7 +11,6 @@ import {
   InputAdornment,
   TextField,
 } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
 
 export const AddTipDialog = ({
   value,
@@ -42,7 +41,7 @@ export const AddTipDialog = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading || value <= 0}
@@ -50,7 +49,7 @@ export const AddTipDialog = ({
           onClick={handleSubmit}
         >
           Submit
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

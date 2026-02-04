@@ -14,7 +14,7 @@ import {
   Stack,
 } from '@mui/material';
 import { FormikProvider } from 'formik';
-import { LoadingButton } from '@mui/lab';
+
 import { DatePicker } from '@mui/x-date-pickers';
 import { COMPANIES, WORK_TYPE } from 'src/constants/common-constants';
 
@@ -70,7 +70,7 @@ export const AddCustomerJobDialog = ({ formik, isOpen, handleClose, isLoading, h
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading}
@@ -78,7 +78,7 @@ export const AddCustomerJobDialog = ({ formik, isOpen, handleClose, isLoading, h
           onClick={handleSubmit}
         >
           Submit
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

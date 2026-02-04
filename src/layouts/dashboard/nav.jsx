@@ -11,24 +11,23 @@ import ListItemButton from '@mui/material/ListItemButton';
 
 import { usePathname, useRouter } from 'src/routes/hooks';
 
-import { useResponsive } from 'src/hooks/use-responsive';
-
 import { account } from 'src/_mock/account';
 
 import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
-import { useSelector } from 'react-redux';
 import { USER_ROLE } from 'src/constants/user-role';
 import { NAVBAR_ITEMS } from './common/navigation-names';
+import useAuthStore from 'src/store/auth-store';
 
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
 
-  const user = useSelector((state) => state.auth.user);
+  const { auth } = useAuthStore.getState();
+  const user = auth.user;
 
   const [selected, setSelected] = useState(NAVBAR_ITEMS.DASHBOARD);
 

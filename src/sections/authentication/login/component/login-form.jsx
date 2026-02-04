@@ -1,5 +1,4 @@
-import { LoadingButton } from '@mui/lab';
-import { IconButton, InputAdornment, Stack, TextField } from '@mui/material';
+import { Button, IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import React from 'react';
 import Iconify from 'src/components/iconify';
 import PropTypes from 'prop-types';
@@ -17,6 +16,12 @@ const LoginForm = ({ handleClick, handleShowPassword, showPassword, formik, isLo
           {...getFieldProps('userName')}
           error={Boolean(touched.userName && errors.userName)}
           helperText={touched.userName && errors.userName}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleClick();
+            }
+          }}
         />
 
         <TextField
@@ -34,6 +39,12 @@ const LoginForm = ({ handleClick, handleShowPassword, showPassword, formik, isLo
           {...getFieldProps('userPassword')}
           error={Boolean(touched.userPassword && errors.userPassword)}
           helperText={touched.userPassword && errors.userPassword}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleClick();
+            }
+          }}
         />
       </Stack>
 
@@ -43,7 +54,7 @@ const LoginForm = ({ handleClick, handleShowPassword, showPassword, formik, isLo
         </Link>
       </Stack> */}
 
-      <LoadingButton
+      <Button
         fullWidth
         size="large"
         type="submit"
@@ -54,7 +65,7 @@ const LoginForm = ({ handleClick, handleShowPassword, showPassword, formik, isLo
         disabled={isLoading}
       >
         Login
-      </LoadingButton>
+      </Button>
     </FormikProvider>
   );
 };

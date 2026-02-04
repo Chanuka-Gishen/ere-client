@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { CustomerDetailsView } from '../view/customer-details-view';
 import { useRouter } from 'src/routes/hooks';
-import itemAction from 'src/store/action/itemAction';
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
 import responseUtil from 'src/utils/responseUtil';
+import useItemStore from 'src/store/item-store';
 
 const CustomerDetailsController = () => {
   const { id } = useParams();
@@ -17,8 +16,8 @@ const CustomerDetailsController = () => {
 
   const sourceToken = axios.CancelToken.source();
 
-  const dispatch = useDispatch();
-  const item = useSelector((state) => state.item.unit);
+  const { unit, selectCustomerUnit } = useItemStore.getState();
+  const item = unit;
 
   const [isLoadingUnit, setIsLoadingUnit] = useState(true);
   const [selectedUnit, setSelectedUnit] = useState(null);
@@ -29,12 +28,10 @@ const CustomerDetailsController = () => {
     setSelectedUnitId(isUnitSelected ? null : unit._id);
     setSelectedUnit(isUnitSelected ? null : unit);
 
-    dispatch(
-      itemAction.selectCustomerUnit({
-        selectedUnit: isUnitSelected ? null : unit._id,
-        selectedJob: id,
-      })
-    );
+    selectCustomerUnit({
+      selectedUnit: isUnitSelected ? null : unit._id,
+      selectedJob: id,
+    });
   };
 
   const handleOnClickBreadCrumb = (screen) => {
@@ -69,7 +66,7 @@ const CustomerDetailsController = () => {
         setSelectedUnitId(item.selectedUnit);
       }
     } else {
-      dispatch(itemAction.selectCustomerUnit({ selectedUnit: null, selectedJob: id }));
+      selectCustomerUnit({ selectedUnit: null, selectedJob: id });
     }
 
     if (selectedUnitId) {

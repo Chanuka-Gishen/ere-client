@@ -9,7 +9,6 @@ import {
   TextField,
 } from '@mui/material';
 import { FormikProvider } from 'formik';
-import { LoadingButton } from '@mui/lab';
 
 export const OverviewUpdateUnit = ({ isOpen, handleClose, formik, isLoading, handleSubmit }) => {
   const { getFieldProps } = formik;
@@ -30,7 +29,7 @@ export const OverviewUpdateUnit = ({ isOpen, handleClose, formik, isLoading, han
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading || formik.values.unitSerialNo === ''}
@@ -38,7 +37,7 @@ export const OverviewUpdateUnit = ({ isOpen, handleClose, formik, isLoading, han
           onClick={handleSubmit}
         >
           Update
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

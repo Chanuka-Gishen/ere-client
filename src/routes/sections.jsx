@@ -3,8 +3,8 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
 import { NAVIGATION_ROUTES } from './navigation-routes';
-import { useSelector } from 'react-redux';
 import UnitsPage from 'src/pages/units';
+import useAuthStore from 'src/store/auth-store';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const LoginPage = lazy(() => import('src/pages/login'));
@@ -44,7 +44,8 @@ const PublicRoutes = [
 ];
 
 const Router = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isLoggedIn);
+  const { auth } = useAuthStore.getState();
+  const isAuthenticated = auth.isLoggedIn;
 
   const routes = useRoutes([
     {

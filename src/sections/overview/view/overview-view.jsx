@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 
 import {
   Card,
+  Grid,
   Stack,
   Table,
   TableBody,
@@ -11,17 +12,16 @@ import {
   TablePagination,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 import Scrollbar from 'src/components/scrollbar';
 import { CustomTableHead } from '../../../components/custom-table/custom-table-head';
 import { JobTableRow } from '../component/job-table-row';
 import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import { StatsComponent } from '../component/stats-component';
-import { useSelector } from 'react-redux';
 import { USER_ROLE } from 'src/constants/user-role';
 import { Calender } from 'src/components/calender';
 import { UpcomingJobsRow } from '../component/upcoming-jobs-row';
+import useAuthStore from 'src/store/auth-store';
 
 // ----------------------------------------------------------------------
 
@@ -43,7 +43,8 @@ export const Overview = ({
   handleChangePageUJ,
   handleChangeRowsPerPageUJ,
 }) => {
-  const user = useSelector((state) => state.auth.user);
+  const { auth } = useAuthStore.getState();
+  const user = auth.user;
 
   return (
     <Container maxWidth="xl">
@@ -110,7 +111,7 @@ export const Overview = ({
             <Card>
               <Scrollbar>
                 <TableContainer sx={{ overflow: 'unset' }}>
-                  <Table sx={{minWidth: '100%'}}>
+                  <Table sx={{ minWidth: '100%' }}>
                     <CustomTableHead headLabel={headerLabelsUJ} enableAction={false} />
                     <TableBody>
                       {isLoadingUJ ? (

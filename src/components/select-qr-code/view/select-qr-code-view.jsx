@@ -10,7 +10,6 @@ import {
   DialogTitle,
   TextField,
 } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
 
 export const SelectQrCodeView = ({
   isOpen,
@@ -40,7 +39,7 @@ export const SelectQrCodeView = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading || isLoadingAddQr || value === null}
@@ -48,7 +47,7 @@ export const SelectQrCodeView = ({
           onClick={handleSubmit}
         >
           Add Code
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

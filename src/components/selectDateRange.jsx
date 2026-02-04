@@ -8,10 +8,9 @@ import {
   DialogContent,
   DialogTitle,
   FormHelperText,
+  Grid,
 } from '@mui/material';
-import Grid from '@mui/material/Grid2';
 import { FormikProvider } from 'formik';
-import { LoadingButton } from '@mui/lab';
 
 import { DatePicker } from '@mui/x-date-pickers';
 
@@ -24,7 +23,7 @@ export const SelectDateRange = ({ open, handleClose, formik, handleSubmit, isLoa
       <DialogContent>
         <FormikProvider value={formik}>
           <Grid container spacing={2} sx={{ mt: 2 }} justifyContent="center">
-            <Grid item size={{ xs: 12, sm: 6 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <DatePicker
                 label="From*"
                 value={values.dateFrom}
@@ -37,7 +36,7 @@ export const SelectDateRange = ({ open, handleClose, formik, handleSubmit, isLoa
                 <FormHelperText error>{errors.dateFrom}</FormHelperText>
               )}
             </Grid>
-            <Grid item size={{ xs: 12, sm: 6 }}>
+            <Grid size={{ xs: 12, sm: 6 }}>
               <DatePicker
                 label="To*"
                 value={values.dateTo}
@@ -55,7 +54,7 @@ export const SelectDateRange = ({ open, handleClose, formik, handleSubmit, isLoa
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose(null)}>Cancel</Button>
-        <LoadingButton
+        <Button
           variant="contained"
           color="inherit"
           disabled={isLoading}
@@ -63,7 +62,7 @@ export const SelectDateRange = ({ open, handleClose, formik, handleSubmit, isLoa
           onClick={handleSubmit}
         >
           Filter
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );
