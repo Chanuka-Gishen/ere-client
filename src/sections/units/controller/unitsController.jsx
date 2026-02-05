@@ -83,7 +83,7 @@ const UnitsController = () => {
     }
   };
 
-  const downloadExcelSheet = async (type) => {
+  const downloadExcelSheet = async (params) => {
     setIsLoadingExcel(true);
 
     await backendAuthApi({
@@ -91,7 +91,7 @@ const UnitsController = () => {
       method: 'GET',
       cancelToken: cancelToken.token,
       responseType: 'blob',
-      params: { type },
+      params,
     })
       .then((res) => {
         // Create a link element and trigger download
@@ -100,7 +100,7 @@ const UnitsController = () => {
         link.href = url;
         link.setAttribute(
           'download',
-          `DateSheet-${type}-${new Date().toLocaleDateString('en-US')}.xlsx`
+          `${params?.company.toUpperCase() ?? 'ALL'}-${params.type.toUpperCase() ?? 'ALL'}-${new Date().toLocaleDateString('en-US')}.xlsx`
         );
         document.body.appendChild(link);
         link.click();
