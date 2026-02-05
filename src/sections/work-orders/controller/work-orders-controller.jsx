@@ -37,6 +37,7 @@ const WorkOrdersController = () => {
     mobile: '',
     company: '',
     type: '',
+    serialNumber: '',
   });
 
   const [isLoading, setIsLoading] = useState(true);
@@ -65,21 +66,26 @@ const WorkOrdersController = () => {
   const handleFetchWorkOrders = async () => {
     setIsLoading(true);
 
+    const params = {
+      page: page,
+      limit: rowsPerPage,
+    };
+
+    // Only add each param if it has a value
+    if (searchParams.name) params.customerName = searchParams.name;
+    if (searchParams.mobile) params.customerMobile = searchParams.mobile;
+    if (searchParams.jobCode) params.jobCode = searchParams.jobCode;
+    if (searchParams.qrCode) params.qrCode = searchParams.qrCode;
+    if (searchParams.invoiceNumber) params.invoiceNumber = searchParams.invoiceNumber;
+    if (searchParams.company) params.company = searchParams.company;
+    if (searchParams.type) params.type = searchParams.type;
+    if (searchParams.serialNumber) params.serialNumber = searchParams.serialNumber;
+
     await backendAuthApi({
       url: BACKEND_API.WORK_ORDERS,
       method: 'GET',
       cancelToken: cancelToken.token,
-      params: {
-        page: page,
-        limit: rowsPerPage,
-        customerName: searchParams.name,
-        customerMobile: searchParams.mobile,
-        jobCode: searchParams.jobCode,
-        qrCode: searchParams.qrCode,
-        invoiceNumber: searchParams.invoiceNumber,
-        company: searchParams.company,
-        type: searchParams.type,
-      },
+      params,
     })
       .then((res) => {
         if (responseUtil.isResponseSuccess(res.data.responseCode)) {

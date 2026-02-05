@@ -82,6 +82,13 @@ export const WorkOrdrsView = ({
           </Grid>
           <Grid size={{ xs: 12, sm: 3 }}>
             <SearchInput
+              filterName={searchParams.serialNumber}
+              onFilterName={(e) => handleChangeSearchParam('serialNumber', e)}
+              placeholder="Search Serial No..."
+            />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 3 }}>
+            <SearchInput
               filterName={searchParams.qrCode}
               onFilterName={(e) => handleChangeSearchParam('qrCode', e)}
               placeholder="Search QR Code..."
