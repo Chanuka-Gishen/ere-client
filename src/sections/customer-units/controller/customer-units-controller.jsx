@@ -17,7 +17,7 @@ const CustomerUnitsController = () => {
 
   const fetchUnits = async () => {
     await backendAuthApi({
-      url: BACKEND_API.CUSTOMER_UNITS,
+      url: BACKEND_API.CUSTOMER_UNITS_PUBLIC,
       method: 'GET',
       cancelToken: sourceToken.token,
       params: { id },
