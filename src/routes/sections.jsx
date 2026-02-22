@@ -12,6 +12,7 @@ export const SetPasswordPage = lazy(() => import('src/pages/set-password'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const CustomersPage = lazy(() => import('src/pages/customers'));
 export const CustomerDetailsPage = lazy(() => import('src/pages/customer-details'));
+export const CustomerUnitsPage = lazy(() => import('src/pages/customer-units'));
 export const OverviewDetailsPage = lazy(() => import('src/pages/overview-details'));
 export const JobDetailsPage = lazy(() => import('src/pages/job-details'));
 export const CustomerUnitPage = lazy(() => import('src/pages/customer-unit-page'));
@@ -37,10 +38,7 @@ const PublicRoutes = [
   { path: NAVIGATION_ROUTES.set_password, element: <SetPasswordPage /> },
   { path: NAVIGATION_ROUTES.not_found, element: <Page404 /> },
   { path: NAVIGATION_ROUTES.customer_unit, element: <CustomerUnitPage /> },
-  {
-    path: NAVIGATION_ROUTES.all_path,
-    element: <Navigate to={NAVIGATION_ROUTES.not_found} replace />,
-  }, // Redirect to login if not authenticated
+  { path: NAVIGATION_ROUTES.customer_units, element: <CustomerUnitsPage /> },
 ];
 
 const Router = () => {
@@ -71,6 +69,10 @@ const Router = () => {
       ],
     },
     ...PublicRoutes,
+    {
+      path: NAVIGATION_ROUTES.all_path,
+      element: <Page404 />,
+    },
   ]);
 
   return routes;

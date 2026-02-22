@@ -18,6 +18,7 @@ import { CustomerDetailsComponent } from '../components/customer-details-compone
 import { CustomerWorkOrders } from '../components/customer-work-component';
 import { NAVIGATION_ROUTES } from 'src/routes/navigation-routes';
 import { fDate } from 'src/utils/format-time';
+import { CustomerLogsComponent } from '../components/customer-logs-component';
 
 const StyledBreadcrumb = styled(Chip)(({ theme }) => {
   const backgroundColor =
@@ -46,6 +47,8 @@ const GridItem = styled(Card)(({ theme }) => ({
 
 export const CustomerDetailsView = ({
   id,
+  customer,
+  setCustomer,
   isLoadingUnit,
   selectedUnit,
   selectedUnitId,
@@ -64,12 +67,21 @@ export const CustomerDetailsView = ({
           <StyledBreadcrumb component="a" href="#" label="Customer-Details" disabled />
         </Breadcrumbs>
         <Grid container spacing={2} alignItems={'start'} justifyContent={'space-between'}>
-          <Grid size={{ xs: 12, md: 6 }}>
+          <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
             <GridItem>
-              <CustomerDetailsComponent id={id} />
+              <CustomerDetailsComponent
+                id={id}
+                customerInfo={customer}
+                setCustomerInfo={setCustomer}
+              />
             </GridItem>
           </Grid>
-          <Grid size={{ xs: 12, md: 6 }}>
+          {customer ? (
+            <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
+              <CustomerLogsComponent customer={customer} />
+            </Grid>
+          ) : null}
+          <Grid size={{ xs: 12, lg: 4 }}>
             <GridItem>
               <CustomerUnits
                 id={id}

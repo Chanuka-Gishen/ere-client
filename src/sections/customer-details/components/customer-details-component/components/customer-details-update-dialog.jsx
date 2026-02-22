@@ -10,6 +10,7 @@ import {
   TextField,
 } from '@mui/material';
 import { FormikProvider } from 'formik';
+import { MobileNumberInput } from 'src/components/mobile-number-input/mobile-number-input';
 
 export const CustomerDetailsUpdateDialog = ({
   isOpen,
@@ -42,14 +43,14 @@ export const CustomerDetailsUpdateDialog = ({
               error={Boolean(touched.customerAddress && errors.customerAddress)}
               helperText={touched.customerAddress && errors.customerAddress}
             />
-            <TextField
-              label="Customer Mobile*"
+            <MobileNumberInput
               name="customerMobile"
-              type="number"
-              fullWidth
-              {...getFieldProps('customerMobile')}
+              value={formik.values.customerMobile}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               error={Boolean(touched.customerMobile && errors.customerMobile)}
               helperText={touched.customerMobile && errors.customerMobile}
+              {...getFieldProps('customerMobile')}
             />
             <TextField
               label="Customer Land Line"
