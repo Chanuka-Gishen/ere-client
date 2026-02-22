@@ -13,18 +13,18 @@ const OverviewController = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [pageUJ, setPageUJ] = useState(0)
-  const [rowsPerPageUJ, setRowsPerPageUJ] = useState(5)
-  const [countPJ, setCountPJ] = useState(0)
+  const [pageUJ, setPageUJ] = useState(0);
+  const [rowsPerPageUJ, setRowsPerPageUJ] = useState(5);
+  const [countPJ, setCountPJ] = useState(0);
 
   const [jobs, setJobs] = useState([]);
-  const [jobsUJ, setJobsUJ] = useState([])
+  const [jobsUJ, setJobsUJ] = useState([]);
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingUJ, setIsLoadingUJ] = useState(true);
 
   const headLabels = ['Work Id', 'Company', 'Customer', 'Status', 'Service Due Date', 'Type'];
-  const headerLabelsUJ = ['Customer', 'Mobile', 'Date']
+  const headerLabelsUJ = ['Customer', 'Mobile', 'Date'];
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -48,8 +48,12 @@ const OverviewController = () => {
     router.push('dashboard/overviewDetails/' + id);
   };
 
-  const handleFetchJobsUJ = async() => {
-    setIsLoadingUJ(true)
+  const handleClickUpcomingCustomer = (id) => {
+    router.push('customers/details//' + id);
+  };
+
+  const handleFetchJobsUJ = async () => {
+    setIsLoadingUJ(true);
 
     await backendAuthApi({
       url: BACKEND_API.CUSTOMER_MAINTAINENCE_UPCOMING,
@@ -64,7 +68,7 @@ const OverviewController = () => {
         const data = res.data;
         if (responseUtil.isResponseSuccess(data.responseCode)) {
           setJobsUJ(data.responseData.data ? data.responseData.data : []);
-          setCountPJ(countPJ)
+          setCountPJ(countPJ);
         }
       })
       .catch(() => {
@@ -73,7 +77,7 @@ const OverviewController = () => {
       .finally(() => {
         setIsLoadingUJ(false);
       });
-  }
+  };
 
   const handleFetchJobs = async () => {
     setIsLoading(true);
@@ -122,6 +126,7 @@ const OverviewController = () => {
       isLoadingUJ={isLoadingUJ}
       handleChangePageUJ={handleChangePageUJ}
       handleChangeRowsPerPageUJ={handleChangeRowsPerPageUJ}
+      handleClickUpcomingCustomer={handleClickUpcomingCustomer}
     />
   );
 };

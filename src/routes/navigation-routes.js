@@ -6,6 +6,7 @@ export const NAVIGATION_ROUTES = {
 
   // public routes
   customer_unit: 'unit/:id',
+  customer_units: 'customer-units/:id',
 
   // not found
   not_found: '404',

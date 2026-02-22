@@ -19,6 +19,8 @@ const CustomerDetailsController = () => {
   const { unit, selectCustomerUnit } = useItemStore.getState();
   const item = unit;
 
+  const [customer, setCustomer] = useState(null);
+
   const [isLoadingUnit, setIsLoadingUnit] = useState(true);
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [selectedUnitId, setSelectedUnitId] = useState(null);
@@ -79,6 +81,8 @@ const CustomerDetailsController = () => {
   return (
     <CustomerDetailsView
       id={id}
+      customer={customer}
+      setCustomer={setCustomer}
       isLoadingUnit={isLoadingUnit}
       selectedUnit={selectedUnit}
       selectedUnitId={selectedUnitId}

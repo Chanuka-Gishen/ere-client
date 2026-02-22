@@ -8,15 +8,13 @@ import { fDate } from 'src/utils/format-time';
 
 // ----------------------------------------------------------------------
 
-export const UpcomingJobsRow = ({ jobs }) => {
+export const UpcomingJobsRow = ({ jobs, onRowClick }) => {
   return (
-    <>
-      <TableRow hover>
-        <TableCell>{jobs.customer.customerName}</TableCell>
-        <TableCell>{jobs.customer.customerTel.mobile}</TableCell>
-        <TableCell component="th">{fDate(jobs.unit.unitNextMaintenanceDate)}</TableCell>
-      </TableRow>
-    </>
+    <TableRow hover sx={{ cursor: 'pointer' }} onClick={() => onRowClick(jobs._id)}>
+      <TableCell>{jobs.customer.customerName}</TableCell>
+      <TableCell>{jobs.customer.customerTel.mobile}</TableCell>
+      <TableCell component="th">{fDate(jobs.unit.unitNextMaintenanceDate)}</TableCell>
+    </TableRow>
   );
 };
 

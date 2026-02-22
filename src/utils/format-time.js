@@ -39,5 +39,5 @@ export const getDaysDifference = (date1, date2) => {
 
   const diffTime = Math.abs(d2 - d1);
 
-  return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-}
+  return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) || 0;
+};

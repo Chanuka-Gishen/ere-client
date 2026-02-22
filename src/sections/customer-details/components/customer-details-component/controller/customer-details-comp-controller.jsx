@@ -17,17 +17,17 @@ import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-const
 const validationSchema = Yup.object().shape({
   customerName: Yup.string().required('Full Name is required'),
   customerAddress: Yup.string().required('Address is required'),
-  customerMobile: Yup.string().required('Mobile is required'),
+  customerMobile: Yup.string()
+    .matches(/^\(?([1-9][0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, 'Invalid mobile number')
+    .required('Mobile number is required'),
   customerLand: Yup.string().nullable,
   customerEmail: Yup.string().email('Invalid email format').nullable,
   customerLocation: Yup.string().nullable,
 });
 
-const CustomerDetailsComponentController = ({ id }) => {
+const CustomerDetailsComponentController = ({ id, customerInfo, setCustomerInfo }) => {
   const { enqueueSnackbar } = useSnackbar();
   const cancelToken = axios.CancelToken.source();
-
-  const [customerInfo, setCustomerInfo] = useState(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -76,6 +76,7 @@ const CustomerDetailsComponentController = ({ id }) => {
         data: {
           customerId: id,
           ...formik.values,
+          customerMobile: parseInt(formik.values.customerMobile.replace(/\s/g, '')),
         },
       })
         .then((res) => {
@@ -83,14 +84,16 @@ const CustomerDetailsComponentController = ({ id }) => {
 
           if (responseUtil.isResponseSuccess(data.responseCode)) {
             handleFetchCustomerDetails();
+            handleClose();
           } else {
             enqueueSnackbar(data.responseMessage, {
               variant: responseUtil.findResponseType(data.responseCode),
             });
           }
+
+          setIsLoadingUpdate(false);
         })
-        .finally(() => {
-          handleClose();
+        .catch(() => {
           setIsLoadingUpdate(false);
         });
     } else {

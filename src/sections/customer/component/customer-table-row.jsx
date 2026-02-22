@@ -8,7 +8,7 @@ import { fDate } from 'src/utils/format-time';
 export const CustomerTableRow = ({ customer, handleClickRow }) => {
   return (
     <>
-      <TableRow hover onClick={() => handleClickRow(customer._id)}>
+      <TableRow hover onClick={() => handleClickRow(customer._id)} sx={{ cursor: 'pointer' }}>
         <TableCell component="th">
           <Typography variant="subtitle2" noWrap>
             {customer.customerName}

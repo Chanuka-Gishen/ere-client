@@ -42,6 +42,7 @@ export const Overview = ({
   isLoadingUJ,
   handleChangePageUJ,
   handleChangeRowsPerPageUJ,
+  handleClickUpcomingCustomer,
 }) => {
   const { auth } = useAuthStore.getState();
   const user = auth.user;
@@ -123,7 +124,11 @@ export const Overview = ({
                           ) : (
                             <>
                               {jobsUJ.map((row, index) => (
-                                <UpcomingJobsRow jobs={row} key={index} />
+                                <UpcomingJobsRow
+                                  jobs={row}
+                                  key={index}
+                                  onRowClick={handleClickUpcomingCustomer}
+                                />
                               ))}
                             </>
                           )}

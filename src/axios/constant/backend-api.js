@@ -19,7 +19,6 @@ export const BACKEND_API = {
   EMPLOYEE_TIPS: IP_URL + '/employee/tips/',
   EMPLOYEE_CURRENT_TIPS: IP_URL + '/employee/tips-current/',
   EMPLOYEE_TOTAL_TIPS: IP_URL + '/employee/total-tips/',
-  
 
   CUSTOMERS_ALL: IP_URL + '/customer/',
   CUSTOMER_ADD: IP_URL + '/customer/register',
@@ -28,6 +27,8 @@ export const BACKEND_API = {
   CUSTOMER_UNITS: IP_URL + '/customer/unit/',
   CUSTOMER_MAINTAINENCE_UPCOMING: IP_URL + '/customer/recent-maintainence',
   LOGS_RECENT: IP_URL + '/customer/recent-logs',
+  CUSTOMER_LOGS: IP_URL + '/customer/logs',
+  CUSTOMER_LOG_CREATE: IP_URL + '/customer/create-log',
 
   CUSTOMER_UNIT_ADD: IP_URL + '/customer/unit',
   CUSTOMER_UNIT_UPDATE: IP_URL + '/customer/unit',
@@ -42,6 +43,7 @@ export const BACKEND_API = {
   SELECTED_CALENDER_DATE_JOBS: IP_URL + '/unit/calender-selected/',
   UNIT_SAVED_DATA: IP_URL + '/unit/select-model',
   CUSTOMER_DUE_UNITS: IP_URL + '/unit/download-due-units',
+  CUSTOMER_UNITS: IP_URL + '/unit/public',
 
   WORK_ORDRS_BY_UNIT: IP_URL + '/work-order/byUnit/',
   WORK_ORDERS: IP_URL + '/work-order/jobs',
@@ -69,6 +71,4 @@ export const BACKEND_API = {
   QR_CODE_UNIT_HISTORY: IP_URL + '/unit/unit-by-qr/',
   QR_CODE_GENERATE: IP_URL + '/qr-code/generate',
   QR_CODE_COUNT: IP_URL + '/qr-code/count',
-
-  
 };
