@@ -49,6 +49,8 @@ export const CustomerDetailsView = ({
   id,
   customer,
   setCustomer,
+  units,
+  setUnits,
   isLoadingUnit,
   selectedUnit,
   selectedUnitId,
@@ -78,13 +80,15 @@ export const CustomerDetailsView = ({
           </Grid>
           {customer ? (
             <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
-              <CustomerLogsComponent customer={customer} />
+              <CustomerLogsComponent customer={customer} units={units} />
             </Grid>
           ) : null}
           <Grid size={{ xs: 12, lg: 4 }}>
             <GridItem>
               <CustomerUnits
                 id={id}
+                units={units}
+                setUnits={setUnits}
                 handleSelectUnit={handleSelectUnit}
                 selectedUnitId={selectedUnitId}
                 selectedUnit={selectedUnit}

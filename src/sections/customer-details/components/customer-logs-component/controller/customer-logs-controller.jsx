@@ -5,10 +5,11 @@ import { CustomerLogsView } from '../view/customer-logs-view';
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
 import responseUtil from 'src/utils/responseUtil';
+import { fDate } from 'src/utils/format-time';
 
 const headerLabels = ['Type', 'Send At'];
 
-const CustomerLogsController = ({ customer }) => {
+const CustomerLogsController = ({ customer, units }) => {
   const cancelToken = axios.CancelToken.source();
 
   const [page, setPage] = useState(0);
@@ -24,6 +25,8 @@ const CustomerLogsController = ({ customer }) => {
 
   const message = `Hi ${customer.customerName},
 This is a reminder that your air conditioner service is due soon.
+
+Next service due: ${units[0]?.unitNextMaintenanceDate ? fDate(units[0].unitNextMaintenanceDate) : 'Not scheduled'}
 
 You can check the due date and details here:
 ${import.meta.env.VITE_APP_URL}customer-units/${customer._id}

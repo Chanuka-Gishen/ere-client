@@ -80,21 +80,42 @@ export const CustomerUnitsView = ({ units, isError, isLoading }) => {
         sx={{
           p: 3,
           mb: 4,
+          flex: 1,
           bgcolor: '#e3f2fd',
           borderRadius: 2,
           border: '1px solid #bbdefb',
         }}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <QrCodeIcon sx={{ fontSize: 40, color: '#1976d2' }} />
-          <Box>
-            <Typography variant="h6" color="#1976d2" gutterBottom>
-              Scan QR Code for Unit Details
-            </Typography>
-            <Typography variant="body1" color="text.primary">
-              For detailed information about your air conditioning units, please scan the QR code
-              sticker provided on your AC unit.
-            </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Box
+            component="img"
+            src="/assets/ere-logo.jpg"
+            alt="EREngineers Logo"
+            sx={{
+              width: 'auto',
+              height: 120,
+              objectFit: 'contain',
+            }}
+          />
+
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <QrCodeIcon sx={{ fontSize: 40, color: '#1976d2' }} />
+            <Box>
+              <Typography variant="h6" color="#1976d2" gutterBottom>
+                Scan QR Code for Unit Details
+              </Typography>
+              <Typography variant="body1" color="text.primary">
+                For detailed information about your air conditioning units, please scan the QR code
+                sticker provided on your AC unit.
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Paper>
@@ -192,6 +213,9 @@ export const CustomerUnitsView = ({ units, isError, isLoading }) => {
         <Box sx={{ mt: 4, textAlign: 'center' }}>
           <Typography variant="body2" color="text.secondary">
             For maintenance requests or inquiries, please contact us.
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            +94 77 621 5126 | +94 77 387 8080
           </Typography>
         </Box>
       )}
