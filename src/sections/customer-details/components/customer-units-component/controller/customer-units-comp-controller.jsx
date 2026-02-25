@@ -36,6 +36,8 @@ const validationUpdateSchema = Yup.object().shape({
 
 const CustomerUnitsComponentController = ({
   id,
+  units,
+  setUnits,
   handleSelectUnit,
   selectedUnit,
   selectedUnitId,
@@ -57,7 +59,6 @@ const CustomerUnitsComponentController = ({
   const [isLoadingSavedData, setIsLoadingSavedData] = useState(false);
 
   const [selectedItem, setSelectedItem] = useState(null);
-  const [units, setUnits] = useState([]);
   const [searchParam, setSearchParam] = useState('');
   const [unitSavedData, setUnitSavedData] = useState(null);
   const [unitBrands, setUnitBrands] = useState([]);

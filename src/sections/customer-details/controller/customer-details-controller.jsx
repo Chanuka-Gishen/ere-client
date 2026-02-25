@@ -20,6 +20,7 @@ const CustomerDetailsController = () => {
   const item = unit;
 
   const [customer, setCustomer] = useState(null);
+  const [units, setUnits] = useState([]);
 
   const [isLoadingUnit, setIsLoadingUnit] = useState(true);
   const [selectedUnit, setSelectedUnit] = useState(null);
@@ -83,6 +84,8 @@ const CustomerDetailsController = () => {
       id={id}
       customer={customer}
       setCustomer={setCustomer}
+      units={units}
+      setUnits={setUnits}
       isLoadingUnit={isLoadingUnit}
       selectedUnit={selectedUnit}
       selectedUnitId={selectedUnitId}
