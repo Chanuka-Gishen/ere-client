@@ -215,7 +215,7 @@ export const CustomerUnitsView = ({ units, isError, isLoading }) => {
             For maintenance requests or inquiries, please contact us.
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            +94 77 621 5126 | +94 77 387 8080
+            +94 77 710 2528 | +94 77 387 8080
           </Typography>
         </Box>
       )}
