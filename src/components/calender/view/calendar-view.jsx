@@ -48,6 +48,7 @@ export const CalendarView = ({
   selectedMonth,
   selectedDateData,
   isLoadingSelectedData,
+  handleOnClick,
 }) => {
   // Filter the data for the selected month
   const filteredData = data.filter((item) => {
@@ -87,9 +88,14 @@ export const CalendarView = ({
           </Typography>
           {isLoadingSelectedData && <Typography textAlign="center">Loading Data...</Typography>}
           {selectedDateData.length > 0 ? (
-            <List sx={{ maxHeight: 308, overflow: 'auto' }}>
+            <List sx={{ maxHeight: 308, overflow: 'auto', cursor: 'pointer' }}>
               {selectedDateData.map((item, index) => (
-                <ListItem key={index}>
+                <ListItem
+                  key={index}
+                  onClick={() => {
+                    handleOnClick(item.unitCustomerId._id);
+                  }}
+                >
                   <ListItemAvatar>
                     <Avatar
                       sx={{

@@ -23,15 +23,29 @@ const CustomerLogsController = ({ customer, units }) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
+  const isMaintenanceDue = units[0]?.unitNextMaintenanceDate
+    ? new Date(units[0].unitNextMaintenanceDate) < new Date()
+    : false;
+
   const message = `Hi ${customer.customerName},
-This is a reminder that your air conditioner service is due soon.
 
-Next service due: ${units[0]?.unitNextMaintenanceDate ? fDate(units[0].unitNextMaintenanceDate) : 'Not scheduled'}
+${
+  isMaintenanceDue
+    ? `Your air conditioner service was due on ${fDate(units[0].unitNextMaintenanceDate)}. Please schedule a service as soon as possible.`
+    : `This is a reminder that your air conditioner service is due soon.`
+}
 
-You can check the due date and details here:
+${
+  units[0]?.unitNextMaintenanceDate
+    ? `Next service ${isMaintenanceDue ? 'was' : 'is'} due: ${fDate(units[0].unitNextMaintenanceDate)}`
+    : 'Next service due: Not scheduled'
+}
+
+You can check the details and schedule a service here:
 ${import.meta.env.VITE_APP_URL}customer-units/${customer._id}
 
-If you need any assistance, feel free to contact EREngineers (Pvt) Ltd.`;
+If you need any assistance, feel free to contact EREngineers (Pvt) Ltd.
++94 77 710 2528 | +94 77 387 8080`;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

@@ -4,8 +4,10 @@ import axios from 'axios';
 import { backendAuthApi } from 'src/axios/instance/backend-axios-instance';
 import { BACKEND_API } from 'src/axios/constant/backend-api';
 import responseUtil from 'src/utils/responseUtil';
+import { useRouter } from 'src/routes/hooks';
 
 const CalendarController = () => {
+  const router = useRouter();
   const cancelToken = axios.CancelToken.source();
 
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -23,6 +25,10 @@ const CalendarController = () => {
 
   const handleMonthChange = (date) => {
     setSelectedMonth(new Date(date));
+  };
+
+  const handleOnClick = (id) => {
+    router.push('customers/details//' + id);
   };
 
   const fetchUnitsDetails = async () => {
@@ -103,6 +109,7 @@ const CalendarController = () => {
       selectedMonth={selectedMonth}
       selectedDateData={selectedDateData}
       isLoadingSelectedData={isLoadingSelectedData}
+      handleOnClick={handleOnClick}
     />
   );
 };
