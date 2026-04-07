@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
 import { CustomerView } from '../view/customer-view';
 
@@ -10,19 +8,9 @@ import { BACKEND_API } from 'src/axios/constant/backend-api';
 
 import responseUtil from 'src/utils/responseUtil';
 import { useSnackbar } from 'notistack';
-import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
 import { useRouter } from 'src/routes/hooks';
 
 // -----------------------------------------------------
-
-const validationSchemaAddCust = Yup.object().shape({
-  customerName: Yup.string().required('Full Name is required'),
-  customerAddress: Yup.string().required('Address is required'),
-  customerMobile: Yup.string()
-    .matches(/^\(?([1-9][0-9]{2})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/, 'Invalid mobile number')
-    .required('Mobile number is required'),
-  customerEmail: Yup.string().email('Invalid email format').nullable,
-});
 
 const CustomerController = () => {
   const headerLabels = ['Customer name', 'Next job date', 'Address', 'Mobile No'];
@@ -51,26 +39,12 @@ const CustomerController = () => {
 
   const cancelToken = axios.CancelToken.source();
 
-  const formik = useFormik({
-    initialValues: {
-      customerName: '',
-      customerAddress: '',
-      customerMobile: '',
-      customerEmail: '',
-    },
-    validationSchema: validationSchemaAddCust,
-    onSubmit: () => {
-      null;
-    },
-  });
-
   const handleOpenAddCustomer = () => {
     setOpenAddCust(true);
   };
 
   const handleCloseAddCustomer = () => {
     setOpenAddCust(false);
-    formik.resetForm();
   };
 
   const handleChangePage = (event, newPage) => {
@@ -105,40 +79,40 @@ const CustomerController = () => {
     return mobileNumber.startsWith(searchTerm);
   });
 
-  const handleSubmitNewCust = async () => {
-    if (formik.isValid && formik.dirty) {
-      setIsLoadingAddCustomer(true);
-      await backendAuthApi({
-        url: BACKEND_API.CUSTOMER_ADD,
-        method: 'POST',
-        cancelToken: cancelToken.token,
-        data: {
-          customerName: formik.values.customerName,
-          customerAddress: formik.values.customerAddress,
-          customerEmail: formik.values.customerEmail === '' ? null : formik.values.customerEmail,
-          customerMobile: parseInt(formik.values.customerMobile.replace(/\s/g, '')),
-        },
+  const handleSubmitNewCust = async (values, resetForm) => {
+    console.log('submitted func');
+
+    setIsLoadingAddCustomer(true);
+    await backendAuthApi({
+      url: BACKEND_API.CUSTOMER_ADD,
+      method: 'POST',
+      cancelToken: cancelToken.token,
+      data: {
+        customerName: values.customerName,
+        customerAddress: values.customerAddress,
+        customerEmail: values.customerEmail === '' ? null : values.customerEmail,
+        customerMobile: values.customerMobile.replace(/\s/g, ''),
+        customerLand: values.customerLand.replace(/\s/g, ''),
+      },
+    })
+      .then((res) => {
+        const data = res.data;
+        if (responseUtil.isResponseSuccess(data.responseCode)) {
+          handleCloseAddCustomer();
+          resetForm();
+          handleFetchCustomers();
+        } else {
+          enqueueSnackbar(data.responseMessage, {
+            variant: responseUtil.findResponseType(data.responseCode),
+          });
+        }
+        setIsLoadingAddCustomer(false);
       })
-        .then((res) => {
-          const data = res.data;
-          if (responseUtil.isResponseSuccess(data.responseCode)) {
-            handleCloseAddCustomer();
-            formik.resetForm();
-            handleFetchCustomers();
-          } else {
-            enqueueSnackbar(data.responseMessage, {
-              variant: responseUtil.findResponseType(data.responseCode),
-            });
-          }
-        })
-        .finally(() => {
-          setIsLoadingAddCustomer(false);
-        });
-    } else {
-      enqueueSnackbar(SNACKBAR_MESSAGE.FILL_REQUIRED_FIELDS, {
-        variant: SNACKBAR_VARIANT.WARNING,
+      .catch((error) => {
+        console.log(error);
+
+        setIsLoadingAddCustomer(false);
       });
-    }
   };
 
   const handleFetchLogs = async () => {
@@ -194,8 +168,8 @@ const CustomerController = () => {
 
   useEffect(() => {
     handleFetchCustomers();
-    handleFetchLogs()
-    
+    handleFetchLogs();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rowsPerPage, page, searchTerm]);
 
@@ -213,7 +187,6 @@ const CustomerController = () => {
       openAddCust={openAddCust}
       handleOpenAddCustomer={handleOpenAddCustomer}
       handleCloseAddCustomer={handleCloseAddCustomer}
-      formik={formik}
       page={page}
       documentCount={documentCount}
       rowsPerPage={rowsPerPage}

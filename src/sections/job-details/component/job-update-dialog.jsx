@@ -19,7 +19,7 @@ import {
   Typography,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers';
-import { COMPANIES, WORK_STATUS, WORK_TYPE } from 'src/constants/common-constants';
+import { CMP_LIST, COMPANIES, WORK_STATUS, WORK_TYPE } from 'src/constants/common-constants';
 
 export const JobUpdateDialog = ({
   formik,
@@ -77,17 +77,19 @@ export const JobUpdateDialog = ({
               label="User Role"
               {...getFieldProps('workOrderFrom')}
             >
-              <MenuItem value={COMPANIES.CMP_ERE}>ERE</MenuItem>
-              <MenuItem value={COMPANIES.CMP_SINGER}>Singer</MenuItem>
-              <MenuItem value={COMPANIES.CMP_SINGER_DIR}>Singer Direct Pay</MenuItem>
-              <MenuItem value={COMPANIES.CMP_SINHAGIRI}>Singhagiri</MenuItem>
-              <MenuItem value={COMPANIES.CMP_SINHAGIRI_DIR}>Singhagiri Direct Pay</MenuItem>
+              {CMP_LIST.map((cmp, index) => (
+                <MenuItem key={index} value={cmp}>
+                  {cmp}
+                </MenuItem>
+              ))}
             </Select>
             {Boolean(touched.workOrderFrom && errors.workOrderFrom) && (
               <FormHelperText>{touched.workOrderFrom && errors.workOrderFrom}</FormHelperText>
             )}
           </FormControl>
-          {[COMPANIES.CMP_SINGER, COMPANIES.CMP_SINHAGIRI].includes(values.workOrderFrom) && (
+          {[COMPANIES.CMP_SINGER, COMPANIES.CMP_SINHAGIRI, COMPANIES.CMP_BROWNS].includes(
+            values.workOrderFrom
+          ) && (
             <TextField
               name={`workOrderCodeSub`}
               label={'Sub WorkOrder Code'}
