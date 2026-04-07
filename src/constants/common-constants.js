@@ -26,6 +26,7 @@ export const COMPANIES = {
   CMP_SINGER_DIR: 'Singer Direct Pay',
   CMP_SINHAGIRI: 'Singhagiri',
   CMP_SINHAGIRI_DIR: 'Singhagiri Direct Pay',
+  CMP_BROWNS: 'Brown & Company PLC',
 };
 
 export const CMP_LIST = [
@@ -34,4 +35,5 @@ export const CMP_LIST = [
   COMPANIES.CMP_SINGER_DIR,
   COMPANIES.CMP_SINHAGIRI,
   COMPANIES.CMP_SINHAGIRI_DIR,
+  COMPANIES.CMP_BROWNS,
 ];

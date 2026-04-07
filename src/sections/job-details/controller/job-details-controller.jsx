@@ -31,6 +31,7 @@ const validationSchema = Yup.object().shape({
         COMPANIES.CMP_SINGER_DIR,
         COMPANIES.CMP_SINHAGIRI,
         COMPANIES.CMP_SINHAGIRI_DIR,
+        COMPANIES.CMP_BROWNS,
       ],
       'Invalid type'
     ),

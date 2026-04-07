@@ -364,9 +364,11 @@ export const JobDetailsView = ({
                         <CustomCell>{workOrder?.workOrderCode}</CustomCell>
                       </TableRow>
                       {!isLoading &&
-                        [COMPANIES.CMP_SINGER, COMPANIES.CMP_SINHAGIRI].includes(
-                          workOrder?.workOrderFrom
-                        ) && (
+                        [
+                          COMPANIES.CMP_SINGER,
+                          COMPANIES.CMP_SINHAGIRI,
+                          COMPANIES.CMP_BROWNS,
+                        ].includes(workOrder?.workOrderFrom) && (
                           <TableRow>
                             <CustomCell>Work Order Code</CustomCell>
                             <CustomCell>

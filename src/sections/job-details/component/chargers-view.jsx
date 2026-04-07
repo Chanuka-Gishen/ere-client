@@ -52,10 +52,10 @@ export const ChargersView = ({
                 Qty
               </CustomCell>
               <CustomCell align="center" sx={{ width: 200 }}>
-                Net Price
+                Buying Price
               </CustomCell>
               <CustomCell align="right" sx={{ width: 200 }}>
-                Gross Price
+                Selling Price
               </CustomCell>
             </TableRow>
           </TableHead>

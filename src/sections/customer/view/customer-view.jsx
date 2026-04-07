@@ -40,7 +40,6 @@ export const CustomerView = ({
   openAddCust,
   handleOpenAddCustomer,
   handleCloseAddCustomer,
-  formik,
   page,
   documentCount,
   rowsPerPage,
@@ -177,9 +176,8 @@ export const CustomerView = ({
       <CustomerDrawer
         isOpen={openAddCust}
         handleClose={handleCloseAddCustomer}
-        formik={formik}
         isLoading={isLoadingAddCustomer}
-        handleSubmit={handleSubmitNewCust}
+        onSubmit={handleSubmitNewCust}
       />
     </Container>
   );

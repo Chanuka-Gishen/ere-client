@@ -12,7 +12,7 @@ import responseUtil from 'src/utils/responseUtil';
 import { useRouter } from 'src/routes/hooks';
 import { useSnackbar } from 'notistack';
 import { SNACKBAR_MESSAGE, SNACKBAR_VARIANT } from 'src/constants/snackbar-constants';
-import { COMPANIES, WORK_TYPE } from 'src/constants/common-constants';
+import { CMP_LIST, WORK_TYPE } from 'src/constants/common-constants';
 
 //------------------------------------------------------
 
@@ -21,18 +21,7 @@ const validationSchema = Yup.object().shape({
     .required()
     .oneOf([WORK_TYPE.SERVICE, WORK_TYPE.REPAIR, WORK_TYPE.INSTALLATION], 'Invalid type'),
   workOrderScheduledDate: Yup.string().required('Scheduled Date is required'),
-  workOrderFrom: Yup.string()
-    .required()
-    .oneOf(
-      [
-        COMPANIES.CMP_ERE,
-        COMPANIES.CMP_SINGER,
-        COMPANIES.CMP_SINGER_DIR,
-        COMPANIES.CMP_SINHAGIRI,
-        COMPANIES.CMP_SINHAGIRI_DIR,
-      ],
-      'Invalid type'
-    ),
+  workOrderFrom: Yup.string().required().oneOf(CMP_LIST, 'Invalid type'),
 });
 
 const CustomerWorkController = ({ id, selectedUnit, isLoadingUnit }) => {

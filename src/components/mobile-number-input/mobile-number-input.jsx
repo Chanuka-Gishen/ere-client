@@ -47,6 +47,7 @@ export const MobileNumberInput = ({
       value={value}
       onChange={onChange}
       onBlur={handleBlur}
+      {...props}
       InputProps={{
         inputComponent: TextMaskCustom,
         startAdornment: <InputAdornment position="start">+94</InputAdornment>,
