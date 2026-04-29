@@ -8,7 +8,7 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function CustomerSearchBar({ filterName, onFilterName }) {
+export default function CustomerSearchBar({ name, placeholder, value, onFilterName }) {
   return (
     <Toolbar
       sx={{
@@ -19,9 +19,11 @@ export default function CustomerSearchBar({ filterName, onFilterName }) {
       }}
     >
       <OutlinedInput
-        value={filterName}
+        name={name}
+        value={value}
         onChange={onFilterName}
-        placeholder="Search mobile..."
+        placeholder={placeholder}
+        fullWidth
         startAdornment={
           <InputAdornment position="start">
             <Iconify
@@ -36,6 +38,6 @@ export default function CustomerSearchBar({ filterName, onFilterName }) {
 }
 
 CustomerSearchBar.propTypes = {
-  filterName: PropTypes.string,
+  value: PropTypes.string,
   onFilterName: PropTypes.func,
 };

@@ -30,7 +30,10 @@ const CustomerController = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [customers, setCustomers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState({
+    customerTel: '',
+    customerName: '',
+  });
 
   const [logs, setLogs] = useState([]);
 
@@ -69,19 +72,14 @@ const CustomerController = () => {
     router.push('customers/details/' + id);
   };
 
-  const handleSearchInputChange = (event) => {
-    setSearchTerm(event.target.value);
+  const handleSearchInputChange = (e) => {
+    setSearchTerm((prevFilters) => ({
+      ...prevFilters,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  //const filteredData = customers.filter((item) => item.customerTel.mobile.includes(searchTerm));
-  const filteredData = customers.filter((item) => {
-    const mobileNumber = item.customerTel.mobile;
-    return mobileNumber.startsWith(searchTerm);
-  });
-
   const handleSubmitNewCust = async (values, resetForm) => {
-    console.log('submitted func');
-
     setIsLoadingAddCustomer(true);
     await backendAuthApi({
       url: BACKEND_API.CUSTOMER_ADD,
@@ -109,8 +107,6 @@ const CustomerController = () => {
         setIsLoadingAddCustomer(false);
       })
       .catch((error) => {
-        console.log(error);
-
         setIsLoadingAddCustomer(false);
       });
   };
@@ -150,7 +146,7 @@ const CustomerController = () => {
       params: {
         page: page,
         limit: rowsPerPage,
-        customerTel: searchTerm,
+        ...searchTerm,
       },
     })
       .then((res) => {
@@ -177,7 +173,6 @@ const CustomerController = () => {
     <CustomerView
       searchTerm={searchTerm}
       handleSearchInputChange={handleSearchInputChange}
-      filteredData={filteredData}
       headerLabels={headerLabels}
       headerLabelsLogs={headerLabelsLogs}
       isLoading={isLoading}
