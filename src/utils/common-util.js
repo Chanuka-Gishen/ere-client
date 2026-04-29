@@ -27,7 +27,6 @@ const roundNumber = (value, decimalPlaces = 2) => {
  * @return {boolean}
  */
 const stringIsEmptyOrSpaces = (string) => {
-  string = string.toString();
   return isUndefinedOrNull(string) || string.match(/^ *$/) !== null;
 };
 

@@ -79,34 +79,6 @@ export const ChargersView = ({
                       }}
                       renderInput={(params) => <TextField {...params} label="Item" />}
                     />
-                    {/* <TextField
-                      size="small"
-                      name={`items[${index}].item`}
-                      fullWidth
-                      value={values.items[index].item}
-                      onChange={(e) => {
-                        const { value } = e.target;
-                        handleChange(`items[${index}].item`)(e);
-                      }}
-                      onBlur={handleBlur(`items[${index}].item`)}
-                      error={Boolean(
-                        touched.items &&
-                          touched.items[index] &&
-                          touched.items[index].item &&
-                          errors.items &&
-                          errors.items[index] &&
-                          errors.items[index].item
-                      )}
-                      helperText={
-                        (touched.items &&
-                          touched.items[index] &&
-                          touched.items[index].item &&
-                          errors.items &&
-                          errors.items[index] &&
-                          errors.items[index].item) ||
-                        ''
-                      }
-                    /> */}
                   </Stack>
                 </TableCell>
                 <TableCell>

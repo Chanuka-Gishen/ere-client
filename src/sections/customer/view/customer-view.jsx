@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
+  Box,
   Button,
   Card,
   Container,
@@ -63,12 +64,25 @@ export const CustomerView = ({
         <Grid size={{ xl: 8, md: 12 }}>
           <Card>
             <Stack
-              direction="row"
+              direction={{ sm: 'column', md: 'row' }}
               alignItems="center"
-              justifyContent="space-between"
+              justifyContent={{ sm: 'left', md: 'space-between' }}
               sx={{ mb: 5, pr: '10px' }}
             >
-              <CustomerSearchBar filterName={searchTerm} onFilterName={handleSearchInputChange} />
+              <Box sx={{ display: 'flex', flexDirection: { sm: 'column', md: 'row' }, gap: 1 }}>
+                <CustomerSearchBar
+                  name={'customerTel'}
+                  placeholder={'Search mobile...'}
+                  value={searchTerm.customerTel}
+                  onFilterName={handleSearchInputChange}
+                />
+                <CustomerSearchBar
+                  name={'customerName'}
+                  placeholder={'Search name...'}
+                  value={searchTerm.customerName}
+                  onFilterName={handleSearchInputChange}
+                />
+              </Box>
 
               <Button
                 variant="contained"
