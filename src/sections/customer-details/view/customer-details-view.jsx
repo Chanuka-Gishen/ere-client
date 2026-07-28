@@ -54,6 +54,7 @@ export const CustomerDetailsView = ({
   isLoadingUnit,
   selectedUnit,
   selectedUnitId,
+  resetSelectedCustomerUnit,
   handleSelectUnit,
   handleOnClickBreadCrumb,
 }) => {
@@ -92,6 +93,7 @@ export const CustomerDetailsView = ({
                 handleSelectUnit={handleSelectUnit}
                 selectedUnitId={selectedUnitId}
                 selectedUnit={selectedUnit}
+                resetSelectedCustomerUnit={resetSelectedCustomerUnit}
               />
             </GridItem>
           </Grid>

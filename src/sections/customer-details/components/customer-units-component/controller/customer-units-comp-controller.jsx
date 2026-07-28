@@ -41,6 +41,7 @@ const CustomerUnitsComponentController = ({
   handleSelectUnit,
   selectedUnit,
   selectedUnitId,
+  resetSelectedCustomerUnit,
 }) => {
   const cancelToken = axios.CancelToken.source();
   const { enqueueSnackbar } = useSnackbar();
@@ -287,6 +288,7 @@ const CustomerUnitsComponentController = ({
           if (responseUtil.isResponseSuccess(res.data.responseCode)) {
             handleOpenCloseDeleteUnitDialog();
             handleFetchCustomerUnits();
+            resetSelectedCustomerUnit();
           } else {
             enqueueSnackbar(res.data.responseMessage, {
               variant: responseUtil.findResponseType(res.data.responseCode),

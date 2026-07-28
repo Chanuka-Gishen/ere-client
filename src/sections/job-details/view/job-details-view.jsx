@@ -367,6 +367,8 @@ export const JobDetailsView = ({
                         [
                           COMPANIES.CMP_SINGER,
                           COMPANIES.CMP_SINHAGIRI,
+                          COMPANIES.CMP_ABANS,
+                          COMPANIES.CMP_ABANS_DIR,
                           COMPANIES.CMP_BROWNS,
                         ].includes(workOrder?.workOrderFrom) && (
                           <TableRow>
