@@ -120,7 +120,7 @@ export const CustomerView = ({
                       {customers.length === 0 && (
                         <TableRow>
                           <TableCell colSpan={headerLabels.length} align="center">
-                            {`No results found for "${searchTerm}"`}
+                            {`No results found.`}
                           </TableCell>
                         </TableRow>
                       )}

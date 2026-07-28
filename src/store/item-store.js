@@ -16,6 +16,13 @@ const useItemStore = create(
             selectedJob: payload.selectedJob,
           },
         })),
+      resetSelectedCustomerUnit: () =>
+        set(() => ({
+          unit: {
+            selectedUnit: null,
+            selectedJob: null,
+          },
+        })),
     }),
     {
       name: 'item-storage', // storage name for localStorage

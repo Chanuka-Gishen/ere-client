@@ -22,7 +22,7 @@ import TableLoadingRow from 'src/components/custom-table/table-loading-row';
 import TableEmptyRow from 'src/components/custom-table/table-empty-row';
 import commonUtil from 'src/utils/common-util';
 import { fDate } from 'src/utils/format-time';
-import { COMPANIES, WORK_STATUS, WORK_TYPE } from 'src/constants/common-constants';
+import { CMP_LIST, COMPANIES, WORK_STATUS, WORK_TYPE } from 'src/constants/common-constants';
 import Label from 'src/components/label';
 import SearchInput from 'src/components/search-input/search-input';
 import { useResponsive } from 'src/hooks/use-responsive';
@@ -115,13 +115,11 @@ export const WorkOrdrsView = ({
                 <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                <MenuItem value={COMPANIES.CMP_ERE}>{COMPANIES.CMP_ERE}</MenuItem>
-                <MenuItem value={COMPANIES.CMP_SINGER}>{COMPANIES.CMP_SINGER}</MenuItem>
-                <MenuItem value={COMPANIES.CMP_SINGER_DIR}>{COMPANIES.CMP_SINGER_DIR}</MenuItem>
-                <MenuItem value={COMPANIES.CMP_SINHAGIRI}>{COMPANIES.CMP_SINHAGIRI}</MenuItem>
-                <MenuItem value={COMPANIES.CMP_SINHAGIRI_DIR}>
-                  {COMPANIES.CMP_SINHAGIRI_DIR}
-                </MenuItem>
+                {CMP_LIST.map((c, i) => (
+                  <MenuItem key={i} value={c}>
+                    {c}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>

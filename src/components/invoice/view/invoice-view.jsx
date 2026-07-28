@@ -98,15 +98,23 @@ export const InvoiceView = ({
               Singhagiri (Pvt) Ltd
             </Typography>
           )}
+          {[COMPANIES.CMP_ABANS, COMPANIES.CMP_ABANS_DIR].includes(workOrder.workOrderFrom) && (
+            <Typography fontWeight={'bold'} variant={isMobile ? 'h6' : 'h4'}>
+              Abans (Pvt) Ltd
+            </Typography>
+          )}
           <Stack direction="row" justifyContent="space-between">
             <Stack direction="column" spacing={isMobile ? 1 : 2}>
               <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
                 Bill To:
               </Typography>
               <Typography variant={isMobile ? 'h7' : 'body1'}>{customer.customerName}</Typography>
-              {[COMPANIES.CMP_SINHAGIRI, COMPANIES.CMP_SINHAGIRI_DIR].includes(
-                workOrder.workOrderFrom
-              ) && (
+              {[
+                COMPANIES.CMP_SINHAGIRI,
+                COMPANIES.CMP_SINHAGIRI_DIR,
+                COMPANIES.CMP_ABANS,
+                COMPANIES.CMP_ABANS_DIR,
+              ].includes(workOrder.workOrderFrom) && (
                 <>
                   <Typography fontWeight={'bold'} variant={isMobile ? 'h7' : 'body1'}>
                     Job Site:
@@ -151,7 +159,12 @@ export const InvoiceView = ({
               </Typography>
             </Stack>
           </Stack>
-          {![COMPANIES.CMP_SINHAGIRI, COMPANIES.CMP_SINGER].includes(workOrder.workOrderFrom) && (
+          {![
+            COMPANIES.CMP_SINHAGIRI,
+            COMPANIES.CMP_SINGER,
+            COMPANIES.CMP_ABANS,
+            COMPANIES.CMP_ABANS_DIR,
+          ].includes(workOrder.workOrderFrom) && (
             <>
               <Divider />
               <Stack spacing={isMobile ? 1 : 2}>

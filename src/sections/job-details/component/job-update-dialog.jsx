@@ -87,9 +87,13 @@ export const JobUpdateDialog = ({
               <FormHelperText>{touched.workOrderFrom && errors.workOrderFrom}</FormHelperText>
             )}
           </FormControl>
-          {[COMPANIES.CMP_SINGER, COMPANIES.CMP_SINHAGIRI, COMPANIES.CMP_BROWNS].includes(
-            values.workOrderFrom
-          ) && (
+          {[
+            COMPANIES.CMP_SINGER,
+            COMPANIES.CMP_SINHAGIRI,
+            COMPANIES.CMP_BROWNS,
+            COMPANIES.CMP_ABANS,
+            COMPANIES.CMP_ABANS_DIR,
+          ].includes(values.workOrderFrom) && (
             <TextField
               name={`workOrderCodeSub`}
               label={'Sub WorkOrder Code'}

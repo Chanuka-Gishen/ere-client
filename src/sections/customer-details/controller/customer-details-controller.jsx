@@ -16,7 +16,7 @@ const CustomerDetailsController = () => {
 
   const sourceToken = axios.CancelToken.source();
 
-  const { unit, selectCustomerUnit } = useItemStore.getState();
+  const { unit, selectCustomerUnit, resetSelectedCustomerUnit } = useItemStore.getState();
   const item = unit;
 
   const [customer, setCustomer] = useState(null);
@@ -89,6 +89,7 @@ const CustomerDetailsController = () => {
       isLoadingUnit={isLoadingUnit}
       selectedUnit={selectedUnit}
       selectedUnitId={selectedUnitId}
+      resetSelectedCustomerUnit={resetSelectedCustomerUnit}
       handleSelectUnit={handleSelectUnitId}
       handleOnClickBreadCrumb={handleOnClickBreadCrumb}
     />
