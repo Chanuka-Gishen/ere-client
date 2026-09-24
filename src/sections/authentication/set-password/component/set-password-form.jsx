@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FormikProvider } from 'formik';
 
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
 import { PasswordField } from 'src/components/password-field/password-field';
 

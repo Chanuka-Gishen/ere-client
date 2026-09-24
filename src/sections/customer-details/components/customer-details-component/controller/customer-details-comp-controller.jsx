@@ -76,7 +76,7 @@ const CustomerDetailsComponentController = ({ id, customerInfo, setCustomerInfo 
         data: {
           customerId: id,
           ...formik.values,
-          customerMobile: parseInt(formik.values.customerMobile.replace(/\s/g, '')),
+          customerMobile: formik.values.customerMobile.replace(/\s/g, ''),
         },
       })
         .then((res) => {
