@@ -18,7 +18,6 @@ export const UsersTableRow = ({
   employee,
   onClickRow,
   handleOpenUpdateDialog,
-  handleOpenDeleteDialog,
   handleOpenResetConfirmation,
 }) => {
   const { auth } = useAuthStore.getState();
@@ -85,14 +84,6 @@ export const UsersTableRow = ({
         >
           <Iconify icon="eva:refresh-fill" sx={{ mr: 2 }} />
           Reset Password
-        </MenuItem>
-        <MenuItem
-          onClick={() => handleOpenDeleteDialog(employee)}
-          sx={{ color: 'error.main' }}
-          disabled={!employee.userIsActive}
-        >
-          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-          Terminate
         </MenuItem>
       </Popover>
     </>

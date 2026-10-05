@@ -8,18 +8,20 @@ import {
   DialogContent,
   DialogTitle,
   FormControl,
+  FormControlLabel,
   FormHelperText,
   InputLabel,
   MenuItem,
   Select,
   Stack,
+  Switch,
   TextField,
 } from '@mui/material';
 import { FormikProvider } from 'formik';
 import { USER_ROLE } from 'src/constants/user-role';
 
 export const UpdateEmployeeDialog = ({ open, handleClose, formik, handleSubmit, isLoading }) => {
-  const { touched, errors, getFieldProps } = formik;
+  const { values, touched, errors, getFieldProps, setFieldValue } = formik;
 
   return (
     <Dialog open={open} onClose={handleClose} fullWidth sx={{ px: 2 }}>
@@ -59,6 +61,15 @@ export const UpdateEmployeeDialog = ({ open, handleClose, formik, handleSubmit, 
                 <FormHelperText>{touched.userLastName && errors.userLastName}</FormHelperText>
               )}
             </FormControl>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={values.userIsActive}
+                  onChange={(event) => setFieldValue('userIsActive', event.target.checked)}
+                />
+              }
+              label={values.userIsActive ? 'Active' : 'Inactive'}
+            />
           </Stack>
         </FormikProvider>
       </DialogContent>

@@ -30,6 +30,7 @@ const validationSchemaOnUpdate = Yup.object().shape({
   userRole: Yup.string()
     .required('User role required')
     .oneOf([USER_ROLE.ADMIN, USER_ROLE.TECHNICIAN, USER_ROLE.HELPER], 'Invalid user role'),
+  userIsActive: Yup.boolean().required('User active status is required'),
 });
 
 const UsersController = () => {
@@ -47,13 +48,11 @@ const UsersController = () => {
 
   const [open, setOpen] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
   const [openResetConfirmation, setOpenResetConfirmation] = useState(false);
 
   const [isLoadingRegister, setIsLoadingRegister] = useState(false);
-  const [isLoadingFetch, setIsLoadingFectch] = useState(false); // change to true
+  const [isLoadingFetch, setIsLoadingFectch] = useState(false);
   const [isLoadingUpdate, setIsLodingUpdate] = useState(false);
-  const [isLoadingDelete, setIsLoadingDelete] = useState(false);
   const [isLoadingReset, setIsLoadingReset] = useState(false);
 
   const formik = useFormik({
@@ -73,6 +72,7 @@ const UsersController = () => {
       userFirstName: '',
       userLastName: '',
       userRole: '',
+      userIsActive: undefined,
     },
     validationSchema: validationSchemaOnUpdate,
     onSubmit: () => {
@@ -94,6 +94,7 @@ const UsersController = () => {
       userFirstName: employee.userFullName.split(' ')[0],
       userLastName: employee.userFullName.split(' ')[1],
       userRole: employee.userRole,
+      userIsActive: employee.userIsActive,
     });
     setSelectedEmployee(employee);
     setOpenUpdate(true);
@@ -103,17 +104,6 @@ const UsersController = () => {
     setOpenUpdate(false);
     setOpen(false);
     updateFormik.resetForm();
-    setSelectedEmployee(null);
-  };
-
-  const handleOpenDeleteDialog = (employee) => {
-    setSelectedEmployee(employee);
-    setOpenDelete(true);
-  };
-
-  const handleCloseDeleteDialog = () => {
-    setOpenDelete(false);
-    setOpen(false);
     setSelectedEmployee(null);
   };
 
@@ -224,31 +214,6 @@ const UsersController = () => {
     }
   };
 
-  const handleDeleteEmployee = async () => {
-    setIsLoadingDelete(true);
-
-    await backendAuthApi({
-      url: BACKEND_API.EMPLOYEE_DELETE + selectedEmployee._id,
-      method: 'DELETE',
-      cancelToken: sourceToken.token,
-    })
-      .then((res) => {
-        const data = res.data;
-
-        if (responseUtil.isResponseSuccess(data.responseCode)) {
-          handleFetchEmployees();
-        } else {
-          enqueueSnackbar(data.responseMessage, {
-            variant: responseUtil.findResponseType(data.responseCode),
-          });
-        }
-      })
-      .finally(() => {
-        setIsLoadingDelete(false);
-        handleCloseDeleteDialog();
-      });
-  };
-
   const handleResetPassword = async () => {
     setIsLoadingReset(true);
     console.log(selectedEmployee);
@@ -304,11 +269,6 @@ const UsersController = () => {
       handleCloseEmployeeUpdateDialog={handleCloseEmployeeUpdateDialog}
       handleUpdateEmployee={handleUpdateEmployee}
       isLoadingUpdate={isLoadingUpdate}
-      openDelete={openDelete}
-      handleOpenDeleteDialog={handleOpenDeleteDialog}
-      handleCloseDeleteDialog={handleCloseDeleteDialog}
-      handleDeleteEmployee={handleDeleteEmployee}
-      isLoadingDelete={isLoadingDelete}
       openResetConfirmation={openResetConfirmation}
       handleOpenResetConfirmation={handleOpenResetConfirmation}
       handleCloseResetConfirmation={handleCloseResetConfirmation}

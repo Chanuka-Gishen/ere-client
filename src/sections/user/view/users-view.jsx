@@ -43,11 +43,6 @@ export const UsersView = ({
   handleCloseEmployeeUpdateDialog,
   handleUpdateEmployee,
   isLoadingUpdate,
-  openDelete,
-  handleOpenDeleteDialog,
-  handleCloseDeleteDialog,
-  handleDeleteEmployee,
-  isLoadingDelete,
   openResetConfirmation,
   handleOpenResetConfirmation,
   handleCloseResetConfirmation,
@@ -90,7 +85,6 @@ export const UsersView = ({
                                 key={row._id}
                                 onClickRow={onClickRow}
                                 handleOpenUpdateDialog={handleOpenEmployeeUpdateDialog}
-                                handleOpenDeleteDialog={handleOpenDeleteDialog}
                                 handleOpenResetConfirmation={handleOpenResetConfirmation}
                               />
                             ))}
@@ -129,15 +123,6 @@ export const UsersView = ({
           isLoading={isLoadingUpdate}
           open={openUpdate}
           handleSubmit={handleUpdateEmployee}
-        />
-      )}
-      {openDelete && (
-        <ConfirmationDialog
-          contentText="Are you sure you want to terminate this employee?"
-          open={openDelete}
-          handleClose={handleCloseDeleteDialog}
-          isLoading={isLoadingDelete}
-          handleSubmit={handleDeleteEmployee}
         />
       )}
       {openResetConfirmation && (
