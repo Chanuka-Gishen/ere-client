@@ -26,6 +26,7 @@ const validationSchema = Yup.object().shape({
   workOrderInvoiceNumber: Yup.string().notRequired(),
   workOrderCodeSub: Yup.string().notRequired(),
   workOrderLinkedJobs: Yup.array().notRequired(),
+  workOrderCompletedDate: Yup.string().notRequired(),
 });
 
 const validationSchemaChargers = Yup.object().shape({
@@ -113,6 +114,7 @@ const JobDetailsController = () => {
       workOrderIsLinked: false,
       workOrderLinkedJobs: [],
       workOrderCodeSub: '',
+      workOrderCompletedDate: null,
     },
     validationSchema,
     onSubmit: () => {
@@ -269,6 +271,9 @@ const JobDetailsController = () => {
           : '',
         workOrderLinkedJobs: workOrder.workOrderLinked,
         workOrderCodeSub: workOrder.workOrderCodeSub ? workOrder.workOrderCodeSub : '',
+        workOrderCompletedDate: workOrder.workOrderCompletedDate
+          ? new Date(workOrder.workOrderCompletedDate)
+          : null,
       });
     } else {
       formik.resetForm();
@@ -447,6 +452,7 @@ const JobDetailsController = () => {
           workOrderLinkedJobs: formik.values.workOrderLinkedJobs,
           workOrderCodeSub:
             formik.values.workOrderCodeSub === '' ? null : formik.values.workOrderCodeSub,
+          workOrderCompletedDate: formik.values.workOrderCompletedDate ?? null,
         },
       })
         .then((res) => {
