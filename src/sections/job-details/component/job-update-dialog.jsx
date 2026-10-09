@@ -38,7 +38,7 @@ export const JobUpdateDialog = ({
       <DialogTitle>Update Work Order</DialogTitle>
       <DialogContent>
         <Stack direction={'column'} spacing={2} sx={{ mt: 2 }}>
-          {workOrder.workOrderStatus === WORK_STATUS.CREATED && (
+          {workOrder.workOrderStatus === WORK_STATUS.CREATED ? (
             <>
               <FormControl>
                 <InputLabel id="select-label">Order Type*</InputLabel>
@@ -67,88 +67,102 @@ export const JobUpdateDialog = ({
                   </Stack>
                 </Grid>
               </Grid>
-            </>
-          )}
-          <FormControl>
-            <InputLabel id="select-label">Company*</InputLabel>
-            <Select
-              labelId="select-label"
-              id="select"
-              label="User Role"
-              {...getFieldProps('workOrderFrom')}
-            >
-              {CMP_LIST.map((cmp, index) => (
-                <MenuItem key={index} value={cmp}>
-                  {cmp}
-                </MenuItem>
-              ))}
-            </Select>
-            {Boolean(touched.workOrderFrom && errors.workOrderFrom) && (
-              <FormHelperText>{touched.workOrderFrom && errors.workOrderFrom}</FormHelperText>
-            )}
-          </FormControl>
-          {[
-            COMPANIES.CMP_SINGER,
-            COMPANIES.CMP_SINHAGIRI,
-            COMPANIES.CMP_BROWNS,
-            COMPANIES.CMP_ABANS,
-            COMPANIES.CMP_ABANS_DIR,
-          ].includes(values.workOrderFrom) && (
-            <TextField
-              name={`workOrderCodeSub`}
-              label={'Sub WorkOrder Code'}
-              fullWidth
-              {...getFieldProps('workOrderCodeSub')}
-            />
-          )}
-          {values.workOrderFrom != COMPANIES.CMP_ERE && (
-            <TextField
-              name={`workOrderInvoiceNumber`}
-              label={'Invoice Number'}
-              fullWidth
-              {...getFieldProps('workOrderInvoiceNumber')}
-            />
-          )}
-          {isLoadingJobList ? (
-            <Typography align="center">Available Jobs Loading</Typography>
-          ) : (
-            <>
-              {workOrder.workOrderStatus != WORK_STATUS.COMPLETED && (
+              <FormControl>
+                <InputLabel id="select-label">Company*</InputLabel>
+                <Select
+                  labelId="select-label"
+                  id="select"
+                  label="User Role"
+                  {...getFieldProps('workOrderFrom')}
+                >
+                  {CMP_LIST.map((cmp, index) => (
+                    <MenuItem key={index} value={cmp}>
+                      {cmp}
+                    </MenuItem>
+                  ))}
+                </Select>
+                {Boolean(touched.workOrderFrom && errors.workOrderFrom) && (
+                  <FormHelperText>{touched.workOrderFrom && errors.workOrderFrom}</FormHelperText>
+                )}
+              </FormControl>
+              {[
+                COMPANIES.CMP_SINGER,
+                COMPANIES.CMP_SINHAGIRI,
+                COMPANIES.CMP_BROWNS,
+                COMPANIES.CMP_ABANS,
+                COMPANIES.CMP_ABANS_DIR,
+              ].includes(values.workOrderFrom) && (
+                <TextField
+                  name={`workOrderCodeSub`}
+                  label={'Sub WorkOrder Code'}
+                  fullWidth
+                  {...getFieldProps('workOrderCodeSub')}
+                />
+              )}
+              {values.workOrderFrom != COMPANIES.CMP_ERE && (
+                <TextField
+                  name={`workOrderInvoiceNumber`}
+                  label={'Invoice Number'}
+                  fullWidth
+                  {...getFieldProps('workOrderInvoiceNumber')}
+                />
+              )}
+              {isLoadingJobList ? (
+                <Typography align="center">Available Jobs Loading</Typography>
+              ) : (
                 <>
-                  {availableJobList && availableJobList.length === 1 ? (
-                    <Typography align="center"> No Jobs available to link </Typography>
-                  ) : (
-                    <Autocomplete
-                      multiple
-                      id="tags-outlined"
-                      options={availableJobList}
-                      getOptionLabel={(option) =>
-                        `${option.workOrderCode} - ${option.workOrderType}`
-                      }
-                      value={values.workOrderLinkedJobs}
-                      defaultValue={
-                        values.workOrderLinkedJobs.length > 0
-                          ? values.workOrderLinkedJobs
-                          : availableJobList
-                      }
-                      filterSelectedOptions
-                      isOptionEqualToValue={(option, value) => option._id === value._id}
-                      onChange={(event, newValue) => setFieldValue('workOrderLinkedJobs', newValue)}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Select Jobs To Link" placeholder="Jobs" />
+                  {workOrder.workOrderStatus != WORK_STATUS.COMPLETED && (
+                    <>
+                      {availableJobList && availableJobList.length === 1 ? (
+                        <Typography align="center"> No Jobs available to link </Typography>
+                      ) : (
+                        <Autocomplete
+                          multiple
+                          id="tags-outlined"
+                          options={availableJobList}
+                          getOptionLabel={(option) =>
+                            `${option.workOrderCode} - ${option.workOrderType}`
+                          }
+                          value={values.workOrderLinkedJobs}
+                          defaultValue={
+                            values.workOrderLinkedJobs.length > 0
+                              ? values.workOrderLinkedJobs
+                              : availableJobList
+                          }
+                          filterSelectedOptions
+                          isOptionEqualToValue={(option, value) => option._id === value._id}
+                          onChange={(event, newValue) =>
+                            setFieldValue('workOrderLinkedJobs', newValue)
+                          }
+                          renderInput={(params) => (
+                            <TextField {...params} label="Select Jobs To Link" placeholder="Jobs" />
+                          )}
+                        />
                       )}
-                    />
-                  )}
-                  {values.workOrderLinkedJobs.length > 0 && (
-                    <Typography variant="body1" textAlign="justify" fontWeight="bold">
-                      Make sure to link all workorders before closing one invoice which will
-                      generate the invoice number for all, Once you proceed cannot link workorders
-                      again.
-                    </Typography>
+                      {values.workOrderLinkedJobs.length > 0 && (
+                        <Typography variant="body1" textAlign="justify" fontWeight="bold">
+                          Make sure to link all workorders before closing one invoice which will
+                          generate the invoice number for all, Once you proceed cannot link
+                          workorders again.
+                        </Typography>
+                      )}
+                    </>
                   )}
                 </>
               )}
             </>
+          ) : (
+            <Grid container alignItems="center">
+              <Grid size={{ xs: 12, sm: 8 }}>
+                <Stack>
+                  <DatePicker
+                    label="Completed Date"
+                    value={formik.values.workOrderCompletedDate}
+                    onChange={(date) => formik.setFieldValue('workOrderCompletedDate', date)}
+                  />
+                </Stack>
+              </Grid>
+            </Grid>
           )}
         </Stack>
       </DialogContent>
